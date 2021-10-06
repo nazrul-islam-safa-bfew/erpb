@@ -52,6 +52,5 @@ function dispHeading()
       document.write("<td>WINSSecondaryServer</td>");
       document.write("</thead>");
 }
-
             </script>
 </html>
