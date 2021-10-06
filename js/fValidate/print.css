@@ -1,0 +1,354 @@
+HTML {
+	HEIGHT: 100%
+}
+BODY {
+	HEIGHT: 100%
+}
+BODY {
+	COLOR: #000; BACKGROUND-COLOR: #fff
+}
+BODY {
+	FONT: 12pt "Times New Roman", Times, serif
+}
+FORM {
+	FONT: 12pt "Times New Roman", Times, serif
+}
+INPUT {
+	FONT: 12pt "Times New Roman", Times, serif
+}
+TEXTAREA {
+	FONT: 12pt "Times New Roman", Times, serif
+}
+SELECT {
+	FONT: 12pt "Times New Roman", Times, serif
+}
+H1 {
+	FONT-FAMILY: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif
+}
+H2 {
+	FONT-FAMILY: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif
+}
+H3 {
+	FONT-FAMILY: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif
+}
+H4 {
+	FONT-FAMILY: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif
+}
+H1 {
+	FONT-SIZE: 200%; MARGIN: 0px; COLOR: #00c; FONT-STYLE: italic; BACKGROUND-COLOR: transparent
+}
+H1 SPAN {
+	FONT-SIZE: 50%
+}
+H2 {
+	FONT-SIZE: 170%; MARGIN: 0px; COLOR: #c00
+}
+H3 {
+	FONT-SIZE: 140%; COLOR: #c00; BORDER-BOTTOM: #ccd 1px solid; BACKGROUND-COLOR: transparent
+}
+P {
+	PADDING-LEFT: 1em
+}
+ACRONYM {
+	CURSOR: help; COLOR: #447; BORDER-BOTTOM: #ccf 1px dashed
+}
+UL.bullets {
+	BORDER-RIGHT: #ccd 1px solid; PADDING-RIGHT: 2em; BORDER-TOP: #ccd 1px solid; PADDING-LEFT: 2em; PADDING-BOTTOM: 0px; MARGIN: 1em 5em; BORDER-LEFT: #ccd 1px solid; COLOR: #000; PADDING-TOP: 0.5em; BORDER-BOTTOM: #ccd 1px solid; BACKGROUND-COLOR: #eef
+}
+OL.list {
+	BORDER-RIGHT: #ccd 1px solid; PADDING-RIGHT: 2em; BORDER-TOP: #ccd 1px solid; PADDING-LEFT: 2em; PADDING-BOTTOM: 0px; MARGIN: 1em 5em; BORDER-LEFT: #ccd 1px solid; COLOR: #000; PADDING-TOP: 0.5em; BORDER-BOTTOM: #ccd 1px solid; BACKGROUND-COLOR: #eef
+}
+OL.list {
+	PADDING-LEFT: 3em
+}
+UL.bullets LI {
+	PADDING-BOTTOM: 0.5em
+}
+OL.list LI {
+	PADDING-BOTTOM: 0.5em
+}
+DIV#header {
+	PADDING-BOTTOM: 5pt
+}
+DIV#nav {
+	DISPLAY: none
+}
+DIV#footer {
+	PADDING-RIGHT: 1em; PADDING-LEFT: 1em; PADDING-BOTTOM: 1em; COLOR: #999; PADDING-TOP: 1em; TEXT-ALIGN: center
+}
+DIV#powered_by {
+	DISPLAY: none
+}
+UNKNOWN {
+	WIDTH: 97%; POSITION: relative
+}
+H3 SPAN.date {
+	FONT-WEIGHT: normal; FONT-SIZE: 70%; RIGHT: 0.5em; COLOR: #999; FONT-STYLE: italic; POSITION: absolute; BACKGROUND-COLOR: transparent
+}
+SPAN.time {
+	FONT-WEIGHT: bold; COLOR: #999
+}
+DIV.contentSection {
+	BORDER-RIGHT: #ddd 1px solid; PADDING-RIGHT: 0.5em; BORDER-TOP: #ddd 1px solid; PADDING-LEFT: 0.5em; PADDING-BOTTOM: 1em; MARGIN: 30px 0px 0px; BORDER-LEFT: #ddd 1px solid; WIDTH: 97%; COLOR: #000; PADDING-TOP: 0px; BORDER-BOTTOM: #ddd 1px solid; POSITION: relative; BACKGROUND-COLOR: #f5f5f5
+}
+DIV.contentSection H3 {
+	BORDER-TOP-STYLE: none; BORDER-RIGHT-STYLE: none; BORDER-LEFT-STYLE: none; BORDER-BOTTOM-STYLE: none
+}
+DIV.contentSection H3 A {
+	BORDER-RIGHT: #ccc 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #ccc 1px solid; PADDING-LEFT: 5px; PADDING-BOTTOM: 5px; BORDER-LEFT: #ccc 1px solid; PADDING-TOP: 5px; BORDER-BOTTOM: #ccc 1px solid; POSITION: relative; TOP: -10px; BACKGROUND-COLOR: #fff
+}
+UNKNOWN {
+	TOP: -25px
+}
+DIV.contentSection DIV.toplink {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; Z-INDEX: 10; RIGHT: -3px; PADDING-BOTTOM: 0px; MARGIN: 0px; BOTTOM: -3px; PADDING-TOP: 0px; POSITION: absolute; BACKGROUND-COLOR: #fff
+}
+DIV.contentSection A.top {
+	BORDER-RIGHT: #fff 1px solid; PADDING-RIGHT: 0.5em; BORDER-TOP: #ddd 1px solid; DISPLAY: block; PADDING-LEFT: 0.5em; PADDING-BOTTOM: 0.2em; BORDER-LEFT: #ddd 1px solid; COLOR: #00c; PADDING-TOP: 0.2em; BORDER-BOTTOM: #fff 1px solid; BACKGROUND-COLOR: #fff; TEXT-ALIGN: center; TEXT-DECORATION: none
+}
+UNKNOWN {
+	RIGHT: -1px; BOTTOM: -1px
+}
+DIV.contentSection A.top:hover {
+	COLOR: #c00
+}
+DIV.params {
+	BORDER-RIGHT: #ccc 1px solid; PADDING-RIGHT: 0.5em; BORDER-TOP: #ccc 1px solid; PADDING-LEFT: 0.5em; PADDING-BOTTOM: 0.5em; BORDER-LEFT: #ccc 1px solid; PADDING-TOP: 0.5em; BORDER-BOTTOM: #ccc 1px solid
+}
+DL.param {
+	PADDING-BOTTOM: 1em; BORDER-BOTTOM: #ccc 1px solid
+}
+DL.param DT {
+	FONT-WEIGHT: bold; COLOR: #060; FONT-FAMILY: "Courier New", Courier, mono
+}
+FIELDSET#typeLegend .parameter {
+	FONT-WEIGHT: bold; COLOR: #060; FONT-FAMILY: "Courier New", Courier, mono
+}
+FIELDSET#typeLegend .valueOther {
+	FONT-WEIGHT: bold; COLOR: #060; FONT-FAMILY: "Courier New", Courier, mono
+}
+FIELDSET#typeLegend .valueDefault {
+	FONT-WEIGHT: bold; COLOR: #060; FONT-FAMILY: "Courier New", Courier, mono
+}
+FIELDSET#typeLegend .valueDesc {
+	FONT-WEIGHT: bold; COLOR: #060; FONT-FAMILY: "Courier New", Courier, mono
+}
+FIELDSET#typeLegend .valueExample {
+	FONT-WEIGHT: bold; COLOR: #060; FONT-FAMILY: "Courier New", Courier, mono
+}
+DL.param DD SPAN {
+	FONT-WEIGHT: bold; COLOR: #00c
+}
+FIELDSET#typeLegend .datatype {
+	FONT-WEIGHT: bold; COLOR: #00c
+}
+FIELDSET#typeLegend .inclusion {
+	FONT-WEIGHT: bold; COLOR: #00c
+}
+DL.param DD SPAN SPAN {
+	COLOR: #f90
+}
+FIELDSET#typeLegend .inclusion {
+	COLOR: #f90
+}
+DL.paramValue DT {
+	FONT-WEIGHT: normal; COLOR: #c00
+}
+FIELDSET#typeLegend .valueOther {
+	FONT-WEIGHT: normal; COLOR: #c00
+}
+FIELDSET#typeLegend .valueDefault {
+	FONT-WEIGHT: normal; COLOR: #c00
+}
+FIELDSET#typeLegend .valueDesc {
+	FONT-WEIGHT: normal; COLOR: #c00
+}
+FIELDSET#typeLegend .valueExample {
+	FONT-WEIGHT: normal; COLOR: #c00
+}
+DL.paramValue DT.default {
+	FONT-WEIGHT: bold
+}
+FIELDSET#typeLegend .valueDefault {
+	FONT-WEIGHT: bold
+}
+DL.paramValue DT.desc {
+	FONT-STYLE: italic
+}
+FIELDSET#typeLegend .valueDesc {
+	FONT-STYLE: italic
+}
+DL.paramValue DT.example {
+	COLOR: #800080
+}
+FIELDSET#typeLegend .valueExample {
+	COLOR: #800080
+}
+FIELDSET#typeLegend P {
+	MARGIN: 0px 0.5em
+}
+FIELDSET#typeLegend LEGEND {
+	PADDING-RIGHT: 0.5em; PADDING-LEFT: 0.5em; FONT-WEIGHT: bold; FONT-SIZE: 110%; PADDING-BOTTOM: 0.2em; COLOR: #000; PADDING-TOP: 0.2em
+}
+UL#changelog {
+	FONT-WEIGHT: bold; PADDING-BOTTOM: 5px; CURSOR: pointer; COLOR: #c00
+}
+UL#changelog UL {
+	FONT-WEIGHT: normal; CURSOR: default; COLOR: #000
+}
+DIV#controlBar {
+	DISPLAY: none
+}
+TABLE {
+	MARGIN: 0px auto; POSITION: relative; BORDER-COLLAPSE: collapse
+}
+TABLE CAPTION {
+	COLOR: #999; FONT-STYLE: italic; TEXT-ALIGN: left
+}
+TABLE TH {
+	COLOR: #fff; BACKGROUND-COLOR: #559
+}
+TABLE TD {
+	BACKGROUND-COLOR: #fff
+}
+TABLE TD {
+	BORDER-RIGHT: #ccd 1px solid; PADDING-RIGHT: 0.5em; BORDER-TOP: #ccd 1px solid; PADDING-LEFT: 0.5em; PADDING-BOTTOM: 0.2em; BORDER-LEFT: #ccd 1px solid; PADDING-TOP: 0.2em; BORDER-BOTTOM: #ccd 1px solid
+}
+TABLE TH {
+	BORDER-RIGHT: #ccd 1px solid; PADDING-RIGHT: 0.5em; BORDER-TOP: #ccd 1px solid; PADDING-LEFT: 0.5em; PADDING-BOTTOM: 0.2em; BORDER-LEFT: #ccd 1px solid; PADDING-TOP: 0.2em; BORDER-BOTTOM: #ccd 1px solid
+}
+TABLE#compat TD.family {
+	FONT-WEIGHT: bold; COLOR: #c00; BACKGROUND-COLOR: #eee
+}
+TABLE#namespace TD.family {
+	FONT-WEIGHT: bold; COLOR: #c00; BACKGROUND-COLOR: #eee
+}
+TABLE#namespace COL.keyCells {
+	FONT-WEIGHT: bold; BACKGROUND-COLOR: #eee
+}
+DIV#files {
+	MARGIN: 1em
+}
+DIV#files H4 {
+	MARGIN-BOTTOM: 2px
+}
+DIV#files P {
+	MARGIN: 0.2em
+}
+UNKNOWN {
+	MARGIN-BOTTOM: 1px
+}
+DIV#files H4 A {
+	BORDER-RIGHT: #ccd 1px solid; PADDING-RIGHT: 0.5em; BORDER-TOP: #ccd 1px solid; PADDING-LEFT: 0.5em; PADDING-BOTTOM: 0.2em; BORDER-LEFT: #ccd 1px solid; COLOR: #559; PADDING-TOP: 0.2em; BORDER-BOTTOM: #ccd 1px; BACKGROUND-COLOR: #fff
+}
+DIV#files DIV.file DIV {
+	BORDER-RIGHT: #ccd 1px solid; PADDING-RIGHT: 0px; BORDER-TOP: #ccd 1px solid; MARGIN-TOP: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; BORDER-LEFT: #ccd 1px solid; PADDING-TOP: 0px; BORDER-BOTTOM: #ccd 1px solid; BACKGROUND-COLOR: #eee
+}
+DIV.testimonial {
+	BORDER-TOP: #ccd 1px solid
+}
+DIV.testimonial P.quote {
+	PADDING-RIGHT: 2em; PADDING-LEFT: 2em; FONT-SIZE: 110%; MARGIN-BOTTOM: 0px; PADDING-BOTTOM: 0px; COLOR: #007; PADDING-TOP: 0px; BACKGROUND-COLOR: transparent
+}
+P.testAuthor {
+	PADDING-RIGHT: 5em; MARGIN: 0px 0px 1em; COLOR: #999; FONT-STYLE: italic; BACKGROUND-COLOR: transparent; TEXT-ALIGN: right
+}
+FORM {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 20px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px
+}
+LABEL {
+	MARGIN-TOP: 1em; DISPLAY: block; FONT-WEIGHT: bold
+}
+INPUT {
+	BORDER-RIGHT: #ccd 1px solid; PADDING-RIGHT: 0.2em; BORDER-TOP: #ccd 1px solid; PADDING-LEFT: 0.2em; PADDING-BOTTOM: 0.2em; MARGIN-LEFT: 1em; BORDER-LEFT: #ccd 1px solid; PADDING-TOP: 0.2em; BORDER-BOTTOM: #ccd 1px solid; BACKGROUND-COLOR: #eef
+}
+SELECT {
+	BORDER-RIGHT: #ccd 1px solid; PADDING-RIGHT: 0.2em; BORDER-TOP: #ccd 1px solid; PADDING-LEFT: 0.2em; PADDING-BOTTOM: 0.2em; MARGIN-LEFT: 1em; BORDER-LEFT: #ccd 1px solid; PADDING-TOP: 0.2em; BORDER-BOTTOM: #ccd 1px solid; BACKGROUND-COLOR: #eef
+}
+TEXTAREA {
+	BORDER-RIGHT: #ccd 1px solid; PADDING-RIGHT: 0.2em; BORDER-TOP: #ccd 1px solid; PADDING-LEFT: 0.2em; PADDING-BOTTOM: 0.2em; MARGIN-LEFT: 1em; BORDER-LEFT: #ccd 1px solid; PADDING-TOP: 0.2em; BORDER-BOTTOM: #ccd 1px solid; BACKGROUND-COLOR: #eef
+}
+INPUT.errHilite {
+	BORDER-RIGHT: #ddc 1px solid; BORDER-TOP: #ddc 1px solid; BORDER-LEFT: #ddc 1px solid; BORDER-BOTTOM: #ddc 1px solid; BACKGROUND-COLOR: #ffe
+}
+SELECT.errHilite {
+	BORDER-RIGHT: #ddc 1px solid; BORDER-TOP: #ddc 1px solid; BORDER-LEFT: #ddc 1px solid; BORDER-BOTTOM: #ddc 1px solid; BACKGROUND-COLOR: #ffe
+}
+TEXTAREA.errHilite {
+	BORDER-RIGHT: #ddc 1px solid; BORDER-TOP: #ddc 1px solid; BORDER-LEFT: #ddc 1px solid; BORDER-BOTTOM: #ddc 1px solid; BACKGROUND-COLOR: #ffe
+}
+LABEL.errHilite {
+	COLOR: #c00
+}
+DIV.formFooter {
+	CLEAR: both; MARGIN-TOP: 1em
+}
+DIV.formFooter INPUT {
+	BORDER-RIGHT: #ccc 1px solid; PADDING-RIGHT: 0px; BORDER-TOP: #ccc 1px solid; PADDING-LEFT: 0px; FONT-WEIGHT: bold; PADDING-BOTTOM: 0px; MARGIN-LEFT: 0px; BORDER-LEFT: #ccc 1px solid; COLOR: #c00; MARGIN-RIGHT: 1em; PADDING-TOP: 0px; BORDER-BOTTOM: #ccc 1px solid; BACKGROUND-COLOR: #eee
+}
+UL#errors {
+	BORDER-RIGHT: #cc9 1px solid; PADDING-RIGHT: 0.3em; BORDER-TOP: #cc9 1px solid; MARGIN-TOP: 1em; DISPLAY: none; PADDING-LEFT: 0.3em; FONT-WEIGHT: bold; PADDING-BOTTOM: 0.3em; BORDER-LEFT: #cc9 1px solid; COLOR: #c00; PADDING-TOP: 0.3em; BORDER-BOTTOM: #cc9 1px solid; BACKGROUND-COLOR: #ffe
+}
+UL#errors LI {
+	PADDING-RIGHT: 0px; MARGIN-TOP: 0.5em; PADDING-LEFT: 0px; MARGIN-BOTTOM: 0.5em; PADDING-BOTTOM: 0px; PADDING-TOP: 0px
+}
+UL#errors LI.heading {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-WEIGHT: normal; PADDING-BOTTOM: 0px; MARGIN: 0.5em 0px; COLOR: #000; PADDING-TOP: 0px; FONT-STYLE: italic; LIST-STYLE-TYPE: none
+}
+FORM#demoForm FIELDSET {
+	PADDING-RIGHT: 1em; PADDING-LEFT: 1em; FLOAT: left; PADDING-BOTTOM: 1em; WIDTH: 40%; MARGIN-RIGHT: 1em; PADDING-TOP: 1em
+}
+FORM#demoForm DIV {
+	CLEAR: both
+}
+FORM#demoForm HR {
+	COLOR: #ccc
+}
+DL#glossary {
+	
+}
+DL#validators {
+	
+}
+DL#glossary DT {
+	FONT-WEIGHT: bold; FONT-SIZE: 110%
+}
+DL#validators DT {
+	FONT-WEIGHT: bold; FONT-SIZE: 110%
+}
+DL#glossary DD {
+	MARGIN-BOTTOM: 1em; PADDING-BOTTOM: 1em; BORDER-BOTTOM: #ccd 1px solid
+}
+DL#validators DD {
+	MARGIN-BOTTOM: 1em; PADDING-BOTTOM: 1em; BORDER-BOTTOM: #ccd 1px solid
+}
+P.currentDownload {
+	BORDER-RIGHT: #cc9 1px solid; PADDING-RIGHT: 10px; BORDER-TOP: #cc9 1px solid; PADDING-LEFT: 65px; BACKGROUND: url(../images/zip_file.gif) #ffc no-repeat 10px 10px; PADDING-BOTTOM: 10px; MARGIN: 0px auto; BORDER-LEFT: #cc9 1px solid; WIDTH: 70%; PADDING-TOP: 10px; BORDER-BOTTOM: #cc9 1px solid; HEIGHT: 45px; min-width: 300px
+}
+P.download {
+	MARGIN-BOTTOM: 0.5em
+}
+CODE {
+	BORDER-RIGHT: #ccc 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #ccc 1px solid; DISPLAY: block; PADDING-LEFT: 5px; FONT-SIZE: 110%; PADDING-BOTTOM: 5px; BORDER-LEFT: #ccc 1px solid; COLOR: #060; PADDING-TOP: 5px; BORDER-BOTTOM: #ccc 1px solid; POSITION: relative; BACKGROUND-COLOR: #eee
+}
+SPAN.filename {
+	COLOR: #060; FONT-FAMILY: "Courier new", courier, mono
+}
+.centered {
+	TEXT-ALIGN: center
+}
+.right {
+	TEXT-ALIGN: right
+}
+.u {
+	TEXT-DECORATION: underline
+}
+.italic {
+	FONT-STYLE: italic
+}
+.note {
+	COLOR: #c00; FONT-STYLE: italic
+}
+.note SPAN {
+	FONT-WEIGHT: bold; FONT-STYLE: normal
+}

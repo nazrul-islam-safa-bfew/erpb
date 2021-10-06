@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0049)http://www.autotap.com/problem5_engine_cranks.asp -->
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/templates/expressdiy.dwt" codeOutsideHTMLIsLocked="false" --><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Problem 5: Engine Cranks But won't Start</title>
+<!-- InstanceEndEditable -->
+<!-- InstanceBeginEditable name="head" -->
+<meta name="description" content="What’s causing the no-start? All engines require three things to start and run: spark, fuel, and compression. If any one of these isn’t there, you aren’t going anywhere.">
+<meta name="keywords" content="engine cranks but won&#39;t start, fuel pump, pcm, crank sensors, fuel pressure, engine starting problems, engine starting issues, engine won&#39;t start">
+<!-- InstanceEndEditable -->
+<link href="./engine cranks pdf_files/960.css" rel="stylesheet" type="text/css">
+<link href="./engine cranks pdf_files/text.css" rel="stylesheet" type="text/css">
+<link href="./engine cranks pdf_files/layout.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" charset="iso-8859-1" src="./engine cranks pdf_files/mTag.js.download"></script><script type="text/javascript" charset="UTF-8" src="./engine cranks pdf_files/saved_resource" id="lpScriptId895093057552-986754495446"></script></head>
+
+<body>
+<div id="maincontainer" class="container_16">
+<div class="grid_4"><a href="http://www.autotap.com/welcome.asp"><img src="./engine cranks pdf_files/header_ATlogo.gif" alt="AutoTap Express DIY logo" width="220" height="85" border="0"></a></div>
+<div class="grid_2 prefix_1"><a href="http://www.autotap.com/product.asp"></a></div>
+<div class="grid_2"><a href="http://www.autotap.com/techlibrary.asp"><img src="./engine cranks pdf_files/nav_techlibrary.gif" alt="Tech Library" width="100" height="85" border="0"></a></div>
+<div class="clear"></div>
+
+<div id="containerborder" class="container_16">
+<div class="clear"></div>
+
+<div class="container_16"><!-- InstanceBeginEditable name="mainbanner" --><img src="./engine cranks pdf_files/hp_ban_20160229.jpg" alt="Introducing the All New AutoTap Express DIY" width="960" height="215" border="0"><!-- InstanceEndEditable --></div>
+<div class="clear"></div>
+
+<div id="bannerdivider" class="container_16"></div>
+<div class="clear"></div>
+
+<div id="content" class="grid_12 alpha"><!-- InstanceBeginEditable name="maincontent" -->
+<div class="grid_11 suffix_1">
+<div class="breadcrumb"><a href="http://www.autotap.com/welcome.asp">Home</a> &gt; Engine Cranks But Won't Start</div>
+
+<h2>Engine Cranks But Won't Start</h2>
+<h6>What’s causing the no-start? All engines require three things to start and run: spark, fuel, and compression. If any one of these isn’t there, you aren’t going anywhere.</h6>
+
+<h6>Symptom:</h6>
+<ul>
+<li>Engine Cranks but won’t Start</li>
+</ul>
+
+<h6>Probable Causes:</h6>
+<ul>
+<li>Fuel Pump (P0230 to P0233)</li>
+<li>PCM (P0600 to P0606)</li>
+<li>Crank Sensor (P0355 to P0399)</li>
+<li>Fuel Pressure (P0190 to P0194)</li>
+</ul>
+
+<p>Chances are the Check Engine Light is not on, but you may find any of the following codes:</p>
+
+<ul>
+<li>P0230 to P0233 Fuel Pump codes</li>
+<li>P0600 to P0606 PCM related codes</li>
+<li>P0335 to P0339 Crank Sensor codes</li>
+<li>P0190 to P0194 Fuel Pressure Sensor codes</li>
+</ul>
+
+<p>No spark due to a bad crank position sensor, a faulty ignition module or PCM, a problem in the ignition circuit (ignition switch, antitheft system, wiring, etc.), a faulty park/neutral safety switch, a bad ignition coil (only on engines with a single coil ignition), or wet plugs or plug wires (did it rain last night, did you just wash the engine?)</p>
+
+<p>A less common cause is a worn starter that draws so many amps while cranking the engine that there’s not enough juice left to adequately power the ignition system and fuel injectors. Contributing factors might be a weak battery and/or loose or corroded battery cables.</p>
+
+<p>No fuel because of a dead fuel pump, bad fuel pump relay, blown fuel pump fuse, plugged fuel filter or line, or failed PCM injector driver circuit or injector power supply relay. Or, the fuel tank might be empty (don’t believe what the gauge is telling you), or the fuel tank might contain contaminated fuel (water or too much alcohol) or the wrong type of fuel (whoops, somebody put in diesel instead of gasoline).</p>
+
+<p>No compression because the timing belt or chain is broken, the timing belt or chain is loose and jumped out of time, or the overhead camshaft has snapped. A powerful scantool like AutoTap Express DIY can help isolate the root cause by capturing this information as in Figure 8.</p>
+<p><a href="http://www.autotap.com/Assets/images/typicle_param_lrg.gif" target="_blank"><img src="./engine cranks pdf_files/no_start.jpg" alt="Figure 8" width="500" height="362" border="0"></a></p>
+<p><em>Figure 8 - Typical parameters to monitor for non-start condition</em></p>
+<p>The first step is to determine if it’s a spark, fuel, or compression problem. Here’s a quick way to find out which of the three is missing. Remove a plug wire, insert a Phillips screwdriver or spare plug piece of bare wire into the plug wire boot and place the end near the engine block (do not hold the plug wire while cranking the engine unless you want a shocking experience). If there’s a spark when the engine is cranked, it has ignition. The problem is either fuel or compression. If the engine has an overhead cam with a timing belt, loosen the cover over the timing belt and check the belt. If the belt is okay, the problem is no fuel. Listen for the electric fuel pump in the fuel tank to make a buzzing noise when the ignition is turned on (you may have to open the gas cap to hear it). You won’t hear anything if the pump has died. Diagnostics can now be focused on the fuel pump circuit to determine if the pump, relay or wiring is causing the no start. If the relay has voltage but the pump isn’t running, you’ll probably have to drop the fuel tank to check the wiring connector at the pump. If the problem is no spark, anything in the ignition circuit that creates the spark may be at fault. Use your AutoTap Express DIY to look for an RPM signal from the Crankshaft Position sensor while cranking the engine. A bad Crankshaft Position sensor is a common cause of no starts. The signal from this sensor goes to the PCM or ignition module that switches the ignition coil(s) on and off. If you have an RPM signal, a bad ignition module or PCM may not be switching the coil(s) on and off. Using a voltmeter, check for voltage at the coils with the key on and while cranking the engine. The voltage should be switching on and off. In ignition systems with a single coil and distributor, a bad coil or a cracked distributor cap or rotor can prevent the spark plugs from firing. On multi-coil, distributorless ignition systems and coil-on-plug systems; one coil failure may cause an engine to misfire, but it won't prevent it from starting. What’s causing the no-start? All engines require three things to start and run: spark, fuel and compression. If any one of these isn’t there, you aren’t going anywhere.</p>
+</div>
+<div class="clear"></div>
+
+<div>
+<div></div>
+<div></div>
+</div>
+<div class="clear"></div>
+
+<!-- InstanceEndEditable --></div>
+<div id="sidebar" class="grid_4 omega">
+<h2>Testimonials</h2>
+<blockquote>
+<p>The new  version is more intuitive. I love the snapshot and real-time views. I will be driving from autoshop to autoshop showing off my new toy."</p>
+<p class="bqcontributor">- Troy, Michigan</p>
+</blockquote>
+
+<blockquote>
+<p>I think this version of the Autotap is a lot more user friendly to people who don't normally rip cars apart and put them back together."</p>
+<p class="bqcontributor">- Tim, Manitoba</p>
+</blockquote>
+
+<blockquote>
+<p>Loved it! The graphics were clear the real time updates rocked."</p>
+<p class="bqcontributor">- Andrew, Minnesota</p>
+</blockquote>
+
+<blockquote>
+<p>I'm impressed! Two thumbs up AND five stars!"</p>
+<p class="bqcontributor">- Joe, Texas</p>
+</blockquote>
+
+<blockquote>
+<p>I have used the Diagnostic Wizard to do a complete sensor check, man this thing is fast. Works really well."</p>
+<p class="bqcontributor">- Warren, Nova Scotia</p>
+</blockquote>
+
+<blockquote>
+<p>It's a pleasure doing business with a company that has real people in the technical support group. They were most helpful."</p>
+<p class="bqcontributor">- Thomas, Ohio</p>
+</blockquote>
+</div>
+<div class="clear"></div>
+
+</div><!-- end containerborder -->
+
+<div id="footer" class="grid_16">
+  <p><a href="http://www.autotap.com/welcome.asp">Home</a>  |   <a href="http://www.autotap.com/about.asp">About Us</a> |  <a href="http://www.autotap.com/techlibrary.asp">Technical Library</a> </p>
+  <p>© 2012 <a href="http://www.bb-elec.com/" target="_blank">B&amp;B Electronics Manufacturing Company, Inc.</a><br></p>
+</div>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="./engine cranks pdf_files/ga.js.download" type="text/javascript"></script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-15148181-1");
+pageTracker._setDomainName(".autotap.com");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+<!-- BEGIN LivePerson Monitor. --><script language="javascript"> var lpMTagConfig = {'lpServer' : "server.iad.liveperson.net",'lpNumber' : "85832183",'lpProtocol' : "http"}; function lpAddMonitorTag(src){if(typeof(src)=='undefined'||typeof(src)=='object'){src=lpMTagConfig.lpMTagSrc?lpMTagConfig.lpMTagSrc:'/hcp/html/mTag.js';}if(src.indexOf('http')!=0){src=lpMTagConfig.lpProtocol+"://"+lpMTagConfig.lpServer+src+'?site='+lpMTagConfig.lpNumber;}else{if(src.indexOf('site=')<0){if(src.indexOf('?')<0)src=src+'?';else src=src+'&';src=src+'site='+lpMTagConfig.lpNumber;}};var s=document.createElement('script');s.setAttribute('type','text/javascript');s.setAttribute('charset','iso-8859-1');s.setAttribute('src',src);document.getElementsByTagName('head').item(0).appendChild(s);} if (window.attachEvent) window.attachEvent('onload',lpAddMonitorTag); else window.addEventListener("load",lpAddMonitorTag,false);</script><!-- END LivePerson Monitor. -->
+
+<!-- end maincontainer -->
+
+
+
+<!-- InstanceEnd -->
+</body></html>

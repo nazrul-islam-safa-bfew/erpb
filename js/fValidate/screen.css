@@ -1,0 +1,15 @@
+LABEL {
+	MARGIN-TOP: 1em;  FONT-WEIGHT: normal
+}
+INPUT.errHilite {
+	BORDER-RIGHT: #ddc 1px solid; BORDER-TOP: #ddc 1px solid; BORDER-LEFT: #ddc 1px solid; BORDER-BOTTOM: #ddc 1px solid; BACKGROUND-COLOR: #ffe
+}
+SELECT.errHilite {
+	BORDER-RIGHT: #ddc 1px solid; BORDER-TOP: #ddc 1px solid; BORDER-LEFT: #ddc 1px solid; BORDER-BOTTOM: #ddc 1px solid; BACKGROUND-COLOR: #ffe
+}
+TEXTAREA.errHilite {
+	BORDER-RIGHT: #ddc 1px solid; BORDER-TOP: #ddc 1px solid; BORDER-LEFT: #ddc 1px solid; BORDER-BOTTOM: #ddc 1px solid; BACKGROUND-COLOR: #ffe
+}
+LABEL.errHilite {
+	COLOR: #c00
+}

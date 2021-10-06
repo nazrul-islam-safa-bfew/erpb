@@ -1,0 +1,10 @@
+@media print {
+  
+  .print_width{width:750px;}
+  .noPrint{display:none; visibility:hidden;}
+  
+  
+  
+  
+  
+}

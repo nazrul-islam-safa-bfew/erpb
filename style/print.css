@@ -1,0 +1,58 @@
+
+BODY {
+	MARGIN-TOP: 10px; MARGIN-LEFT: 10px;MARGIN-RIGHT: 5px; PADDING-TOP: 10px; margin-bottom: 10px; 
+	font-family:  Arial,Verdana, Helvetica, sans-serif; font-size: 11px; background-color: #FFFFFF;background-image: none;
+}
+
+
+.englishhead {
+	FONT-SIZE: 12px; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; COLOR:#FFFFFF;  letter-spacing: 2;text-transform: capitalize
+}
+.englishheadBlack {
+	FONT-SIZE: 12px; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; COLOR:#000000;  letter-spacing: 2;FONT-WEIGHT:BOLD;text-transform: capitalize
+}
+.englishheadBlue {
+	FONT-SIZE: 12px; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; COLOR:#0000FF;  letter-spacing: 2;FONT-WEIGHT:BOLD;text-transform: capitalize
+}
+
+h1{	FONT-SIZE: 12px; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; COLOR:#FFFFFF;  letter-spacing: 2;text-transform: capitalize}
+
+
+table {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; color:#000000}
+/*th{
+	background:#FFAAAA;FONT-SIZE: 16px; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; COLOR:#000000;  letter-spacing: 2;FONT-WEIGHT:BOLD;text-transform: capitalize
+	}
+	*/
+th{
+	FONT-SIZE: 11px; FONT-FAMILY:Arial, Helvetica, sans-serif; COLOR:#000000;  letter-spacing: 1;FONT-WEIGHT:BOLD;text-transform: capitalize
+	}
+td{
+	FONT-SIZE: 11px; FONT-FAMILY:Verdana, Helvetica,Arial, sans-serif; COLOR:#000000; 
+	}
+	
+
+textbold {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; color:#000000}
+/*input {    FONT-SIZE: 8pt; FONT-FAMILY: Verdava, Arial; color:#000000 ;BORDER-BOTTOM: #000000 1px solid; BORDER-LEFT: #000000 1px solid; BORDER-RIGHT: #000000 1px solid; BORDER-TOP: #000000 1px solid;}
+*/
+   
+}
+@media screen {
+   BODY {font-size: font-size: 11px; background: white;}
+}
+.noPrint { 
+display: none; 
+} 
+A:link {	COLOR: #00c; TEXT-DECORATION: none;FONT-SIZE: 11px; }
+A:visited {	COLOR: #00a; TEXT-DECORATION: none;FONT-SIZE: 11px; }
+A:hover {	COLOR: #F00; TEXT-DECORATION: none;FONT-SIZE: 11px; BORDER-BOTTOM: #f00 1px dashed;}
+A:active {	COLOR: #000000; TEXT-DECORATION: none;FONT-SIZE: 11px; BORDER-BOTTOM: #f00 1px dashed;}
+.dialog {
+ width:700;
+ margin:0px auto;
+ color:#f00;
+ FONT-SIZE: 11px; FONT-FAMILY:Verdana, Helvetica,Arial, sans-serif; COLOR:#000000; 
+}
+.border{
+ BORDER: #000000 1px solid;
+ margin:0px auto;
+}
