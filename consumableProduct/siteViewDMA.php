@@ -128,6 +128,7 @@ elseif($loginDesignation=='Equipment Co-ordinator')
 $sqliow = "SELECT * from `iowtemp` where `iowId` = '$iow'";
 else
 $sqliow = "SELECT * from `iowtemp` where  `iowId` = '$iow'"; 
+//$sqliow = "SELECT * from `iowtemp` where `iowProjectCode` = '$loginProject' OR `iowId` = '$iow'";
 //echo $sqliow;
 $sqlruniow= mysqli_query($db, $sqliow);
 $resultiow=mysqli_fetch_array($sqlruniow);

@@ -39,8 +39,9 @@ $loginProject = trim($loginProject);
  <option value="">All Project </option>
 <?
 }
-include("config.inc.php");
-$db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
+$localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
+include($localPath."/includes/config.inc.php"); //datbase_connection
+ $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 	 
 $sqlp = "SELECT `pcode`,pname from `project` order by pcode";
 //echo $sqlp;
@@ -78,7 +79,7 @@ if($loginProject=="000" && $loginDesignation!='Project Engineer')
 <?
 $localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
 include($localPath."/includes/config.inc.php"); //datbase_connection
-$db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
+ $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 
 if($r3 OR $r4){
 		if($loginDesignation=='Equipment Co-ordinator'){
@@ -115,7 +116,7 @@ if($status) $sqlp.= " "; // Xhead
 		if($r2)$sqlp.= " and (iowStatus like 'Raised by PM' or iowStatus='noStatus') ";
 		if($r5)$sqlp.= " and (iowStatus like 'maintenance' or iowStatus='Not Ready' or iowStatus='noStatus') ";
 			
-$sqlp.= " and (".maintenanceHeadSql(true,true," position like "," or ").")";
+//$sqlp.= " and (".maintenanceHeadSql(true,true," position like "," or ").")";
 $sqlp.= " ORDER By position ASC";
 }else{
 	$sqlp = "SELECT * from `iowtemp` WHERE 1";
@@ -177,7 +178,8 @@ if($sqlp)
  <td align="center" <?php ?>><b>Amount</b></td>
 </tr>
 <? 
-	
+	$sql = "SELECT * from `iowtemp` WHERE iowProjectCode='004' and (iowStatus like 'Raised by PM' or iowStatus='noStatus') and ( .%' or .%' or .%') ORDER By position ASC";
+	$sqlrump =mysqli_query($db , $sql);
 while($iow=mysqli_fetch_array($sqlrunp)){
 	$position=count_dot_number($iow['position']);
 	$firstPos=$secondPos=$thirdPos=$fourthPos=null; //assign all variable init is null
@@ -210,7 +212,6 @@ while($iow=mysqli_fetch_array($sqlrunp)){
  ?>
 
  <? 
-	
 	if($iow['iowStatus']!='noStatus')echo $iow['iowCode'].' (R:'.$iow['revisionNo'].')';?> </a>
  <? 
 	if($iow['iowStatus']!='noStatus')getRevisionList($iow['iowId']);?>
@@ -266,7 +267,9 @@ if($iow['iowStatus']!='noStatus'){
 <?php } ?>
 	 
 	</td>
-<?php } //if header http://win4win.biz/erp/bfew/copyThat.php?iowId=
+<?php } //if header
+		
+//http://win4win.biz/erp/bfew/copyThat.php?iowId=
 	if($iow['iowStatus']=='noStatus'){ echo "<td align='right'> 
 	<a href='./copyThat.php?iowId=$iow[iowId]' target='_blank'>Copy</a> ";
 	

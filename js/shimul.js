@@ -106,7 +106,7 @@ else if(total<0) output1.value=total*(-1);
 }
 
 
-<!-- Begin
+// Begin 
 var isNN = (navigator.appName.indexOf("Netscape")!=-1);
 function autoTab(input,len, e) {
 
@@ -136,7 +136,7 @@ return true;
 }
 //  End -->
 
-<!--Begin 
+//--Begin 
 //if(document.ven.cfacility[2].checked) {alert('ss');document.ven.camount.disabled='true';document.ven.camount.className='disabled'}"
 function credit(){
 	if(document.ven.cfacility[0].checked || document.ven.cfacility[1].checked) 

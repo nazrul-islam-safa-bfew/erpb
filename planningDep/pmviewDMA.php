@@ -497,7 +497,6 @@ $sqlrunp= mysqli_query($db, $sqlp);
 							<textarea name="revisionTxt" id="revisionTxt" style="margin: 0px; width: 98%; height: 117px; 1px solid rgb(176, 174, 174)"></textarea>
 							<input type="button" value="submit" id="revSubmitBTN">
 						</div>
-						
 					</div>
 				</div>
 			</div>

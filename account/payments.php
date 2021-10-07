@@ -160,8 +160,8 @@ $sqlrunp= mysqli_query($db, $sqlp);
 
  while($typel= mysqli_fetch_array($sqlrunp))
 {
- echo "<option value='".$typel[vid]."'";
- if($vid==$typel[vid]) echo " SELECTED ";
+ echo "<option value='".$typel['vid']."'";
+ if($vid==$typel['vid']) echo " SELECTED ";
  echo ">$typel[vname]</option>  ";
  }
 ?>
@@ -252,7 +252,7 @@ $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 // 		print_r($typel);
 		while($typel2= mysqli_fetch_array($sqlrunp2))
 		{
-		echo  "<option value='".$typel[accountID].'-'.$typel2[id]."'";
+		echo  "<option value='".$typel['accountID'].'-'.$typel2['id']."'";
 		if($account=="$typel2[accountId]-$typel2[id]")  echo  " SELECTED";
 		echo  ">$typel2[accountId]-$typel[description]-$typel2[landerName]</option>";
 		}//while2
@@ -264,9 +264,9 @@ $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 	$sqlrunp= mysqli_query($db, $sqlp);
 	while($typel= mysqli_fetch_array($sqlrunp))
 	{
-	if($typel[pcode]!='000'){
+	if($typel['pcode']!='000'){
 	echo "<option value='5502000-$typel[pcode]'";
-	if($account=='5502000-'.$typel[pcode])  echo " SELECTED";
+	if($account=='5502000-'.$typel['pcode'])  echo " SELECTED";
 	echo ">5502000-$typel[pcode]--$typel[pname]</option>  ";
 	}
 	}
@@ -275,7 +275,7 @@ $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 	$sqlrunp= mysqli_query($db, $sqlp);
 	while($typel= mysqli_fetch_array($sqlrunp))
 	{
-	echo  "<option value='".$typel[accountID]."'";
+	echo  "<option value='".$typel['accountID']."'";
 	if($account=="$typel[accountID]")  echo  " SELECTED ";
 	echo  ">$typel[accountID]-$typel[description]</option>  ";
 	}//while1
@@ -290,7 +290,7 @@ $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 		$sqlrunp2= mysqli_query($db, $sqlp2);
 		while($typel2= mysqli_fetch_array($sqlrunp2))
 		{
-		echo  "<option value='".$typel[accountID].'-'.$typel2[pcode]."'";
+		echo  "<option value='".$typel['accountID'].'-'.$typel2['pcode']."'";
 		if($account=="$typel[accountID]-$typel2[pcode]")  echo  " SELECTED";
 		echo  ">$typel[accountID]-$typel2[pcode]-$typel[description]</option>  ";
 		}//while2
@@ -302,7 +302,7 @@ $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 	while($typel= mysqli_fetch_array($sqlrunp))
 	{
 	echo "<option value='5700000-$typel[empId]'"; if($account=="5700000-$typel[empId]") echo " SELECTED "; 
-	echo ">5700000-DIRECTORS ACCOUNTS-".empName($typel[empId])."</option>";
+	echo ">5700000-DIRECTORS ACCOUNTS-".empName($typel['empId'])."</option>";
 	}
 	
 echo '</select>';?></td></tr>
@@ -323,19 +323,19 @@ $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 		$sqlrunp2= mysqli_query($db, $sqlp2);
 		while($typel2= mysqli_fetch_array($sqlrunp2))
 		{
-		echo  "<option value='".$typel[accountID].'-'.$typel2[id]."'";
+		echo  "<option value='".$typel['accountID'].'-'.$typel2['id']."'";
 		if($ct_to_account=="$typel2[accountId]-$typel2[id]")  echo  " SELECTED";
 		echo  ">$typel2[accountId]-$typel[description]-$typel2[landerName]</option>";
 		}//while2
 	}//while1
-     
+    
 	 echo "<option value='5501000-000'>5501000-HeadOffice Cash</option>";
 	$sqlp = "SELECT `pcode`,pname from `project` order by pcode ASC";
 	//echo $sqlp;
 	$sqlrunp= mysqli_query($db, $sqlp);
 	while($typel= mysqli_fetch_array($sqlrunp))
 	{
-	if($typel[pcode]!='000'){
+	if($typel['pcode']!='000'){
 	echo "<option value='5502000-$typel[pcode]'";
 	if($account=="5502000-$typel[pcode]")  echo " SELECTED";
 	echo ">5502000-$typel[pcode]--$typel[pname]</option>  ";
@@ -346,7 +346,7 @@ $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 	$sqlrunp= mysqli_query($db, $sqlp);
 	while($typel= mysqli_fetch_array($sqlrunp))
 	{
-	echo  "<option value='".$typel[accountID]."'";
+	echo  "<option value='".$typel['accountID']."'";
 	if($account=="$typel[accountID]")  echo  " SELECTED ";
 	echo  ">$typel[accountID]-$typel[description]</option>  ";
 	}//while1
@@ -361,7 +361,7 @@ $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 		$sqlrunp2= mysqli_query($db, $sqlp2);
 		while($typel2= mysqli_fetch_array($sqlrunp2))
 		{
-		echo  "<option value='".$typel[accountID].'-'.$typel2[pcode]."'";
+		echo  "<option value='".$typel['accountID'].'-'.$typel2['pcode']."'";
 		if($account=="$typel[accountID]-$typel2[pcode]")  echo  " SELECTED";
 		echo  ">$typel[accountID]-$typel2[pcode]-$typel[description]</option>  ";
 		}//while2
@@ -373,7 +373,7 @@ $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 	while($typel= mysqli_fetch_array($sqlrunp))
 	{
 	echo "<option value='5700000-$typel[empId]'"; if($account=="5700000-$typel[empId]") echo " SELECTED "; 
-	echo ">5700000-DIRECTORS ACCOUNTS-".empName($typel[empId])."</option>";
+	echo ">5700000-DIRECTORS ACCOUNTS-".empName($typel['empId'])."</option>";
 	}
 	
 echo '</select>';?></td></tr>
@@ -385,9 +385,6 @@ echo '</select>';?></td></tr>
 	<?   if($loginProject=='000'){
 	include("./includes/config.inc.php");
 	$db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
-	
-	 
-	
 	 
 	echo "<select name='account'>"; 
  if($loginDesignation!="Human Resource Manager" && $loginDesignation!="Executive, HR Productivity management")
@@ -401,9 +398,9 @@ echo '</select>';?></td></tr>
 			$sqlrunp= mysqli_query($db, $sqlp);
 			while($typel= mysqli_fetch_array($sqlrunp))
 			{
-			echo  "<option value='".$typel[accountID]."'";
+			echo  "<option value='".$typel['accountID']."'";
 // 			if(!$account1 && $typel[accountID]=="5601011")echo " style='background:#0f0;'";
-			if($account==$typel[accountID]){  echo  " SELECTED"; $accountDesc=$typel[description];}
+			if($account==$typel['accountID']){  echo  " SELECTED"; $accountDesc=$typel['description'];}
 			echo  ">$typel[accountID]--$typel[description]</option>  ";
 			}
 	 }
@@ -426,8 +423,8 @@ elseif($loginProject!='000'){
 			$sqlrunp= mysqli_query($db, $sqlp);
 			while($typel= mysqli_fetch_array($sqlrunp))
 			{
-			echo  "<option value='".$typel[accountID]."'";
-			if($account==$typel[accountID])  echo  " SELECTED";
+			echo  "<option value='".$typel['accountID']."'";
+			if($account==$typel['accountID'])  echo  " SELECTED";
 			echo  ">$typel[accountID]--$typel[description]</option>  ";
 			}
 	 }
@@ -456,9 +453,9 @@ else echo '<option value="5601001">Bank Account</option>';
 	$sqlrunp= mysqli_query($db, $sqlp);
 	while($typel= mysqli_fetch_array($sqlrunp))
 	{
-	echo  "<option value='".$typel[accountID]."'";
+	echo  "<option value='".$typel['accountID']."'";
 // 	if($typel[accountID]=="5601011") echo "style='background:#0f0'";
-	if($account1==$typel[accountID])  echo  " SELECTED";
+	if($account1==$typel['accountID'])  echo  " SELECTED";
 	echo  ">$typel[accountID]--$typel[description]</option>  ";
 	}
 	//
@@ -530,8 +527,8 @@ else echo '<option value="5601001">Bank Account</option>';
 	$sqlrunp= mysqli_query($db, $sqlp);
 	while($typel= mysqli_fetch_array($sqlrunp))
 	{
-	echo "<option value='".$typel[pcode]."'";
-	if($exfor==$typel[pcode])  echo " SELECTED";
+	echo "<option value='".$typel['pcode']."'";
+	if($exfor==$typel['pcode'])  echo " SELECTED";
 	echo ">$typel[pcode]--$typel[pname]</option>  ";
 	}
   } // else w=4
@@ -540,12 +537,8 @@ else echo '<option value="5601001">Bank Account</option>';
 		<?
 		if($w==5  OR $w=='51' ){ 
 		
-		
-		
 		}
-		
-		
-			
+				
 		if($w==2) {?>
 <!--  <tr>
    <td>Paid to</td>
@@ -573,7 +566,11 @@ else echo '<option value="5601001">Bank Account</option>';
 			$ccDate=explode("/",$voucherDate);
 			$ssDate=$ccDate[2]."-".$ccDate[1]."-".$ccDate[0];
 		}
-		$sql="select e.*,i.itemDes from employee as e,itemlist as i where e.location='$location' and e.empId in (select empId from attendance where  location='$location' and edate='$ssDate' and `action` in ('P','HP')  group by empId) and e.designation=i.itemCode
+		
+		// $sql="select e.*,i.itemDes from employee as e,itemlist as i where e.location='$location' and e.empId in (select empId from attendance where  location='$location' and edate='$ssDate' and `action` in ('P','HP')  group by empId) and e.designation=i.itemCode
+		// and (designation > '70-00-000' and designation < '86-00-000')
+		// order by e.designation asc";
+		$sql="select e.*,i.itemDes from employee as e,itemlist as i where e.location='$location' and e.designation=i.itemCode
 		and (designation > '70-00-000' and designation < '86-00-000')
 		order by e.designation asc";
 // 		echo $sql;

@@ -32,7 +32,7 @@ if($loginDesignation=='Equipment Co-ordinator'){
 	echo "Select Project: <select name='pcode'>";
 	while($pR=mysqli_fetch_array($pQ)){
 		echo "<option value='$pR[pcode]'";
-		echo $pR[pcode]==$pcode ? " selected " : "";
+		echo $pR['pcode']==$pcode ? " selected " : "";
 		echo ">$pR[pcode] - $pR[pname]</option>";
 	}
 	echo "</select>";
@@ -82,8 +82,8 @@ if($r3 || $r4){
 else{
 	if($loginDesignation=='Equipment Co-ordinator'){
 		$sqlp = "SELECT * from `iowtemp` WHERE iowProjectCode='$pcode'";
-		if($status) $sqlp.= " and (iowStatus='$status' or iowStatus='noStatus')
-		and ( ".maintenanceHeadSql(true,true," position like "," or ").")";
+		//if($status) $sqlp.= " and (iowStatus='$status' or iowStatus='noStatus')
+		//and ( ".maintenanceHeadSql(true,true," position like "," or ").")";
 		if($r2)$sqlp.= " and (iowStatus like 'Raised by PM' or iowStatus='noStatus') ";
 		if($r5)$sqlp.= " and (iowStatus like 'maintenance' or iowStatus='Not Ready' or iowStatus='noStatus') ";
 		$sqlp.=" ORDER BY position ASC";
@@ -113,19 +113,19 @@ $sqlrunp= mysqli_query($db, $sqlp);
 </tr>
 <? while($iow=mysqli_fetch_array($sqlrunp)){?>
 <tr <? if($iow["iowStatus"]=='noStatus')echo "style='background:#ffc;font-weight: bold;'";?>>
- <td><? if($iow["iowStatus"]!='noStatus')echo $iow[iowCode].' (R:'.$iow[revisionNo].')';?></td>
- <td><? echo $iow[iowDes];?></td> 
- <td align="right"><? if($iow["iowStatus"]!='noStatus')echo number_format($iow[iowQty]);?></td> 
- <td align="center"><? if($iow["iowStatus"]!='noStatus')echo $iow[iowUnit];?></td> 
- <td align="right"><? if($iow["iowStatus"]!='noStatus')echo number_format($iow[iowQty]*$iow[iowPrice],2);?></td> 
- <td align="center"><? if($iow["iowStatus"]!='noStatus'){ if($iow[supervisor]) echo supervisorDetails($iow[supervisor]);}?>
+ <td><? if($iow["iowStatus"]!='noStatus')echo $iow['iowCode'].' (R:'.$iow['revisionNo'].')';?></td>
+ <td><? echo $iow['iowDes'];?></td> 
+ <td align="right"><? if($iow["iowStatus"]!='noStatus')echo number_format($iow['iowQty']);?></td> 
+ <td align="center"><? if($iow["iowStatus"]!='noStatus')echo $iow['iowUnit'];?></td> 
+ <td align="right"><? if($iow["iowStatus"]!='noStatus')echo number_format($iow['iowQty']*$iow['iowPrice'],2);?></td> 
+ <td align="center"><? if($iow["iowStatus"]!='noStatus'){ if($iow['supervisor']) echo supervisorDetails($iow['supervisor']);}?>
 <? if($status!='Completed' && $iow["iowStatus"]!='noStatus'){?>
 <br><a href="./consumableProduct/assignSupervisor.php?iow=<? echo "$iow[iowId]&iowProjectCode=$loginProject";?>">Assign/Change Supervisor</a>
  <? }?>
  </td>
     <td align="center"> 
       <? 
-		 if($iow[iowStatus]=='Not Ready' || ($iow[iowStatus]=='maintenance' && $loginDesignation=='Equipment Co-ordinator')){
+		 if($iow['iowStatus']=='Not Ready' || ($iow['iowStatus']=='maintenance' && $loginDesignation=='Equipment Co-ordinator')){
 	    echo "<a href='./index.php?keyword=enter+sub+item+work&iow=$iow[iowId]&revisionNo=$iow[revisionNo]&iowStatus=$iow[iowStatus]'>SIOW</a> || ";
         echo "<a href='./index.php?keyword=site+view+dma&iow=$iow[iowId]&iowStatus=$iow[iowStatus]'>Detail</a>";
 		}
