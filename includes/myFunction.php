@@ -2088,10 +2088,8 @@ else
 
 function myprojectName($p)
 {
- include("config.inc.php");
-$db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
-	
-
+	$localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
+	include($localPath."/includes/config.inc.php"); //datbase_connection
  $sql=mysqli_query($db, " SELECT pname FROM project where pcode= '$p' ORDER by pcode ASC") ;
 	
  $row=mysqli_num_rows($sql);

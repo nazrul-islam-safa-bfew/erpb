@@ -1,14 +1,14 @@
 <?php
-if($_SESSION[jQuery]!=1){
-	$_SESSION[jQuery]=1;
+if($_SESSION['jQuery']!=1){
+	$_SESSION['jQuery']=1;
 	header("Refresh:0");
 }
 // ajax data handel
 if($_REQUEST["paginationMode"]=="on"){
-	echo $_SESSION[paginationMode]=1;
+	echo $_SESSION['paginationMode']=1;
 	exit();
 }elseif($_REQUEST["paginationMode"]=="off"){
-	echo $_SESSION[paginationMode]=0;
+	echo $_SESSION['paginationMode']=0;
 	exit();
 }
 // end of ajax data handel
@@ -198,11 +198,11 @@ echo '<input type="hidden" value="'.$loginProject.'" name="location">';
  //<!--  ===============================================================================   Salary while =========================   -->   
  while($typel= mysqli_fetch_array($sql)){?>
 <tr <? if($i%2==0) echo  "bgcolor=#f4f4f4";?>>
- <td><? echo empId($typel[empId],$typel[designation]);?><br>
-  <?  echo hrDesignation($typel[designation]);?>
-     <input type="hidden" name="empId<? echo $i;?>" value="<? echo $typel[empId];?>"  >
+ <td><? echo empId($typel['empId'],$typel['designation']);?><br>
+  <?  echo hrDesignation($typel['designation']);?>
+     <input type="hidden" name="empId<? echo $i;?>" value="<? echo $typel['empId'];?>"  >
  </td>
- <td><? echo $typel[name];?></td>
+ <td><? echo $typel['name'];?></td>
 <?
 if(isHoliday($dd,$project)){
 $acv1='HA';
@@ -221,7 +221,7 @@ $sql1="select * from attendance WHERE empId='$typel[empId]' and edate='$dd' and 
  if($sqlq1['location']!=$emp_project & $sqlq1['location']!='')
  	$confelit_location=$sqlq1['location'];
 //<!--End of added!-->
- $act= $sqlq1[action] ;
+ $act= $sqlq1['action'] ;
  $t='';  $t1='';
  if($act==$acv1) $t=" CHECKED ";
  else if($act==$acv2) $t1=" CHECKED ";
@@ -241,17 +241,17 @@ $confelit_location='';}
 <!--End of added!-->
 </td>
   <td align="center">
-  <? $t=empExTime($typel[empId],'H',$dd);
-      $eh= $t[eh];
-      $em= $t[em];
-      $xh= $t[xh];
+  <? $t=empExTime($typel['empId'],'H',$dd);
+      $eh= $t['eh'];
+      $em= $t['em'];
+      $xh= $t['xh'];
 	  
-	  if($t[xh]=="00")
+	  if($t['xh']=="00")
           $xh="17";
       
-      $xm= $t[xm];
+      $xm= $t['xm'];
       
-      if($t[xm]=="00")
+      if($t['xm']=="00")
           $xm="59";
 	  
    ?>
@@ -263,7 +263,7 @@ $confelit_location='';}
 	  <input name="xm<? echo $i;?>" value="<? echo $xm;?>"  size="2" maxlength="2" onKeyUp="return autoTab(this, 2, event);" class="number">
 
   </td>
- <td><input type="text" name="remarks<? echo $i;?>" disabled  class="disabled" value="<? echo view_AttRemarks($sqlq1[id]);?>"></td>
+ <td><input type="text" name="remarks<? echo $i;?>" disabled  class="disabled" value="<? echo view_AttRemarks($sqlq1['id']);?>"></td>
 </tr>
 
 <? $i++;}
@@ -280,13 +280,13 @@ $confelit_location='';}
   while($r_dma=mysqli_fetch_array($q_dma)){
     $iow_remaining_days=get_iow_remaining_days($r_dma["dmaItemCode"],$edat11);
     if($iow_remaining_days<=0){
-     $des=hrDesignation($r_dma[dmaItemCode]);
+     $des=hrDesignation($r_dma['dmaItemCode']);
       echo "<tr style='background:#f00; color:#fff'><td colspan=7 align=center>Designation of 
       <a href='http://win4win.biz/erp/bfew/planningDep/subdailyRequirment.php?project=$project&itemCode=$r_dma[dmaItemCode]' target='_blank' style='color:#fff; font-weight:800; background:#00f'>$r_dma[dmaItemCode] $des</a>
       has no iow remaining days found.</td><tr>";
       continue;
     }
-    $total_approved_hr=$r_dma[dmaQty];
+    $total_approved_hr=$r_dma['dmaQty'];
     $attendance_hr=get_attendance_of_particular_empId($r_dma["dmaItemCode"],$project);  
 //     echo $attendance_hr."<br>";
 //     echo $r_dma["dmaItemCode"]."--".$total_approved_hr." == $attendance_hr<br>";
@@ -296,7 +296,7 @@ $confelit_location='';}
     if( $today_req_today<1 && $today_req_today>0 )$today_req_today=1;
 //   End of iow requirement
     $today_req=sec2hms($today_req);
-    $des=hrDesignation($r_dma[dmaItemCode]);
+    $des=hrDesignation($r_dma['dmaItemCode']);
     echo "<tr style='background:#c99; color:#fff'><td colspan=6 align=center person='$today_req_today' class='head_row'><b>
     
      
@@ -314,11 +314,11 @@ $confelit_location='';}
     
     while($typel= mysqli_fetch_array($sql)){?>
 <tr <? if($i%2==0) echo  "bgcolor=#f4f4f4";?>>
- <td><? echo empId($typel[empId],$typel[designation]);?><br>
-  <?  echo hrDesignation($typel[designation]);?>
-     <input type="hidden" name="empId<? echo $i;?>" value="<? echo $typel[empId];?>"  >
+ <td><? echo empId($typel['empId'],$typel['designation']);?><br>
+  <?  echo hrDesignation($typel['designation']);?>
+     <input type="hidden" name="empId<? echo $i;?>" value="<? echo $typel['empId'];?>"  >
  </td>
- <td><? echo $typel[name];?></td>
+ <td><? echo $typel['name'];?></td>
 <?
 if(isHoliday($dd,$project)){
 $acv1='HA';
@@ -337,7 +337,7 @@ $sql1="select * from attendance WHERE empId='$typel[empId]' and edate='$dd' and 
  if($sqlq1['location']!=$emp_project & $sqlq1['location']!='')
  	$confelit_location=$sqlq1['location'];
 //<!--End of added!-->
- $act= $sqlq1[action] ;
+ $act= $sqlq1['action'] ;
  $t='';  $t1='';
  if($act==$acv1) $t=" CHECKED ";
  else if($act==$acv2) $t1=" CHECKED ";
@@ -358,17 +358,17 @@ $confelit_location='';}
 <!--End of added!-->
 </td>
   <td align="center">
-  <? $t=empExTime($typel[empId],'H',$dd);
-      $eh= $t[eh];
-      $em= $t[em];
-      $xh= $t[xh];
+  <? $t=empExTime($typel['empId'],'H',$dd);
+      $eh= $t['eh'];
+      $em= $t['em'];
+      $xh= $t['xh'];
 	  
-	  if($t[xh]=="00")
+	  if($t['xh']=="00")
           $xh="17";
       
-      $xm= $t[xm];
+      $xm= $t['xm'];
       
-      if($t[xm]=="00")
+      if($t['xm']=="00")
           $xm="59";
 	  
    ?>
@@ -380,7 +380,7 @@ $confelit_location='';}
 	  <input name="xm<? echo $i;?>" value="<? echo $xm;?>"  size="2" maxlength="2" onKeyUp="return autoTab(this, 2, event);" class="number">
 
   </td>
- <td><input type="text" name="remarks<? echo $i;?>" disabled  class="disabled" value="<? echo view_AttRemarks($sqlq1[id]);?>"></td>
+ <td><input type="text" name="remarks<? echo $i;?>" disabled  class="disabled" value="<? echo view_AttRemarks($sqlq1['id']);?>"></td>
 </tr>
 
 <? $i++;}

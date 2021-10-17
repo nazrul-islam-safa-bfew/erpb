@@ -1,10 +1,21 @@
-<? include_once("../includes/myFunction1.php");
-include("../includes/config.inc.php");
-include_once("../includes/myFunction.php");
-include_once("../includes/empFunction.inc.php");
-include_once("../includes/eqFunction.inc.php");
-include_once("../includes/subFunction.inc.php");
-include_once("../includes/matFunction.inc.php");
+<? 
+$localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
+include($localPath."/includes/config.inc.php"); //datbase_connection
+//include($localPath."/includes/myFunction.php"); // some general function
+include_once($localPath."/includes/myFunction1.php"); // some general function
+include_once($localPath."/includes/empFunction.inc.php"); //manpower function
+include_once($localPath."/includes/eqFunction.inc.php"); // equipment function
+include_once($localPath."/includes/subFunction.inc.php"); // sub contracts function
+include_once($localPath."/includes/matFunction.inc.php"); // material function
+$todat=todat();
+
+// include_once("../includes/myFunction1.php");
+// include("../includes/config.inc.php");
+// include_once("../includes/myFunction.php");
+// include_once("../includes/empFunction.inc.php");
+// include_once("../includes/eqFunction.inc.php");
+// include_once("../includes/subFunction.inc.php");
+// include_once("../includes/matFunction.inc.php");
 
 //$todat=todat();
 ?>

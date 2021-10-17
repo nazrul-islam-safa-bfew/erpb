@@ -10,7 +10,7 @@ $sql="select * from project ORDER by pcode ASC";
 $sqlq=mysqli_query($db, $sql);
 while($sqlr=mysqli_fetch_array($sqlq)){
 	echo "<option value=$sqlr[pcode]";
-	if($project==$sqlr[pcode]) echo " SELECTED ";
+	if($project==$sqlr['pcode']) echo " SELECTED ";
 	 echo ">";
 	echo "$sqlr[pcode]--$sqlr[pname]</option>";
 }
@@ -81,9 +81,9 @@ $sqlrunp= mysqli_query($db, $sqlp);
 
 while($typel= mysqli_fetch_array($sqlrunp))
 {
-	 echo "<option value='".$typel[empId]."'";
-	 if($empId==$typel[empId]) echo "SELECTED";
-	 echo ">".empId($typel[empId],$typel[itemCode])."--$typel[itemDes]--$typel[name]</option> ";
+	 echo "<option value='".$typel['empId']."'";
+	 if($empId==$typel['empId']) echo "SELECTED";
+	 echo ">".empId($typel['empId'],$typel['itemCode'])."--$typel[itemDes]--$typel[name]</option> ";
 }
 ?>
 </select>
@@ -119,32 +119,31 @@ $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 " empId='$empId' AND pcode='$project'".
 " AND edate BETWEEN '$fromD' AND '$toD'".
 " ORDER by edate ASC";
-//echo $sqlut;
+echo $sqlut;
 */
 
 $sqlut = "SELECT  edate FROM attendance WHERE".
 " empId='$empId' AND location='$project' AND action in ('P','HP')".
 " AND edate BETWEEN '$fromD' AND '$toD'".
 " ORDER by edate ASC";
-//echo $sqlut;
-
+echo $sqlut;
 
 $sqlqut= mysqli_query($db, $sqlut);
 $i=1;
-$sqlr=mysql_num_rows($sqlqut);
+$sqlr=mysqli_num_rows($sqlqut);
  while($reut= mysqli_fetch_array($sqlqut))
 {?>
-<tr <? if(date('D',strtotime($reut[edate]))=='Fri') echo "bgcolor=#FFFFCC"; elseif($i%2==0) echo "bgcolor=#EFEFEF";?> >
+<tr <? if(date('D',strtotime($reut['edate']))=='Fri') echo "bgcolor=#FFFFCC"; elseif($i%2==0) echo "bgcolor=#EFEFEF";?> >
   <td align="center" ><a href='./employee/local_emputReport_byEmp_detail.php?empId=<? echo $empId;?>
-  &empType=H&edate=<? echo $reut[edate];?>&empType=H&pcode=<? echo $project;?>' target='_blank'>
-<? echo myDate($reut[edate]);?></a>
+  &empType=H&edate=<? echo $reut['edate'];?>&empType=H&pcode=<? echo $project;?>' target='_blank'>
+<? echo myDate($reut['edate']);?></a>
 
 <?
-$dailyworkBreakt=dailyworkBreak($empId,$reut[edate],'H',$project);
+$dailyworkBreakt=dailyworkBreak($empId,$reut['edate'],'H',$project);
 
-$toDaypresent=toDaypresent($empId,$reut[edate],'H',$project)-$dailyworkBreakt;
+$toDaypresent=toDaypresent($empId,$reut['edate'],'H',$project)-$dailyworkBreakt;
 
-$workt=dailywork($empId,$reut[edate],'H',$project);
+$workt=dailywork($empId,$reut['edate'],'H',$project);
 /*if(date('D',strtotime($reut[edate]))=='Fri')
  $overtimet = $toDaypresent-(4*3600);
 else 
@@ -158,8 +157,8 @@ $idlet=$toDaypresent-$workt;
 
 </td>
   <td align="center"> <?
- $hour_row=get_emp_hours($empId,$reut[edate]);
- echo $hour_row[stime]." - ".$hour_row[etime]. " : ";
+ $hour_row=get_emp_hours($empId,$reut['edate']);
+ echo $hour_row['stime']." - ".$hour_row['etime']. " : ";
  
  $preset= sec2hms($toDaypresent/3600,$padHours=false);   echo $preset.' Hrs.';  $totalPresent=$totalPresent+$toDaypresent;?></td>
   <td align="center"> <?   $work= sec2hms($workt/3600,$padHours=false);   echo $work.' Hrs.';  $totalWork=$totalWork+$workt;?></td>

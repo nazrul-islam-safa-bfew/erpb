@@ -1,4 +1,5 @@
 <?
+error_reporting(E_ERROR | E_PARSE);
 if($loginProject=='000' || $loginProject=='004'){?>
 <form name="pro" method="post" >
 <select name="project" onChange="location.href='index.php?keyword=local+eq+ut+report+b&project='+pro.project.options[document.pro.project.selectedIndex].value";>
@@ -233,7 +234,11 @@ $from="$year-$month-01";
  }?>
 
 	<tr><td colspan="4" height="5">Usage: <?php 
-	 echo "<font color='#00f'>".$last_usage_report."</font> ".(measuerUnti()[$mRow[unit]]);
+     $c = measuerUnti();
+     $b = $mRow[unit];
+     $a= $c[$b];
+	 echo "<font color='#00f'>".$last_usage_report."</font>".$a;
+	 //echo "<font color='#00f'>".$last_usage_report."</font> ".(measuerUnti()[$mRow[unit]]);
 		 
 	 echo "; Fuel: <font color='#00f'>"."XX Ltr"."</font> Diesel;"; ?>
 		
@@ -353,7 +358,11 @@ $eqDesc=$itemRow[itemDes];
 	 $last_usage_report.=$mRow[unit]=="ue" ? " Hr. " : ""; //add hr if utilization in erp
  }?>
 	<span>Usage: <?php 
-	 echo "<font color='#00f'>".$last_usage_report."</font> ".(measuerUnti()[$mRow[unit]]); ?></span>
+	  $c = measuerUnti();
+	  $b = $mRow[unit];
+	  $a= $c[$b];
+	  echo "<font color='#00f'>".$last_usage_report."</font>".$a;
+	 //echo "<font color='#00f'>".$last_usage_report."</font> ".(measuerUnti()[$mRow[unit]]); ?></span>
 	<?php } ?>
 					
 					</li>

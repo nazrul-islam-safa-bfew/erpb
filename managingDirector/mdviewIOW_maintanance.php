@@ -1,3 +1,6 @@
+<?php
+error_reporting(E_ERROR | E_PARSE);
+?>
 <form name="searchIOW" action="./index.php?keyword=mdview+IOW+maintenance" method="post">
 <table width="90%"  align="center" class="dblue">
 <tr>
@@ -7,6 +10,7 @@
 </tr>
 <tr>
  <?
+
 		$theSelectedPcode=$selectedPcode;
 	 	$selectedPcode="004";
 	 
@@ -48,7 +52,7 @@ $sqliow = "SELECT * from `iowtemp` where `iowProjectCode` = '$pcode'  AND `iowId
 //echo $sqliow;
 $sqlruniow= mysqli_query($db, $sqliow);
 $resultiow=mysqli_fetch_array($sqlruniow);
-$iocode=$resultiow[iowCode];
+$iocode=$resultiow['iowCode'];
 
 $sqlsiow = "SELECT * from `siowtemp` where `iowId` = '$iow' ORDER BY siowId ASC";
 //echo $sqlsiow;
@@ -65,22 +69,22 @@ while($siow=mysqli_fetch_array($sqlrunsiow))
 	while($iowResult=mysqli_fetch_array($sqlrunp))
 	  	{
 	  	$approvedAmount=0;
-	  	$test=explode("-",$iowResult[dmaItemCode]);
+	  	$test=explode("-",$iowResult['dmaItemCode']);
 	  	if($test[0]>='50' AND $test[0]<='98'){	$itemCode="$test[0]-$test[1]-000";}
-      	else {$itemCode=$iowResult[dmaItemCode];}
+      	else {$itemCode=$iowResult['dmaItemCode'];}
 
-		$approvedQty=approvedQty($siow[siowId],$itemCode); 
-	    $approvedRate=approvedRate($siow[siowId],$itemCode); //echo number_format($approvedRate,2);
+		$approvedQty=approvedQty($siow['siowId'],$itemCode); 
+	    $approvedRate=approvedRate($siow['siowId'],$itemCode); //echo number_format($approvedRate,2);
 		 $approvedAmount=$approvedQty*$approvedRate;// echo number_format($approvedAmount,2);
 		 if($test[0]>='01' AND $test[0]<'35'){$approvedmaterialCost+=$approvedAmount;}
 		 elseif($test[0]>='35' AND $test[0]<'70'){$approvedequipmentCost+=$approvedAmount;}
 		 elseif($test[0]>='70'){$approvedhumanCost+=$approvedAmount;}
 		 $approveddirectCost+=$approvedAmount;	 	 
 		 $approvedtotalcost=$approvedtotalcost+$approvedAmount;
-		$totalCost=$resultiow[iowQty]*$resultiow[iowPrice];
+		$totalCost=$resultiow['iowQty']*$resultiow['iowPrice'];
  
-		$rate=$iowResult[dmaRate];
-		$amount=$rate*$iowResult[dmaQty];
+		$rate=$iowResult['dmaRate'];
+		$amount=$rate*$iowResult['dmaQty'];
 		if($test[0]>='01' AND $test[0]<'35'){$materialCost+=$amount;}
 	 	elseif($test[0]>='35' AND $test[0]<'70'){$equipmentCost+=$amount;}
 	 	elseif($test[0]>='70'){$humanCost+=$amount;}
@@ -111,10 +115,10 @@ $sqlrunp= mysqli_query($db, $sqlp);
 
 while($typel= mysqli_fetch_array($sqlrunp))
 {
-		$itemCounter=the_iow_counter_eqMaintenance($r3,$typel[pcode],$iow,$status,true);
-	  echo "<option value='".$typel[pcode]."'";
+		$itemCounter=the_iow_counter_eqMaintenance($r3,$typel['pcode'],$iow,$status,true);
+	  echo "<option value='".$typel['pcode']."'";
 	  if($itemCounter)echo " style='font-weight:600;  color:#f00;'";
-	  if($theSelectedPcode==$typel[pcode]) echo ' SELECTED';
+	  if($theSelectedPcode==$typel['pcode']) echo ' SELECTED';
 	  echo ">$typel[pcode]--$typel[pname]  (".$itemCounter." Nos)</option>  ";
  }
 ?> </select> </td><td>
@@ -128,9 +132,6 @@ $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 	 
 	//===================================================== iow sql =====================================================
 	
-	
-	
-
 if($r3){
 	$sqlp = "SELECT * from `iow` WHERE 1";
 	if($selectedPcode) $sqlp.= " AND iowProjectCode= '$selectedPcode'";else  $sqlp.= " AND iowProjectCode= '000'";
@@ -165,33 +166,36 @@ else {
  <th class="th1">Rate</th>  
  <th class="th1">Amount</th>
 </tr>
+
 <? 
 $i=1;
 while($iow=mysqli_fetch_array($sqlrunp)){
 if($iow["iowStatus"]!='noStatus')
-	if(!getEqmaintenancePcode($iow[iowCode],$theSelectedPcode))continue;
-	$i++;?>
+	if(!getEqmaintenancePcode($iow['iowCode'],$theSelectedPcode))continue;
+	$i++;
+?>
+
 <?php if($iow["iowStatus"]!='noStatus'){ ?>
 	
 <tr <?  echo trColor($i);?>>
- <td width="10"><?php echo getEqmaintenancePcode($iow[iowCode]); ?></td>
+ <td width="10"><?php echo getEqmaintenancePcode($iow['iowCode']); ?></td>
  <td width="100">
  <?
   if($status=='Approved')
 	echo "<a href='./index.php?keyword=mdview+dma&selectedPcode=$iow[iowProjectCode]&iow=$iow[iowId]&iowStatus=$iow[iowStatus]'>";
  else echo "<a href='./index.php?keyword=pmview+temp+dma&selectedPcode=$iow[iowProjectCode]&iow=$iow[iowId]'>";
 
-	$selectedPcode=$iow[iowProjectCode];
-	$iowid=$iow[iowId];
+	$selectedPcode=$iow['iowProjectCode'];
+	$iowid=$iow['iowId'];
  ?>
  
  
- <? echo $iow[iowCode].' (R:'.$iow[revisionNo].')';?> </a></td>
- <td width="200"><? echo $iow[iowDes];?></td> 
- <td align="right"><? echo number_format($iow[iowQty]);?></td> 
- <td align="right"><? echo $iow[iowUnit];?></td>  
- <td align="right"><? echo number_format($iow[iowPrice],2);?></td> 
- <td align="right"><? echo number_format($iow[iowQty]*$iow[iowPrice],2);?>
+ <? echo $iow['iowCode'].' (R:'.$iow['revisionNo'].')';?> </a></td>
+ <td width="200"><? echo $iow['iowDes'];?></td> 
+ <td align="right"><? echo number_format($iow['iowQty']);?></td> 
+ <td align="right"><? echo $iow['iowUnit'];?></td>  
+ <td align="right"><? echo number_format($iow['iowPrice'],2);?></td> 
+ <td align="right"><? echo number_format($iow['iowQty']*$iow['iowPrice'],2);?>
  <? 
 echo " [ ";
 if($status=="Approved"){echo "<a href='./print/print_approvedSIOW.php?selectedPcode=$iow[iowProjectCode]&iow=$iow[iowId]' target=_blank>Print</a>";} 
@@ -199,10 +203,10 @@ if($status=="Approved"){echo "<a href='./print/print_approvedSIOW.php?selectedPc
 	else{echo "<a href='./print/print_tempSIOW.php?selectedPcode=$iow[iowProjectCode]&iow=$iow[iowId]' target=_blank>Print</a>";}	
    echo " ] ";
 
-$materialCost=materialCost($iow[iowId]);
-$equipmentCost=equipmentCost($iow[iowId]);
-$humanCost=humanCost($iow[iowId]);
-$totalCost=$iow[iowQty]*$iow[iowPrice];
+$materialCost=materialCost($iow['iowId']);
+$equipmentCost=equipmentCost($iow['iowId']);
+$humanCost=humanCost($iow['iowId']);
+$totalCost=$iow['iowQty']*$iow['iowPrice'];
 $directCost=$materialCost+$equipmentCost+$humanCost;
 
  ?>
@@ -242,7 +246,7 @@ while($iowResult=mysqli_fetch_array($sqlrunp))
 <? 
 																		} //nostatus
 																		else{
-	 $position=count_dot_number($iow[position])-1; //change position to one position left
+	 $position=count_dot_number($iow['position'])-1; //change position to one position left
   $positionVal=md_IOW_headerFormat($position);
 ?>
 																			<tr  <? if($iow["iowStatus"]=='noStatus')echo "style='background:#ffc;font-weight: bold; border:1px solid #A99600;'";?>>
@@ -252,12 +256,9 @@ while($iowResult=mysqli_fetch_array($sqlrunp))
   </td>
  <td <? if($iow["iowStatus"]=='noStatus')echo " colspan='6'";?>><? echo  "<span style='    color: #f00;
     font-weight: normal;
-    font-size: 14px;'>".$positionVal."</span> ".$iow[iowDes];?></td> 
+    font-size: 14px;'>".$positionVal."</span> ".$iow['iowDes'];?></td> 
 
-
-</tr> 
-																		
-																		
-																		<?php  }//nostatus
-																			 } ?>
+</tr> 																																		
+	<?php  }//nostatus
+	} ?>
 </table>

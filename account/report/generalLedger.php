@@ -661,7 +661,6 @@ $i=0;
 //	$rate=eqpoRate($st[itemCode],$st[posl])/(8*3600);
 	$rate=eqpoRate($st['itemCode'],$st['posl']);
 	$pamount=$st['total']*$rate;
-
   $array_date[$i][0]=$st['edate'];
   $array_date[$i][1]=$st['posl'];  
   $array_date[$i][2]=' eq present';
@@ -669,7 +668,7 @@ $i=0;
   $array_date[$i][4]=2;  
   $i++;  
   }//while st
-  
+
 $sql1="SELECT `paidAmount` as amount,`paymentSL`,`paymentDate`,`posl` 
 from `vendorpayment` 
 WHERE `paymentDate` BETWEEN '$fromDate' AND '$toDate' 
@@ -945,7 +944,7 @@ for($i=0;$i<$r;$i++){
 }// if(myarray_search ('2403000',  $accountId)){
 ?>
 
- <?
+<?
  if(myarray_search ('2404000',  $accountId)){
  $k=0;
  $drAmount=0;
@@ -955,7 +954,7 @@ $array_date=array();
 
 $openingBalance=openingBalance('2404000',$fromDate,$pcode);
   
- $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
+$db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 	
 	
  $si=((strtotime($toDate)-strtotime($fromDate))/86400)+1;

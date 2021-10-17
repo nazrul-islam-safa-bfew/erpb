@@ -1,4 +1,6 @@
-aaa<? if($loginProject=='000'){?>
+<? 
+error_reporting(E_ERROR | E_PARSE);
+if($loginProject=='000'){?>
 <form name="pro" method="post" >
 <select name="project" onChange="location.href='index.php?keyword=local+emp+ut+report+c&project='+pro.project.options[document.pro.project.selectedIndex].value";>
 <option value="">Select Project</option>
@@ -633,7 +635,6 @@ $perDayAmount=0;
  <td align="right"><? echo sec2hms($workedgTotal/3600,$padHours=false).' hrs.';?></td>
  <td align="right"><? echo number_format(($workedgTotal/3600)/($hour100parcent_project/100));?>%</td>
  <td align="right">Tk. <? echo number_format($normalDayAmountgTotalup);?></td>
-
 </tr>
 
 <tr>

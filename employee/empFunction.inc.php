@@ -1621,6 +1621,8 @@ $empTime= array("eh"=>$eh,"em"=>$em,'xh'=>$xh,'xm'=>$xm);
 
 /* daily update apprisal status*/
 function updateApp($todat){
+	include("./includes/config.inc.php");
+$db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 $sql="SELECT * FROM appaction where actionStatus='0' and date1<='$todat'";
 $sqlq=mysqli_query($db, $sql);
 while($r=mysqli_fetch_array($sqlq)){
