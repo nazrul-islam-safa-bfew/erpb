@@ -48,10 +48,10 @@ if($_POST['approved']){
    <th class="">Itemcode</th>
    <th class="th1">
 		<input type='text' value='<?php echo $itemCode_0; ?>' name='itemCode_0' style="float:left; text-align:center; width: 70px;" placeholder='01-01-001'> &nbsp;
-		 <input type='text' value='<?php echo $itemCode_1; ?>' name='itemCode_1' style="float:left; text-align:center;width: 70px;" placeholder='01-01-999'>
+		<input type='text' value='<?php echo $itemCode_1; ?>' name='itemCode_1' style="float:left; text-align:center;width: 70px;" placeholder='01-01-999'>
 		 <br>
 		 <br>
-			<input type="submit" value="Search" name='search' style="float:left">
+		<input type="submit" value="Search" name='search' style="float:left">
 	 </th>
  </tr>
 		

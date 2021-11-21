@@ -188,7 +188,7 @@ else if(k==3){
 </tr>
 <tr>
  <td><input type="checkbox" name="ch14" value="ch14" <?php if(!$tch141)echo 'disabled="disabled"'; else echo 'checked';  if($ch14) echo 'checked';?> onclick="return false;" readonly></td>
-<td>Advance <input type="text" name="tch141" value="<? echo $tch141;?>" readonly size="5" onBlur="tch142.value=<? echo "($totalAmount*tch141.value)/100";?>">
+<td>Advanceeeee <input type="text" name="tch141" value="<? echo $tch141;?>" readonly size="5" onBlur="tch142.value=<? echo "($totalAmount*tch141.value)/100";?>">
       % of the Work Order amount which is Tk. 
       <input type="text" name="tch142" value="<? echo number_format(($totalAmount*$tch141)/100,2);?>" size="10" readonly="" style="border:0">  will be paid along with this Work Order. Advanced Amount will be adjusted on prorate basis from every bill.<i>(Under Construction)</i></td>
 </tr>

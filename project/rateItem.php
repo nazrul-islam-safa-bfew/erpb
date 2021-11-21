@@ -8,20 +8,36 @@ class itemCode{
 	}
 	public function split(){
 		$itemArray=explode("-",$this->itemCode);
-		return [$itemArray[0],$itemArray[1],$itemArray[2]];
+		return array($itemArray[0],$itemArray[1],$itemArray[2]);
 	}
-	public function first(){
-		return $this->split()[0];
-	}
-	public function second(){
-		return $this->split()[1];
-	}
-	public function third(){
-		return $this->split()[2];
-	}
-	public function full(){
-		return $this->itemCode;
-	}
+	// public function first(){
+		
+	// 	return $this->split()[0];
+	// }
+	// public function second(){
+	// 	return $this->split()[1];
+	// }
+	// public function third(){
+	// 	return $this->split()[2];
+	// }
+	// public function full(){
+	// 	return $this->itemCode;
+	// }
+
+	
+	// public function first(){
+
+	// 	return $this->split()[0];
+	// }
+	// public function second(){
+	// 	return $this->split()[1];
+	// }
+	// public function third(){
+	// 	return $this->split()[2];
+	// }
+	// public function full(){
+	// 	return $this->itemCode;
+	// }
 }
 $ic=new itemCode($itemCode);
 ?>
@@ -60,7 +76,8 @@ include("./config.inc.php");
 $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 	
 	$itemCode="$itemCode1-$itemCode2-$itemCode3";	
-$sqlitem = "UPDATE `itemlist` SET itemDes='$itemDes', itemSpec='$itemSpec', itemUnit='$itemUnit', GLsit='$GLsit',GLsales='$GLsales',GLinventory='$GLinventory',GLcost='$GLcost',itemType='$itemClass' WHERE itemCode='$itemCode'";
+	$itemCodef="$itemCode1-$itemCode2-";	
+    echo $sqlitem = "UPDATE `itemlist` SET itemCode='$itemCode', itemDes='$itemDes', itemSpec='$itemSpec', itemUnit='$itemUnit', GLsit='$GLsit',GLsales='$GLsales',GLinventory='$GLinventory',GLcost='$GLcost',itemType='$itemClass' WHERE (itemCode='$itemCodef' OR itemCode='$itemCode')";
 //echo $sqlitem;
 $sqlrunItem= mysqli_query($db, $sqlitem);
 
@@ -73,6 +90,11 @@ $sql="INSERT INTO toolrate (id,itemCode,averageValue,salvageValue,life) Values (
 	$sqlrunItem1= mysqli_query($db, $sql);
  }
 }
+
+
+
+
+
 
 if($newItem || $updateItem){
 		$lo=$_POST["n"];
@@ -124,7 +146,11 @@ if($newItem || $updateItem){
 }
 
 
+
 ?>
+
+
+
 
 <?php
 $list=departmentList();
@@ -249,21 +275,21 @@ onChange="location.href='index.php?keyword=rate+Item&s='+itm.items.options[docum
 			echo ">$dpm[code] $dpm[designation]</option>";
 		}
 		?>    
-    <option value="86" <? if($s=='86') echo 'selected';?>>86-00-000 Direct Labour</option>
-    <option value="87" <? if($s=='87') echo 'selected';?>>87-00-000 Direct Labour</option>
-    <option value="88" <? if($s=='88') echo 'selected';?>>88-00-000 Direct Labour Skilled Monthly Basis</option>
-    <option value="89" <? if($s=='89') echo 'selected';?>>89-00-000 Direct Labour Semi Skilled Monthly Basis</option>
-    <option value="90" <? if($s=='90') echo 'selected';?>>90-00-000 Direct Labour Skilled Daily Basis</option>
-    <option value="91" <? if($s=='91') echo 'selected';?>>91-00-000 Direct Labour Unskilled Daily Basis</option>
-    <option value="92" <? if($s=='92') echo 'selected';?>>92-00-000 Direct Labour Semi Skilled Daily Basis</option>
-    <option value="93" <? if($s=='93') echo 'selected';?>>93-00-000 Direct Labour</option>
-    <option value="94" <? if($s=='94') echo 'selected';?>>94-00-000 Direct Labour</option>
-    <option value="95" <? if($s=='95') echo 'selected';?>>95-00-000 Sub Contructor Civil Works</option>
-    <option value="96" <? if($s=='96') echo 'selected';?>>96-00-000 Sub Contructor Mechanical Works</option>
-    <option value="97" <? if($s=='97') echo 'selected';?>>97-00-000 Sub Contructor Electrical Works</option>
-    <option value="98" <? if($s=='98') echo 'selected';?>>98-00-000 Finished Goods(Invoice Items)</option>
-    <option value="99" <? if($s=='99') echo 'selected';?>>99-00-000 Sub Contructor Others</option>
-		
+    <option value="86" <? if($s=='86') echo 'selected';?>>86-00 Direct Labour Semi-Skilled(Civil)</option>
+    <option value="87" <? if($s=='87') echo 'selected';?>>87-00 Direct Labour High Skilled(Mechanical & Electrical)</option>
+    <option value="88" <? if($s=='88') echo 'selected';?>>88-00 Direct Labour Skilled(Mechanical & Electrical)</option>
+    <option value="89" <? if($s=='89') echo 'selected';?>>89-00 Direct Labour Semi-Skilled(Mechanical & Electrical)</option>
+    <option value="90" <? if($s=='90') echo 'selected';?>>90-00 Direct Labour High Skilled(Equipment & Machine Operator)</option>
+    <option value="91" <? if($s=='91') echo 'selected';?>>91-00 Direct Labour Skilled(Equipment & Machine Operator)</option>
+    <option value="92" <? if($s=='92') echo 'selected';?>>92-00 Direct Labour Semi-Skilled(Equipment & Machine Operator)</option>
+    <option value="93" <? if($s=='93') echo 'selected';?>>93-00 Direct Labour</option>
+    <option value="94" <? if($s=='94') echo 'selected';?>>94-00 Direct Labour</option>
+    <option value="95" <? if($s=='95') echo 'selected';?>>95-00 Sub Contructor Civil Works</option>
+    <option value="96" <? if($s=='96') echo 'selected';?>>96-00 Sub Contructor Mechanical Works</option>
+    <option value="97" <? if($s=='97') echo 'selected';?>>97-00 Sub Contructor Electrical Works</option>
+    <option value="98" <? if($s=='98') echo 'selected';?>>98-00 Finished Goods(Invoice Items)</option>
+    <option value="99" <? if($s=='99') echo 'selected';?>>99-00 Sub Contructor Others</option>
+			
 		<?php	} ?>
   </select>
 	

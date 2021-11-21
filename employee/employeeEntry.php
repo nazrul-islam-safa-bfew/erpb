@@ -68,7 +68,7 @@ if($eqresult[designation]){$designation=$eqresult[designation];}
    <td >
 		 <select name="mc">
 			 <?php
-			 $Isql="select * from itemlist where itemCode>'73-10-001' and itemCode<'73-13-001'";
+			 $Isql="select * from itemlist where itemCode LIKE '72-%'";
 			 $Iq=mysqli_query($db,$Isql);
 			 while($Irow=mysqli_fetch_array($Iq)){
 				if(!$Irow[itemDes])continue;
@@ -165,14 +165,6 @@ if($designation<'86-00-000'){?>
 	<td>Project</td>
 	<td>
 
-
-
-
-
-
-
-
-
 <select name="pcode" size="1">
 	  <option value="0">Select Project</option>
 	   
@@ -188,25 +180,10 @@ if($designation<'86-00-000'){?>
 	
 	
 				 echo "<option value='".$typel[pcode]."'>$typel[pcode]--$typel[pname]</option>  ";
-			 
-			
-		
-		 
+	 
 	 }
 	 ?>
 	</select>
-
-
-
-
-
-
-
-
-
-
-
-
 	</td>
 </tr>
 <? }?>

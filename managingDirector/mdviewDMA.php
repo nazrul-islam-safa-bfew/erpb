@@ -80,24 +80,46 @@ $resultiow=mysqli_fetch_array($sqlruniow);
   <td colspan="4">Project: <font class="out"> <? echo $selectedPcode;?></font></td>
 </tr>
 <tr>
-  <td colspan="4">Iow Type: <font class="out"> <? 
- $pos= $resultiow[position];
- $explode= (explode(".",$pos));
- $positionNumber = $explode[1];
-  if($positionNumber==001){
-    echo "Breakdown";
-  }
-  elseif($positionNumber==002){
-    echo "Overhauling";
-  }
-  elseif($positionNumber==003){
-    echo "Preventive";
-  }
-  elseif($positionNumber==004){
-    echo "Troubled Running";
+  <td colspan="4">Maintenance Type: <font class="out"> <? 
+      $pos= $resultiow['position'];
+      $explode= (explode(".",$pos));
+      $positionNumber = $explode[1];
+        if($positionNumber==000){
+          echo "Equipment Maintenance";
+        }
+        elseif($positionNumber==001){
+          echo "Breakdown";
+        }
+        elseif($positionNumber==002){
+          echo "Overhauling";
+        }
+        elseif($positionNumber==003){
+          echo "Preventive";
+        }
+        elseif($positionNumber==004){
+          echo "Troubled Running";
+        }
+  ?></font></td>
+</tr>
+
+<?php
+if($positionNumber==003){
+?>
+<tr>
+  <td colspan="4">Maintenance Frequency:<font class="out"> <? 
+  
+  if($selectedPcode=="004"){
+		$eqFreq=getEquipmentFrequencyEqCode($resultiow['iowCode']);
+		if($eqFreq){
+		$des=itemDes($eqFreq['eqItemCode']);
+    echo "$eqFreq[maintenanceFrequency]</font> [$eqFreq[measureUnit]]";
+    }
   }
   ?></font></td>
 </tr>
+<?
+}
+?>
 
 <tr>
   <td colspan="4">Item of Work:<font class="out"> <? echo "$resultiow[iowCode]</b> [ <i>$resultiow[iowDes]</i>]";?></font></td>

@@ -32,19 +32,50 @@ $todat=todat();
 </table>
 <br>
 <br>
+<br>
+<?
+//$dateFormat = $year."-".$month."-01";
+//echo "weekend : ".weekend($dateFormat,$exfor);
+?>
+<br>
+<?
+  //$dateFormat = $year."-".$month;
+	//echo "monthly_project_calender_holiday: ".$a= monthly_project_calender_holiday($dateFormat,$exfor);
+?>
+<br>
+<br>
+<?
+    //$dateFormat = $year."-".$month;
+  //echo "calender_holiday in final_salary funtion: ".$b =  finalSalary($empId,$fromD,$toD,$exfor, $dateFormat);
+?>
+<br>
+<br>
+
 
 <table   width="100%" align="center" border="2" bordercolor="#000" cellspacing="0" cellpadding="5" style="border-collapse:collapse">
  <tr bgcolor="#EEEEEE">
    <th valign="top" width="50" rowspan="2" >SL</th>
    <th valign="top" width="100" rowspan="2" >EmployeeID,<br> Designation</th>
    <th valign="top" rowspan="2" >Employee Name</th>
-    <th valign="top" width="50" rowspan="2" >Days <br>Present</th>
-   <th valign="top" rowspan="2" >Total OT<br> Hours</th>      
+    <th valign="top" width="150" rowspan="2" >Days <br>Present (<?
+     $daysOfmonth = date('t', strtotime("$year-$month-01")); 
+
+     $dateFormat = $year."-".$month;
+     $project_holidy= monthly_project_calender_holiday($dateFormat,$exfor);
+      
+     $dateFormat = $year."-".$month."-01";
+     $weekend = weekend($dateFormat,$exfor);
+     
+     $total_day = $daysOfmonth- $weekend - $project_holidy;
+     echo 'Total: '.$total_day;
+     
+     ?>)</th>
+   <th valign="top" rowspan="2" width="150" >Total OT<br> Hours</th>      
    <th valign="top" width="50" colspan="2"  >Wages</th>
    <th valign="top" width="50" rowspan="2" >OT Rate<br>/ Hour</th>
    <th valign="top"  colspan="2" >Amount (Tk)</th>
    <th valign="top" rowspan="2" >Payable <br>Amount(Tk.)</th>
-   <th valign="top" rowspan="2" width="250" >Signature</th>       
+   <th valign="top" rowspan="2" width="100" >Signature</th>       
  </tr>
  <tr bgcolor="#EEEEEE">
    <th valign="top" >Basic</th>
@@ -66,6 +97,8 @@ $todat=todat();
 $daysofmonth=daysofmonth($fromD);
 	$toD="$year-$month-$daysofmonth";
 
+  $dateFormat = $year."-".$month."-01";
+  $daysofmonth -= weekend($dateFormat,$exfor);
 
 	
 //$sqlp = "SELECT * from `employee` WHERE location='$exfor' AND salaryType='Wages Monthly Master Roll' order by designation,empId ASC";// LIMIT 0,3";
@@ -89,6 +122,10 @@ if($b%2==0) $bg = "#E5E5E5";
 else $bg = "#D5D5D5";
 
 ?>
+
+
+
+
 <tr style="height:60px; ">
    <td align="center" ><? echo $b;?></td>
    <td ><? echo '<font class=out>'.empId($re[empId],$re[designation]).'</font>'; echo '<br>'.hrDesignation($re[designation]);?>
@@ -112,9 +149,33 @@ $TotalPresentHr=TotalPresentHr($fromD,$toD,$re[empId],'H');
    if($idlet<0)  $idlet=0;
    $idle=sec2hms($idlet/3600,$padHours=false);
 
-    $totalPresent = local_TotalPresentHr($fromD,$toD,$re[empId],'H',$exfor); 
-	echo $totalPresent;
-	?>
+
+   //$totalPresent = local_TotalPresentHr($fromD,$toD,$re[empId],'H',$exfor); 
+   $local_TotalPresentHronlyHP = local_TotalPresentHronlyHP($fromD,$toD,$re[empId],'H',$exfor); 
+   $local_TotalPresentHronlyP = local_TotalPresentHronlyP($fromD,$toD,$re[empId],'H',$exfor); 
+  
+   $dateFormat = $year."-".$month;
+   $project_holidy= monthly_project_calender_holiday($dateFormat,$exfor);
+   $dateFormat = $year."-".$month."-01";
+   $weekend = weekend($dateFormat,$exfor);
+   $required_present = $daysOfmonth- $weekend - $project_holidy; 
+
+   $local_TotalPresentHronlyP= $required_present < $local_TotalPresentHronlyP ? $required_present : $local_TotalPresentHronlyP;
+   $local_TotalPresentHronlyHP= $required_present < $local_TotalPresentHronlyP ? $local_TotalPresentHronlyHP  + ($local_TotalPresentHronlyP - $required_present ) : $local_TotalPresentHronlyHP ;
+ 
+   $totalPresent = $local_TotalPresentHronlyP + $local_TotalPresentHronlyHP;
+
+   //$totalPresent = $local_TotalPresentHronlyP + $local_TotalPresentHronlyHP;
+
+   //$totalPresent = finalSalary($re[empId],$fromD,$toD,$exfor); 
+	 //echo $totalPresent; 
+   echo '<font class=out>'. 'Total: '. $totalPresent ."<br>".'P: '.$local_TotalPresentHronlyP ."<br>".'HP: '.$local_TotalPresentHronlyHP .'</font>';
+   
+  
+   ?>
+     
+ 
+
     </td>
 	<td align="right" ><? 
 $presentTotal=0;
@@ -170,9 +231,12 @@ $idlet=0;
 	$overtimeTotal1=sec2hms($overtimeTotal/3600,$padHours=false);
 	$workedTotal=sec2hms($workedTotal/3600,$padHours=false);
 	$idleTotal=sec2hms($idleTotal/3600,$padHours=false);
+  $i="rvr";
 	//echo "<br>presentTotal:$presentTotal--idleTotal:$idleTotal<br>";		
 	?>
-<? echo $overtimeTotal1;?>
+<? 
+ 
+echo '<font class=out>'. 'P: '. $presentTotal ."<br>".'OT: '.$overtimeTotal1 ."<br>".'IDLE: '.$idleTotal .'</font>'; ?>
 	 </td>
    <td  align="right" ><? echo number_format($re[salary],2);?> </td> 
    <td  align="right" ><? echo number_format($re[allowance],2);?> </td> 
@@ -196,11 +260,16 @@ $idlet=0;
     <td align="right"> 
       <? $amount=$otAmount+$atAmount; 
 	  
-	  $paid=currentWPayble($re[empId],"$year-$month-01",$exfor);
-	  $payable= $amount-$paid;
+	  // $paid=currentWPayble($re[empId],"$year-$month-01",$exfor);
+	  // $payable= $amount-$paid;
 	  //echo "**$loginProject**	  $payable= $amount-$paid; +++";
-	  echo number_format($payable,2);
-	  $totalAmount+=$payable;
+	  //echo number_format($payable,2);
+
+	  $dateFormat = $year."-".$month."-01";
+    $payable = finalSalary($re[empId],$fromD,$toD,$exfor,$dateFormat) + $overtimeTotal1; 
+    echo number_format($payable,2);
+
+    $totalAmount+=$payable;
 	  ?>
       <input type="hidden" name="amount<? echo $b;?>" alt="" value="<? echo round($amount,2);?>">
 	  
@@ -224,7 +293,15 @@ $idlet=0;
  <br><br>
  <br><br>
  <table width="100%" align="center">
-  <tr>
+  
+ <tr>
+		<th>Prepared by HR Executive</th>
+		<th>Forwarded to Check by Line Manager <br>(OK)..............(Not OK)</th>   
+		<th>Approved by HR Manager</th>  
+		<th>Paid By Cashier</th>
+  </tr>
+
+  <!-- <tr>
 		<th>Prepared by HR</th>
 		<th>Site Engr/Foreman</th>   
 		<th>Project Manager</th>  
@@ -232,12 +309,11 @@ $idlet=0;
 		<th>Director Planning &amp; Control</th>  
 		<th>Director Admin.</th>  
 		<th>Managing Director</th>  
-  </tr>
+  </tr> -->
  </table>
   <br>
   <br>
 <? include('../bottom.php');?>
 </body>
-
 </html>
  

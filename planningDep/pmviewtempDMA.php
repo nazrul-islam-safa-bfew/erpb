@@ -1,4 +1,5 @@
 <?
+error_reporting(E_ERROR | E_PARSE);
 $localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
 include($localPath."/project/siteDailyReport.f.php");
 if($Save){

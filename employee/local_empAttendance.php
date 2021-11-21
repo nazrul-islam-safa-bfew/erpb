@@ -1,4 +1,4 @@
-	<SCRIPT LANGUAGE="JavaScript" SRC="./js/CalendarPopup.js"></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript" SRC="./js/CalendarPopup.js"></SCRIPT>
 	<SCRIPT language=JavaScript>document.write(getCalendarStyles());</SCRIPT>
 
 	<?
@@ -25,7 +25,8 @@ if($loginDesignation=='Human Resource Manager' || $loginDesignation=='Human Reso
 <?
 $ex=array('Select one','');
 //if($loginDesignation=='Human Resource Manager')
-echo selectPlistProject('project',"",$loginProject);
+echo selectPlist('project',$ex,$project);
+//echo selectPlistProject('project',"",$loginProject);
 ?>
 	<input type="text" maxlength="10" name="edat" value="<? echo $edat;?>">
 	<a id="anchor" href="#" onClick="cal.select(document.forms['att'].edat,'anchor','dd/MM/yyyy'); return false;" name="anchor" ><img src="./images/b_calendar.png" alt="calender" border="0"></a> 
@@ -59,29 +60,31 @@ else{$edat=date("d/m/Y",strtotime($todat)); $t1='checked'; $t2='';}
 	$format="Y-m-j";
 	$edat11 = formatDate($edat,$format);
   $j=1;
-  $sql_dma="select dmaItemCode,dmaiow,dmaQty from dma where dmaItemCode >= '90-01-000' AND dmaItemCode <= '92-99-999' and dmaProjectCode='$project' group by dmaItemCode";
-  $q_dma=mysqli_query($db,$sql_dma);
-  while($r_dma=mysqli_fetch_array($q_dma)){
-    $iow_remaining_days=get_iow_remaining_days($r_dma["dmaItemCode"],$edat11);
-    if($iow_remaining_days<=0)continue;
+//   $sql_dma="select dmaItemCode,dmaiow,dmaQty from dma where dmaItemCode >= '90-01-000' AND dmaItemCode <= '92-99-999' and dmaProjectCode='$project' group by dmaItemCode";
+//   echo $sql_dma;
+//   $q_dma=mysqli_query($db,$sql_dma);
+//   while($r_dma=mysqli_fetch_array($q_dma)){
+    // $iow_remaining_days=get_iow_remaining_days($r_dma["dmaItemCode"],$edat11);
+    // if($iow_remaining_days<=0)continue;
     
-    $total_approved_hr=$r_dma[dmaQty];
-    $attendance_hr=get_attendance_of_particular_empId($r_dma["dmaItemCode"],$project);    
-    $today_req=($total_approved_hr-$attendance_hr)/$iow_remaining_days;
+    // $total_approved_hr=$r_dma[dmaQty];
+    // $attendance_hr=get_attendance_of_particular_empId($r_dma["dmaItemCode"],$project);    
+    // $today_req=($total_approved_hr-$attendance_hr)/$iow_remaining_days;
     
-    $today_req_today=round($today_req/8,2);
-    if( $today_req_today<1 && $today_req_today>0 )$today_req_today=1;
+    // $today_req_today=round($today_req/8,2);
+    // if( $today_req_today<1 && $today_req_today>0 )$today_req_today=1;
 //   End of iow requirement
-    $today_req=sec2hms($today_req);
+    // $today_req=sec2hms($today_req);
     
-    echo "<tr><td colspan=5 person='$today_req_today' class='head_row'>Today requirement $today_req hr. for $r_dma[dmaItemCode] You can engaged $today_req_today person. 
+    // echo "<tr><td colspan=5 person='$today_req_today' class='head_row'>Today requirement $today_req hr. for $r_dma[dmaItemCode] You can engaged $today_req_today person. 
     
-      <a href='http://win4win.biz/erp/bfew/planningDep/subdailyRequirment.php?project=$project&itemCode=$r_dma[dmaItemCode]' target='_blank' style='color:#fff; font-weight:800; background:#00f'>Approved qty in graph</a>
+    //   <a href='http://win4win.biz/erp/bfew/planningDep/subdailyRequirment.php?project=$project&itemCode=$r_dma[dmaItemCode]' target='_blank' style='color:#fff; font-weight:800; background:#00f'>Approved qty in graph</a>
       
-    </td><tr>";
+    // </td><tr>";
         
-	$sqlquery="SELECT * FROM employee where designation = '$r_dma[dmaItemCode]' 
-	AND location='$project'  AND status='0' ORDER by designation ASC limit $today_req_today";
+	$sqlquery="SELECT * FROM employee where
+	designation >= '82-01-000' AND designation <= '92-99-999'
+	AND location='$project'  AND status='0' ORDER by designation ASC/* limit $today_req_today*/";
 	// echo $sqlquery;
 	$sql= mysqli_query($db, $sqlquery);
 
@@ -142,7 +145,7 @@ $empStayDate=todat_new_format("d-m-Y");
 	   <? $j++;
 	} //while
     
-} //iow while  ?>  
+//} //iow while  ?>  
     
 	<tr><td colspan="2" height="10"> </td></tr>	
 

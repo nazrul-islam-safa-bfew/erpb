@@ -1,14 +1,18 @@
 <? 
 error_reporting(0);
-include_once("../includes/session.inc.php");
+header('Access-Control-Allow-Origin: *');
+$localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
+ //datbase_connection
+include($localPath."/includes/session.inc.php");
+include($localPath."/includes/myFunction.php"); // some general function
+include_once($localPath."/includes/myFunction1.php"); // some general function
+include_once($localPath."/includes/accFunction.php"); //all accounts function
+include_once($localPath."/includes/eqFunction.inc.php"); // equipment function
 
-include_once("../includes/myFunction1.php");
-include_once("../includes/myFunction.php");
-include_once("../includes/accFunction.php");
-include_once("../includes/eqFunction.inc.php");
 
 
-include("../includes/config.inc.php");
+
+include($localPath."/includes/config.inc.php");
 $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS, $SESS_DBNAME);
 	
 $todat=todat();
@@ -38,10 +42,10 @@ if(!empty($_GET["issueID"])){
 <head>
 	<title>Verify Issued Material</title>
 	
-	<link href="http://win4win.biz/erp/bfew/datatable/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+	<link href="http://localhost/erpb/datatable/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
   
-<script src="http://win4win.biz/erp/bfew/datatable/jquery-1.12.2.min.js"></script>
-		<script src="http://win4win.biz/erp/bfew/datatable/jquery.dataTables.min.js"></script>
+<script src="http://localhost/erpb/datatable/jquery-1.12.2.min.js"></script>
+		<script src="http://localhost/erpb/datatable/jquery.dataTables.min.js"></script>
 	
 	
 	<style>
@@ -135,10 +139,10 @@ if(!empty($_GET["issueID"])){
 
 					function acceptIt(aID){
 						$(document).ready(function() {
-    					$.get("http://www.win4win.biz/erp/bfew/store/verifyIssuedMaterial.php",{issueID:aID},function(data,status){
+    					$.get("http://localhost/erpb/store/verifyIssuedMaterial.php",{issueID:aID},function(data,status){
 								
  								if(data==1){
-									$("#btn_"+aID).parent().html("Done");
+									$("#btn_"+aID).parent().html("Doneee");
 								}else{									
 									$("#btn_"+aID).parent().html("Error");
 								}

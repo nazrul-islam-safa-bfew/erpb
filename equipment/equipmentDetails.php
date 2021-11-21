@@ -1,3 +1,6 @@
+<?php
+    error_reporting(E_ERROR | E_PARSE);
+?>
 <form name="store" action="index.php?keyword=equipment+Details&a=<? echo $a;?>" method="post">
 <table align="center" width="500" class="vendorTable">
 <tr class="vendorAlertHdt">
@@ -137,8 +140,6 @@ $eqId=eqpId($sqlresult[assetId],$sqlresult[itemCode]);
 $temp = explode('-',$sqlresult[assetId]);
 $test =  $sqlresult[itemCode];
 $temp = itemDes($sqlresult[itemCode]);
-
-
 
 if($test!=$testp && $i>0 ){
 if($loginDesignation=='Managing Director') echo "<tr class=vendorAlertHd_lite>
@@ -367,7 +368,7 @@ elseif($accd90 && (!$d90 || is_nan($d90)) )
 			$d90=sec2hms($d90);
 			$d180=sec2hms($d180);
 		
-	   echo "<p>  <a href='./equipment/eqReport.php?month=1&assetID=$eqId&itemCode=$itemCode&pcode=$project' target='_blank'>1 month</a>: <font color='#00f'>$d30</font> $MesureUnit/hrs. <br> <a href='./equipment/eqReport.php?month=3&assetID=$eqId&itemCode=$itemCode&pcode=$project' target='_blank'>3 months</a>: <font color='#00f'>$d90</font> $MesureUnit/hrs. <br> <a href='./equipment/eqReport.php?month=6&assetID=$eqId&itemCode=$itemCode&pcode=$project' target='_blank'>6 months</a>: <font color='#00f'>$d180</font> $MesureUnit/hrs.</p>";
+	    echo "<p>  <a href='./equipment/eqReport.php?month=1&assetID=$eqId&itemCode=$itemCode&pcode=$project' target='_blank'>1 month</a>: <font color='#00f'>$d30</font> $MesureUnit/hrs. <br> <a href='./equipment/eqReport.php?month=3&assetID=$eqId&itemCode=$itemCode&pcode=$project' target='_blank'>3 months</a>: <font color='#00f'>$d90</font> $MesureUnit/hrs. <br> <a href='./equipment/eqReport.php?month=6&assetID=$eqId&itemCode=$itemCode&pcode=$project' target='_blank'>6 months</a>: <font color='#00f'>$d180</font> $MesureUnit/hrs.</p>";
 }
 	 		$d30="";
 			$d90="";

@@ -29,7 +29,7 @@ include("./includes/config.inc.php");
 $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);	
 
 $sqlp="SELECT DISTINCT attendance.empId,designation,name,salary,allowance FROM attendance,employee
- WHERE employee.designation>='86-00-000' AND employee.designation<='97-00-000'
+ WHERE employee.designation>='82-00-000' AND employee.designation<='97-00-000'
  AND attendance.location='$exfor' AND attendance.action in ('P','HP')
  AND attendance.edate between '$fromD' AND '$toD'
  AND attendance.empId=employee.empId 
@@ -118,7 +118,7 @@ $overtimet=0;
 $workt=0;
 $idlet=0;
 
- }
+}
 ?>	
 	<? 
 	$presentTotal=sec2hms($presentTotal/3600,$padHours=false);

@@ -1,3 +1,6 @@
+<?
+error_reporting(E_ERROR | E_PARSE);
+?>
 <? if($loginProject=='000'){?>
 <table width="95%" align=center>
 	<tr>
@@ -157,7 +160,7 @@ $toD='2006-03-31';
 " ORDER by edate ASC";
 */
 if($submit)
-	$sqlut="SELECT DISTINCT edate FROM eqattendance WHERE".
+echo $sqlut="SELECT DISTINCT edate FROM eqattendance WHERE".
 " eqId='$eqId' AND itemCode='$itemCode' AND location='$project'".
 " AND edate BETWEEN '$fromD' AND '$toD'".
 " ORDER by edate ASC";
@@ -165,13 +168,13 @@ if($submit)
 //echo $sqlut;
 $sqlqut= mysqli_query($db, $sqlut);
 $i=1;
-$sqlr=mysql_num_rows($sqlqut);
+$sqlr=mysqli_num_rows($sqlqut);
 while($reut= mysqli_fetch_array($sqlqut)){?>
 	<tr <? if(date('D',strtotime($reut[edate]))=='Fri') echo "bgcolor=#FFFFCC"; elseif($i%2==0) echo "bgcolor=#EFEFEF";?>>
 		<td align="center">
-<!-- 			<a href='./equipment/local_equtReport_byEq_detail.php?eqId=<? echo $eqId;?>&itemCode=<? echo $itemCode;?>&eqType=<? echo $eqType;?>&edate=<? echo $reut[edate];?>' target='_blank'> -->
-		<font color="#00f"><? echo myDate($reut[edate]);?></font>
-<!-- 			</a> -->
+			<a href='./equipment/local_equtReport_byEq_detail.php?eqId=<? echo $eqId;?>&itemCode=<? echo $itemCode;?>&eqType=<? echo $eqType;?>&edate=<? echo $reut[edate];?>' target='_blank'> 
+		       <font color="#00f"><? echo myDate($reut[edate]);?></font>
+ 			</a> 
 			<?
 		$dailyworkBreakt=eq_dailyworkBreak($eqId,$itemCode,$reut[edate],$eqType,$project);
 		$dailyBreakDownt=eq_dailyBreakDown($eqId,$itemCode,$reut[edate],$eqType,$project);
@@ -179,8 +182,9 @@ while($reut= mysqli_fetch_array($sqlqut)){?>
 		$toDaypresent=eq_toDaypresent($eqId,$itemCode,$reut[edate],$eqType,$project);
 
 		$toDaypresent=$toDaypresent-$dailyworkBreakt;
-
+		//$workt= eq_dailywork($eqId,$itemCode,$edate,'H',$loginProject);
 		$workt= eq_dailywork($eqId,$itemCode,$reut[edate],$eqType,$project)-$dailyworkBreakt;
+		
 		if($workt<0)$workt=0;
 	
 		$overtimet = $toDaypresent-(8*3600);
@@ -191,24 +195,14 @@ while($reut= mysqli_fetch_array($sqlqut)){?>
 	?>
 </td>
 		
-	
-	
-	
-	
-	
-	
-	
-	
-	
   <td align="center"> <? 
 $hour_row=get_eq_hours($eqId,$itemCode,$reut[edate]);
 echo $hour_row[stime]." - ".$hour_row[etime]. " = ";
 																					
-																					$preset= sec2hms($toDaypresent/3600,$padHours=false);   echo $preset.' Hrs.'; 
+$preset= sec2hms($toDaypresent/3600,$padHours=false);   echo $preset.' Hrs.'; 
    $totalPresent=$totalPresent+$toDaypresent;?>
    </td>
-  <td align="center"> <? $work= sec2hms($workt/3600,$padHours=false);   echo $work>=0 ? $work : "0:00"; echo ' Hrs.'; 
-   $totalWork=$totalWork+$workt;?>
+  <td align="center"> <? echo $work= sec2hms($workt/3600,$padHours=false);?>
    </td>
   <td align="center"> <?  $overtime=sec2hms($overtimet/3600,$padHours=false);  echo $overtime.' Hrs.';  
   $totalOverTime=$totalOverTime+$overtimet;?>
@@ -219,88 +213,65 @@ echo $hour_row[stime]." - ".$hour_row[etime]. " = ";
   <td align="center"> <?  $idle=sec2hms($idlet/3600,$padHours=false);  echo $idle.' Hrs.'; 
     $totalIdel=$totalIdel+$idlet;?>
 	</td>
-		
-		
-		
-		
-		
-		
-		<td>		
+	
+	<td>		
 		<?php
-$assetID=$eqId;
-$xDaysAgo=$reut[edate];
-//    From utilization
-   $eq_sql="select issueDate,km_h_qty,issuedQty,issueRate,unit,itemCode from issue$project where eqID='$assetID"."_"."$itemCode' and issueDate='$xDaysAgo' order by km_h_qty desc";
-//   echo $eq_sql;
-  $eq_q=mysqli_query($db,$eq_sql);   
-  while($eq_row=mysqli_fetch_array($eq_q)){
-    
-    if($eq_row["unit"]=="ue")$eq_row["km_h_qty"]=getUsageofEQ($itemCode,$assetID,$xDaysAgo); //erp hr
-    print_r($eq_row);
-$measureUnit=$eq_row["unit"]=="ue" ? "Hour " : "";
-    
+			$assetID=$eqId;
+			$xDaysAgo=$reut[edate];
+			//    From utilization
+			$eq_sql="select issueDate,km_h_qty,issuedQty,issueRate,unit,itemCode from issue$project where eqID='$assetID"."_"."$itemCode' and issueDate='$xDaysAgo' order by km_h_qty desc";
+			//   echo $eq_sql;
+			$eq_q=mysqli_query($db,$eq_sql);   
+			while($eq_row=mysqli_fetch_array($eq_q)){
+				
+				if($eq_row["unit"]=="ue")$eq_row["km_h_qty"]=getUsageofEQ($itemCode,$assetID,$xDaysAgo); //erp hr
+				//print_r($eq_row);
+			$measureUnit=$eq_row["unit"]=="ue" ? "Hour " : "";
+				
+			if($eq_row["km_h_qty"]>0)
+				if($eq_row["unit"]!="km" && $eq_row["unit"]!="ue")
+				$eq_row["km_h_qty"]=sec2hms(round($eq_row["km_h_qty"],2));
+				elseif($eq_row["unit"]=="km")$eq_row["km_h_qty"]=round($eq_row["km_h_qty"]);
+					
+				$itemDesC=itemDes($eq_row[itemCode]);
 
-    
-if($eq_row["km_h_qty"]>0)
-     if($eq_row["unit"]!="km" && $eq_row["unit"]!="ue")
-      $eq_row["km_h_qty"]=sec2hms(round($eq_row["km_h_qty"],2));
-     elseif($eq_row["unit"]=="km")$eq_row["km_h_qty"]=round($eq_row["km_h_qty"]);
-		
-    $itemDesC=itemDes($eq_row[itemCode]);
+				$a = measuerUnti();
+				$b = $eq_row["unit"];
+				$c = $a[$b];
+				if($eq_row["km_h_qty"])
+				$rowAA[]=array("<font color='#00f'>".number_format($eq_row["km_h_qty"],2)."</font> ".$c
 
-     if($eq_row["km_h_qty"])$rowAA[]=["<font color='#00f'>".number_format($eq_row["km_h_qty"],2)."</font> ".$measureUnit.measuerUnti()[$eq_row["unit"]]
-
-   ,"<b>".$itemDesC[des]."</b>: <font color='#00f'>".number_format($eq_row["issuedQty"],2)."</font> Ltr"];  
-  }
-//  End of utilization
-                            
-//  Accounts payment start
-   $eqacc_sql="select edate,km,qty,amount,uItemCode from accEqConsumption where eqID='$assetID' and eqItemCode='$itemCode' and edate='$xDaysAgo' order by km desc";
-//    echo $eqacc_sql;
-  $eqacc_q=mysqli_query($db,$eqacc_sql);  
-  $amount=0;
-  while($eqacc_row=mysqli_fetch_array($eqacc_q)){
-    $itemDesC=itemDes($eqacc_row[uItemCode]);
-    $eqDes=itemDes($itemCode);    
-    
-//     Get equipment measurement unit
-    $sql_eq_con="select measureUnit from eqconsumsion where eqitemCode='$itemCode' limit 1";
-    $q_eq_con=mysqli_query($db,$sql_eq_con);
-    $row_eq=mysqli_fetch_array($q_eq_con); 
-    $measureUnit=$row_eq[measureUnit]=="ue" ? "Hour " : ($row_eq[measureUnit]=="km" ? "Km" : "");        
-      
-     if($eqacc_row["qty"])$rowAA[]=["Meter: <font color='#00f'>".number_format($eqacc_row["km"],2)." $measureUnit</font>, <b>".$itemDesC[des]."</b> ". number_format($eqacc_row["qty"],2)   .", $itemDesC[unit]: <font color='#00f'>Tk. ".number_format($eqacc_row["amount"],2)."</font>"];
-  }
-                                          
-echo "<table width='100%'>";
-
-
-
-foreach($rowAA as $rowAA_){
-	echo "<tr><td>$rowAA_[0]</td><td>$rowAA_[1]</td></tr>";
-}
-unset($rowAA);
-echo "</table>";
-?>
-</td>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+			,"<b>".$itemDesC[des]."</b>: <font color='#00f'>".number_format($eq_row["issuedQty"],2)."</font> Ltr");  
+			}
+			//  End of utilization
+										
+			//  Accounts payment start
+			$eqacc_sql="select edate,km,qty,amount,uItemCode from accEqConsumption where eqID='$assetID' and eqItemCode='$itemCode' and edate='$xDaysAgo' order by km desc";
+			//    echo $eqacc_sql;
+			$eqacc_q=mysqli_query($db,$eqacc_sql);  
+			$amount=0;
+			while($eqacc_row=mysqli_fetch_array($eqacc_q)){
+				$itemDesC=itemDes($eqacc_row[uItemCode]);
+				$eqDes=itemDes($itemCode);    
+				
+			//     Get equipment measurement unit
+				$sql_eq_con="select measureUnit from eqconsumsion where eqitemCode='$itemCode' limit 1";
+				$q_eq_con=mysqli_query($db,$sql_eq_con);
+				$row_eq=mysqli_fetch_array($q_eq_con); 
+				$measureUnit=$row_eq[measureUnit]=="ue" ? "Hour " : ($row_eq[measureUnit]=="km" ? "Km" : "");        
+				
+				if($eqacc_row["qty"])
+				$rowAA[]=array("Meter: <font color='#00f'>".number_format($eqacc_row["km"],2)." $measureUnit</font>, <b>".$itemDesC[des]."</b> ". number_format($eqacc_row["qty"],2)   .", $itemDesC[unit]: <font color='#00f'>Tk. ".number_format($eqacc_row["amount"],2)."</font>");
+			}
+													
+			echo "<table width='100%'>";
+			foreach($rowAA as $rowAA_){
+				echo "<tr><td>$rowAA_[0]</td><td>$rowAA_[1]</td></tr>";
+			}
+			unset($rowAA);
+			echo "</table>";
+		?>
+    </td>
 		
  </tr>
  <? $i++;

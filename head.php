@@ -214,6 +214,7 @@ elseif($loginDesignation=='Accounts Manager'){?>
 		
 		<td  align="right"<? if($keyword=='financial overview')echo " id='current' ";?>><a   href='./index.php?keyword=financial+overview'>Financial  Overview</a></td>
 		<td  align="right"<? if($keyword=='lander ledger')echo " id='current' ";?>><a   href='./index.php?keyword=lander+ledger'>lander  ledger</a></td>
+		<td  align="right"<? if($keyword=='lander ledger')echo " id='current' ";?>><a   href='./index.php?keyword=lander+ledger'>Advance Ledger</a></td>
 		
 		<td  align="center"><a href='./index.php?keyword=closing+cash+inventory'>Closing Cash &amp; Inventory</a></td>
 		<td  align="center"><a href='./index.php?keyword=Daily+Site+Cash+Report'>Daily site cash report</a></td>
@@ -582,6 +583,7 @@ elseif($loginDesignation=='Human Resource Manager'){?>
 		 <td  align="center"><a   href='./index.php?keyword=month+attendance+report'>Monthly Attendance Report</a></td>
 		 <td  align="center"><a   href='./index.php?keyword=daily+attendance+report'>Daily Attendance Report</a></td>
 	     <tr> 
+		 <td align="left"<? if($keyword=='salary disbursment')echo " id='current' ";?>><a href='./index.php?keyword=salary+disbursment'>Salary &amp; Wages Disbursment</a></td>
 		 <td  align="center"><a   href='./index.php?keyword=attendance+report'>Attendance Report</a></td>
 		 <td  align="center"><a   href='./index.php?keyword=empSalary+report'>Wages Report</a></td>
 		 <td  align="center"><a   href='./index.php?keyword=empSalary+report+detail'>Salary Report Detail</a></td>		 
@@ -590,7 +592,8 @@ elseif($loginDesignation=='Human Resource Manager'){?>
 
 
 		       <td align="center"><a href='./index.php?keyword=local+emp+ut+report+b'>Direct Labour Utilization</a></td>	
-         </tr>
+			  
+			</tr>
 	 </table>
    </td>
 </tr>

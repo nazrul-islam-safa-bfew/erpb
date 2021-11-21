@@ -71,8 +71,6 @@ if($project=='') $project=$loginProject;
 
 include("./includes/config.inc.php");
 $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
-	
-
 
 $sqlquery="SELECT DISTINCT attendance.empId,employee.designation FROM attendance,employee 
 where attendance.location='$project' AND attendance.edate<='$edat1' 

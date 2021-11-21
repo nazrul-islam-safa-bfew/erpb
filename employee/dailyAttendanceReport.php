@@ -1,4 +1,4 @@
-	<SCRIPT LANGUAGE="JavaScript" SRC="./js/CalendarPopup.js"></SCRIPT>
+ 	<SCRIPT LANGUAGE="JavaScript" SRC="./js/CalendarPopup.js"></SCRIPT>
 	<SCRIPT language=JavaScript>document.write(getCalendarStyles());</SCRIPT>
 
 <form name="attendance" method="post">

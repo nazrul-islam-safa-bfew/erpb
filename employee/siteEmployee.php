@@ -127,8 +127,8 @@ while($eq=mysqli_fetch_array($sqlQuery)){
 		$qt= $eq2[dmaQty]; //echo 'Eqaaaaaaaaaaaaa::'.$qt.'<br>';
 		$sqe = $eq1[siowSdate];
 		$eqe = $eq1[siowSdate];
-	       }
-	 }
+	    }
+	}
 }
 
 ?>   

@@ -23,10 +23,16 @@ function invoiceRetentionAmount($pcode){
 	return $row[retention];
 }
 
-
 /*invoice complete date*/
 function invoiceCompleteDate($in){
 global $db;
+
+// $SESS_DBHOST = "localhost";			/* database server hostname */
+// $SESS_DBNAME = "bfew2";				/* database name */
+// $SESS_DBUSER = "root";				/* database user */
+// $SESS_DBPASS = "";	                /* database password */
+// $SESS_DBH = "";
+// $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 $sql="SELECT receiveDate from receivecash WHERE reff='$in'";
 //echo "$sql<br>";
 $sqlq=mysqli_query($db, $sql);
@@ -34,12 +40,10 @@ $r=mysqli_fetch_array($sqlq);
 return myDate($r[receiveDate]);
 }
 
-
 function advanceAdjustmentPO($posl,$adjType){
 	global $db;
 	$sql="select * from ";
 }
-
 
 function getSalaryIncrements($empID,$month){
 		global $db;
@@ -48,7 +52,6 @@ function getSalaryIncrements($empID,$month){
 		$row=mysqli_fetch_array($q);
 		return $row[details]>0 ? $row[details] : 0;
 }
-
 
 function alreadyPaid($empID,$loc,$month,$year){
 	global $db;
@@ -2039,7 +2042,7 @@ function advanceSadjust($empId,$month){
 function advanceSadjust_v2($empId,$edate){
 	global $db;
 
-	$sql="select * from empsalaryad where empId='$empId' AND pdate<'$edate' AND status='2'  and amountTmp>0";
+	$sql="select * from empsalaryad where empId='$empId' AND pdate<'$edate' AND status='2'";
 	// echo "<br>$sql<br>";
 	$sqlq=mysqli_query($db, $sql);
 	$sqlr=mysqli_fetch_array($sqlq);
@@ -2101,8 +2104,6 @@ if($temp[76])
 	$foodingp = $temp[76];//amount
 if($temp[36])
 	$foodingp = $temp[36];//amount
-if($temp[37])
-	$foodingp = $temp[37];//amount
 
 
 

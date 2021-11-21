@@ -5,7 +5,6 @@ if(!$_SESSION["loginUid"]){
   $_SESSION["errorCode"]=0;
 }
 
-
 $_SESSION["errorLimit"]=20;
 
 $_SESSION["loginUname"];
@@ -17,3 +16,4 @@ $_SESSION["loginFullName"];
 $_SESSION["loginProjectName"];
 //echo $_SESSION["loginFullName"];
 ?>
+

@@ -60,7 +60,7 @@ if($w=='5' OR $w=='51'){
 <table width="100%" align="center" border="2" bordercolor="#999999" cellspacing="0" cellpadding="5" style="border-collapse:collapse">
  <tr bgcolor="#EEEEEE">
    <th valign="top">SL</th>
-   <th valign="top">EmployeeID,<br> Designation</th>
+   <th valign="top">EmployeeID,,,<br> Designation</th>
    <th valign="top">Employee Name</th>
    <th valign="top" width="200">Remarks</th>  
  
@@ -91,7 +91,7 @@ else if($w=='51'){
  AND salaryType LIKE 'Wages Monthly'  
  order by designation ASC ";*/
  $sqlp = "SELECT * from `employee` WHERE location='$exfor' AND designation!='70-01-000' AND empDate<='$year-$month-$daysofmonth' AND `status`<>'-2' 
- AND designation>='86-00-000' AND designation<'90-00-000'
+ AND designation>='82-00-000' AND designation<'92-99-999'
  order by designation ASC "; 
 }
 // echo $sqlp;

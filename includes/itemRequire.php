@@ -1,7 +1,7 @@
 <form name="fpcode" action="./index.php?keyword=item+require" method="post">
 <table width="500" align="center" class="ablue">
 <tr><td class="ablueAlertHd_small" colspan="3">create purchase order</td></tr>
-<tr><td>Project</td>
+<tr><td>Projectqq</td>
 <td colspan="2">
  <select name="pcode"  onChange="location.href='./index.php?keyword=item+require&pcode='+fpcode.pcode.options[document.fpcode.pcode.selectedIndex].value";>
 <?	include("./includes/config.inc.php");

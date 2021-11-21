@@ -72,7 +72,7 @@ if($project=='') $project=$loginProject;
 	
 	  <input type="submit" name="go" value="Go">
 	  </td> 
- <td align="right" colspan="3" ><font class='englishhead'>human utilization report</font></td>
+ <td align="right" colspan="3" ><font class='englishheadBlack'>human utilization report</font></td>
 </tr>
 
 	<style>
@@ -101,13 +101,13 @@ if($project=='') $project=$loginProject;
 				for($fDate2;$fDate2<=$tDate2;$tDate2-=86400){
 					$edat1=date("Y-m-d",$tDate2);
 					echo '<tr bgcolor="#ff8080" style="border: 2px solid #fff;">
-					<td colspan="5" align="center"><font class="englishhead" style="font-size:12px; font-weight:800;">'.date("D d/m/Y",$tDate2).'</font></td>
+					<td colspan="5" align="center"><font class="englishheadBlack" style="font-size:12px; font-weight:800;">'.date("D d/m/Y",$tDate2).'</font></td>
 					</tr>';
 	
 	
 // 	========================================================= Designation =============
 if($sortBy=="designation"){	
-	$sqlp = "SELECT DISTINCT employee.designation,itemlist.* from `itemlist`,employee Where itemCode >= '87-00-000' AND itemCode < '98-00-000'".
+	$sqlp = "SELECT DISTINCT employee.designation,itemlist.* from `itemlist`,employee Where itemCode >= '71-00-000' AND itemCode < '81-99-999'".
 " AND employee.designation=itemlist.itemCode AND employee.location='$project' ORDER by employee.designation ASC";
 // echo $sqlp;
 $sqlrunp= mysqli_query($db, $sqlp);
@@ -117,7 +117,7 @@ $sqlrunp= mysqli_query($db, $sqlp);
 	
 	?>
 <tr bgcolor="#CC9999" style="    border: 2px solid #fff;">
-	<td align="" colspan="5" ><font class='englishhead' style="font-size:12px;">Designation: <?php echo $typel[itemCode]."-".$typel[itemDes]; ?></font></td>
+	<td align="" colspan="5" ><font class='englishheadBlack' style="font-size:12px;">Designation: <?php echo $typel[itemCode]."-".$typel[itemDes]; ?></font></td>
 </tr>
  <?php 
 //Head office employee
@@ -241,7 +241,7 @@ $siowRows=array();
 		$isQuery=mysqli_query($db,$allIowSiow);
 		while($isRow=mysqli_fetch_array($isQuery)){ ?>
 <tr bgcolor="#CC9999" style="    border: 2px solid #fff;">
-	<td align="" colspan="5" ><font class='englishhead' style="font-size:12px;">Task: <?php echo $isRow[iowCode].": ".$isRow[siowCode]." - ".$isRow[siowName]; ?></font></td>
+	<td align="" colspan="5" ><font class='englishheadBlack' style="font-size:12px;">Task: <?php echo $isRow[iowCode].": ".$isRow[siowCode]." - ".$isRow[siowName]; ?></font></td>
 </tr>
 	
 	<?

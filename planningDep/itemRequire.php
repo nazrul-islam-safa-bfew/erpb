@@ -219,7 +219,7 @@ $t=itemDes($re[itemCode]);
    <th class="th1">Quantity at Hand</th>
    <th class="th1">
 	 <? if($requisition!="") echo $requisition; else echo "10"; ?> Days Req.</th>   
-   <th class="th1 noPrint">Budget</th>
+   <th class="th1">Budget</th>
    <th class="th1">Fuel Consumption</th>
    <th class="th1 noPrint">Quotation<br> at Hand</th>
  </tr>
@@ -377,7 +377,7 @@ if(($current>0 AND ($tt[0]<50) OR $tt[0]>=50)){
 		<a href="./planningDep/subdailyRequirment.php?project=<? echo $sqlresult[dmaProjectCode];?>&itemCode=<? echo $sqlresult[dmaItemCode];?>" target="_blank">
     <?  echo number_format($estimatdTotalIssue,3);?></a>
    </td>
-	<td align="right" class="noPrint"><?php
+	<td align="right" class=""><?php
 	if($tt[0]<50 || ($tt[0]>70 && $tt[0]<=99)){
 		echo number_format($sqlresult[dmaRate]*$estimatdTotalIssue,2);
 	}

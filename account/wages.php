@@ -46,9 +46,15 @@ $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 	
 $sqlp="SELECT DISTINCT attendance.empId,designation,name,salary,allowance FROM attendance,employee".
 " WHERE employee.salaryType not like 'Salar%'".
-" AND attendance.location='$exfor' AND attendance.action in ('P','HP') AND employee.designation>='86-00-000' AND employee.designation<='99-00-000'".
+" AND attendance.location='$exfor' AND attendance.action in ('P','HP') AND employee.designation>='71-00-000' AND employee.designation<='81-99-999'".
 " AND attendance.edate between '$fromD' AND '$toD'".
 " AND attendance.empId=employee.empId ORDER by employee.designation ASC";
+
+// $sqlp="SELECT DISTINCT attendance.empId,designation,name,salary,allowance FROM attendance,employee".
+// " WHERE employee.salaryType not like 'Salar%'".
+// " AND attendance.location='$exfor' AND attendance.action in ('P','HP') AND employee.designation>='86-00-000' AND employee.designation<='99-00-000'".
+// " AND attendance.edate between '$fromD' AND '$toD'".
+// " AND attendance.empId=employee.empId ORDER by employee.designation ASC";
 // echo $sqlp;
 $sqlrunp= mysqli_query($db, $sqlp);
 $b=1;

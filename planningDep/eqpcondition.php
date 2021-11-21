@@ -1,4 +1,4 @@
-<? 
+ <? 
 
 $db = mysql_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS);
 	 

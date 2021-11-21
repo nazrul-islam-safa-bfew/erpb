@@ -1,4 +1,5 @@
 <?
+error_reporting(E_ERROR | E_PARSE);
 if($loginProject=='000' || $loginProject=='004'){?>
 <form name="pro" method="post" >
 <select name="project" onChange="location.href='index.php?keyword=local+eq+ut+report+b&project='+pro.project.options[document.pro.project.selectedIndex].value";>
@@ -64,7 +65,7 @@ if($project=='') $project=$loginProject;
 	<th >Equipment Name</th>  
 	<th  >at <? echo $edat;?></th>  
 	<th  >Monthly total <br>till <? echo $edat;?></th>    
-	<th   >Project total <br>till <? echo $edat;?></th>    
+	<th  >Project total <br>till <? echo $edat;?></th>    
 </tr>
 
 <div id=testdiv1 style="VISIBILITY: hidden; POSITION: absolute; BACKGROUND-COLOR: white; layer-background-color: white"></div>
@@ -431,7 +432,7 @@ $workt=0;
 $idlet=0;
 $breakDownt=0;
 
- }
+}
 ?>	
 
 	<? 

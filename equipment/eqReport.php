@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ERROR | E_PARSE);
 include("../includes/config.inc.php");
 $db=mysqli_connect($SESS_DBHOST,$SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 include("../includes/myFunction.php");
@@ -15,7 +16,7 @@ $formdatFormated=date("d/m/Y",strtotime(getXdaysAgo($days)));
     <?php
       echo "<p>$itemCode$assetID: ";
       $itemDes=itemDes($itemCode);
-      if($itemDes)echo $itemDes[des];
+      if($itemDes)echo $itemDes['des'];
     $sql="select teqSpec from equipment where itemcode='$itemCode' and assetId='$assetID'";
     $q=mysqli_query($db,$sql);
     $eq_row__=mysqli_fetch_array($q);
@@ -74,11 +75,14 @@ if($eq_row["km_h_qty"]>0)
       $exp=explode(":",$eq_row["km_h_qty"]);
       $current_cons=$exp[0].".".(60/$exp[1]);
     }
-    
-    if($eq_row["km_h_qty"])$rowA[]="<font color='#00f'>".number_format($current_cons,2)."</font> ".$measureUnit.measuerUnti()[$eq_row["unit"]];
+    $a= measuerUnti();
+    $b=$eq_row["unit"];
+    $c= $a[$b];
+    if($eq_row["km_h_qty"])$rowA[]="<font color='#00f'>".number_format($current_cons,2)."</font> ".$measureUnit.$c;
+    // if($eq_row["km_h_qty"])$rowA[]="<font color='#00f'>".number_format($current_cons,2)."</font> ".$measureUnit.measuerUnti()[$eq_row["unit"]];
 
-    $itemDesC=itemDes($eq_row[itemCode]);
-    $fuelA[]="<b>".$itemDesC[des]."</b>: <font color='#00f'>".number_format($eq_row["issuedQty"],2)."</font> Ltr";  
+    $itemDesC=itemDes($eq_row['itemCode']);
+    $fuelA[]="<b>".$itemDesC['des']."</b>: <font color='#00f'>".number_format($eq_row["issuedQty"],2)."</font> Ltr";  
 //     $amount+=$eq_row["issueRate"] * $eq_row["issuedQty"];
   }
 //  End of utilization
@@ -88,9 +92,14 @@ if($eq_row["km_h_qty"]>0)
   $eqacc_q=mysqli_query($db,$eqacc_sql);  
    $amount=0; 
   while($eqacc_row=mysqli_fetch_array($eqacc_q)){
-    if($eqacc_row["km"])$rowA[]="<font color='#00f'>".number_format($eqacc_row["km"],2)."</font> ".measuerUnti()[getEqLocalUnit($itemCode)];
-    $itemDesC=itemDes($eqacc_row[uItemCode]);
-    $fuelA[]="<b>".$itemDesC[des]."</b>: <font color='#00f'>".number_format($eqacc_row["qty"],2)."</font> Ltr; Tk. ".number_format($eqacc_row["amount"],2);
+    $a = measuerUnti();
+    $b = getEqLocalUnit($itemCode);
+    $c = $a[$b];
+    if($eqacc_row["km"])$rowA[]="<font color='#00f'>".number_format($eqacc_row["km"],2)."</font> ".$c;
+    //if($eqacc_row["km"])$rowA[]="<font color='#00f'>".number_format($eqacc_row["km"],2)."</font> ".measuerUnti()[getEqLocalUnit($itemCode)];
+    
+    $itemDesC=itemDes($eqacc_row['uItemCode']);
+    $fuelA[]="<b>".$itemDesC['des']."</b>: <font color='#00f'>".number_format($eqacc_row["qty"],2)."</font> Ltr; Tk. ".number_format($eqacc_row["amount"],2);
   }
    
    
@@ -104,7 +113,7 @@ if($rowA){
 if($fuelA){
   echo implode("<br> ",$fuelA);
   
-//   if(count($fuelA)>1)      echo ";<font color='#00f'> Tk. ".number_format($tk,2)."</font>";
+// if(count($fuelA)>1) echo ";<font color='#00f'> Tk. ".number_format($tk,2)."</font>";
   
   unset($fuelA);
 }

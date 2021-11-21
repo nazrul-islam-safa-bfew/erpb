@@ -384,7 +384,8 @@ $j++;
     <tr>
       <td colspan="8">
         <? 
-		if(poType($posl)==1)include('./planningDep/poUnder/condition.php');
+   echo "pppp". $potypeTest=poType($posl);
+		if($potypeTest==1)include('./planningDep/poUnder/condition.php');
 		else 
 		include('./planningDep/poUnder/sub_condition.php');		
 		?>

@@ -227,7 +227,7 @@ if(!$typel1[itemCode])continue;
 	 <!-- <input type="hidden" name="rate<? echo $i;?>" value="<? echo round($typel1[rate],2);?>">-->
       </td>
       <td width="100"><input type="text" name="porderQty<? echo $i;?>" value="<? echo ${porderQty.$i};?>" style="text-align:right" size="3" maxlength="3" width="4">
-        <?  echo $temp[unit];?>
+        <?  echo $temp[itemUnit];?>
       </td>
   
       <td align="right"><? echo number_format(round($typel1[rate]*${porderQty.$i}),2);

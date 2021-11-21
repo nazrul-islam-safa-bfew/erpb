@@ -84,19 +84,30 @@ if(ch) { tx.disabled=false;	tx.className='yel';}
 <option value="65" <? if($s=='65') echo 'selected';?>>65-00-000	Piling Equipments</option>
 <option value="66" <? if($s=='66') echo 'selected';?>>66-00-000	Office Equipment</option>
 <option value="69" <? if($s=='69') echo 'selected';?>>69-00-000	MISCULLINEOUS EQUIPMENT</option>
-<option value="87" <? if($s=='87') echo 'selected';?>>87-00-000	Direct Labour</option>
-<option value="88" <? if($s=='88') echo 'selected';?>>88-00-000	Direct Labour</option>
-<option value="89" <? if($s=='89') echo 'selected';?>>89-00-000	Direct Labour</option>
-<option value="90" <? if($s=='90') echo 'selected';?>>90-00-000	Direct Labour</option>
-<option value="91" <? if($s=='91') echo 'selected';?>>91-00-000	Direct Labour</option>
-<option value="92" <? if($s=='92') echo 'selected';?>>92-00-000	Direct Labour</option>
-<option value="93" <? if($s=='93') echo 'selected';?>>93-00-000	Direct Labour</option>
-<option value="94" <? if($s=='94') echo 'selected';?>>94-00-000	Direct Labour</option>
-<option value="95" <? if($s=='95') echo 'selected';?>>95-00-000	Direct Labour</option>
-<option value="96" <? if($s=='96') echo 'selected';?>>96-00-000	Direct Labour</option>
-<option value="97" <? if($s=='97') echo 'selected';?>>97-00-000	Direct Labour</option>
-<option value="98" <? if($s=='98') echo 'selected';?>>98-00-000	Direct Labour</option>
-<option value="99" <? if($s=='99') echo 'selected';?>>99-00-000	Direct Labour</option>
+
+
+
+<option value="82" <? if($s=='82') echo 'selected';?>>82-00 Supervisor</option>
+<option value="83" <? if($s=='83') echo 'selected';?>>83-00 Foreman</option>
+<option value="84" <? if($s=='84') echo 'selected';?>>84-00 Direct Labor High Skilled (Civil)</option>
+<option value="85" <? if($s=='85') echo 'selected';?>>85-00 Direct Labor Skilled (Civil)</option>
+<option value="86" <? if($s=='86') echo 'selected';?>>86-00 Direct Labour Semi-Skilled(Civil)</option>
+<option value="87" <? if($s=='87') echo 'selected';?>>87-00 Direct Labour High Skilled(Mechanical & Electrical)</option>
+<option value="88" <? if($s=='88') echo 'selected';?>>88-00 Direct Labour Skilled(Mechanical & Electrical)</option>
+<option value="89" <? if($s=='89') echo 'selected';?>>89-00 Direct Labour Semi-Skilled(Mechanical & Electrical)</option>
+<option value="90" <? if($s=='90') echo 'selected';?>>90-00 Direct Labour High Skilled(Equipment & Machine Operator)</option>
+<option value="91" <? if($s=='91') echo 'selected';?>>91-00 Direct Labour Skilled(Equipment & Machine Operator)</option>
+<option value="92" <? if($s=='92') echo 'selected';?>>92-00 Direct Labour Semi-Skilled(Equipment & Machine Operator)</option>
+<option value="93" <? if($s=='93') echo 'selected';?>>93-00 Direct Labour</option>
+<option value="94" <? if($s=='94') echo 'selected';?>>94-00 Direct Labour</option>
+<option value="95" <? if($s=='95') echo 'selected';?>>95-00 Sub Contructor Civil Works</option>
+<option value="96" <? if($s=='96') echo 'selected';?>>96-00 Sub Contructor Mechanical Works</option>
+<option value="97" <? if($s=='97') echo 'selected';?>>97-00 Sub Contructor Electrical Works</option>
+<option value="98" <? if($s=='98') echo 'selected';?>>98-00 Finished Goods(Invoice Items)</option>
+<option value="99" <? if($s=='99') echo 'selected';?>>99-00 Sub Contructor Others</option>
+			
+
+
 </select>
 <input type="hidden" value="<? echo $iow;?>" name="iow">
 <input type="hidden" value="<? echo $siow;?>" name="siow">
@@ -119,6 +130,7 @@ if(ch) { tx.disabled=false;	tx.className='yel';}
 $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 	
 $sqlitem = "SELECT DISTINCT * FROM `itemlist` WHERE itemCode LIKE '$s%' ORDER by itemCode ASC";
+//$sqlitem = "SELECT DISTINCT * FROM `itemlist` WHERE itemCode>='82-00-000' AND itemcode<='94-99-999' ORDER by itemCode ASC";
 //echo $sqlitem;
 $sqlrunItem= mysqli_query($db, $sqlitem);
 $i=1;

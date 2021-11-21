@@ -34,6 +34,8 @@ $todat=todat();
 </table>
 <br>
 <br>
+
+
 <table   width="100%" align="center" border="2" bordercolor="#000" cellspacing="0" cellpadding="5" style="border-collapse:collapse">
  <tr bgcolor="#EEEEEE">
    <th valign="top">SL</th>
@@ -90,7 +92,9 @@ $advanceSadjust=$advanceSadjust1[0];
 $advanceSadjustRef=$advanceSadjust1[1];
 
 $actualSalary=$re[salary]-$advanceSadjust;
-
+// echo $de =$re[designation]."ddddddddddddddddddddddd";
+// $p = explode("-",$de );
+// $po = $p[0]."-".$p[1]."-";
 ?>
  <tr <? if($b%2==0) echo 'bgcolor=#FFFFEE';?> >
    <td valign="top" align="center"><? echo $b;?></td>
@@ -205,7 +209,7 @@ if($empStatus=='-1'){
   // $totalAmount+= $payable;
   $totalAmount= $amountArray[B]+ $amountArray[C] + $amountArray[T];
   $grand_totalAmount+= $totalAmount;
-
+	$lm_designation = $re['designation'];
  $b++;
  $ta=0;
  }//if checked 
@@ -226,14 +230,62 @@ if($empStatus=='-1'){
  <br><br>
  <br><br>
  <table width="100%" align="center">
-  <tr>
+ 
+ <tr>
+		<th>
+		    <ol style="list-style-type: none;">
+				<li>Prepared by</li>
+				<li style="color: red; text-decoration: underline;">Najifa Anjum </li>
+				<li>HR Executive,</li>
+				<li>Payroll management</li>
+			</ol>	
+		</th>
+		<th>
+		    <ol style="list-style-type: none;">
+				<li>Checked & recommended by</li>
+				<li style="color: red; text-decoration: underline;">
+				<?
+					$managerArr=getManager($lm_designation,$exfor);
+					if (empty($managerArr)) {
+						echo "<font color='#f00'>No Line manager found</font>";
+					}
+						else
+						echo "<font color='#f00'>$managerArr[name]</font>";
+				?>
+			    </li>
+				<li>
+				<?
+				$des = hrDesignation($managerArr[designation]);
+						echo strlen($des)>0 ? $des : "No line manager designation found.";
+				?>
+				</li>
+			</ol>	
+		</th>
+		<th>
+		    <ol style="list-style-type: none;">
+				<li>Approved by</li>
+				<li style="color: red; text-decoration: underline;"> Mr.Harun Or Rashid </li>
+				<li>HR Manager</li>
+			</ol>	
+		</th>
+		<th>
+		    <ol style="list-style-type: none;">
+				<li>Paid By</li>
+				<li style="color: red; text-decoration: underline;"> Mr. Shahjahan  </li>
+				<li>Cashier</li>
+			</ol>	
+		</th>
+    </tr>
+ 
+ 
+ <!-- <tr>
 		<th>Prepared by</th>
 		<th>HR &amp; Admin Manager</th>  
 		<th>Checked by Accounts</th>  
 		<th>Manager MIS &amp; Accounts</th>  
 		<th>Director Admin.</th>  
 		<th>Managing Director</th> 
-  </tr>
+  </tr> -->
  </table>
 <br>
 <br>

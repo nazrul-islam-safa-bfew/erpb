@@ -1,11 +1,11 @@
 <? 
 
-$db = mysql_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS);
+$db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS);
 	 
 $sqlp1 = "SELECT * from  `pconditiontemp` WHERE posl='$posl'";
 //echo $sqlp1;
-$sqlrunp1= mysql_query($sqlp1);
-$typel2= mysql_fetch_array($sqlrunp1);
+$sqlrunp1= mysqli_query($sqlp1);
+$typel2= mysqli_fetch_array($sqlrunp1);
 //echo $typel2[condition];
 $extra=$typel2[extra];
 $extra1=$typel2[extra1];

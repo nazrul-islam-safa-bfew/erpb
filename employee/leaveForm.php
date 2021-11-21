@@ -56,8 +56,11 @@ if($_POST['save']){
 
 
 	 $sql=@mysqli_query($db, "SELECT * FROM employee WHERE (salaryType like 'Salar%' OR salaryType='Consolidated' OR salaryType='Wages Monthly' )
-		AND location='$loginProject' AND status='0' AND designation!='70-01-000' ORDER by designation") or die('Please try later!!');
+		AND location='$loginProject' AND status='0' AND designation>='71-00-000' AND designation<='81-99-999'  ORDER by designation") or die('Please try later!!');
 	 while($typel= mysqli_fetch_array($sql)){
+	//  $sql=@mysqli_query($db, "SELECT * FROM employee WHERE (salaryType like 'Salar%' OR salaryType='Consolidated' OR salaryType='Wages Monthly' )
+	// 	AND location='$loginProject' AND status='0' AND designation!='70-01-000' ORDER by designation") or die('Please try later!!');
+	//  while($typel= mysqli_fetch_array($sql)){
 	 $plist.= "<option value='".$typel[empId]."'";
 	 if($empId==$typel[empId]) $plist.=" SELECTED ";
    $des=itemDes($typel[designation]);

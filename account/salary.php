@@ -88,9 +88,14 @@ $daysofmonth = daysofmonth($sdate);
 	
 if($w==5){
 $sqlp = "SELECT * from `employee` WHERE location='$exfor' AND empDate<='$year-$month-$daysofmonth' AND status<>'-2'".
-"  AND salaryType='Salary' AND designation>'70-99-999' AND designation<='85-00-000'".
+"  AND salaryType='Salary' AND designation>'71-00-000' AND designation<='81-99-999'".
 "  order by designation ASC ";
 }
+// if($w==5){
+// $sqlp = "SELECT * from `employee` WHERE location='$exfor' AND empDate<='$year-$month-$daysofmonth' AND status<>'-2'".
+// "  AND salaryType='Salary' AND designation>'70-99-999' AND designation<='85-00-000'".
+// "  order by designation ASC ";
+// }
 else if($w=='51'){
 $sqlp = "SELECT * from `employee` WHERE location='$exfor' AND empDate<='$year-$month-$daysofmonth' AND status<>'-2' 
  AND salaryType='Consolidated' AND designation>='86-00-000' AND designation<'99-00-000'

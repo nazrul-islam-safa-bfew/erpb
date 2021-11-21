@@ -39,6 +39,7 @@ function empId2Designation($empId){
 function getManager($designation,$pcode){
 	global $db;
 	$sql="select * from employee where location='$pcode' and designation=(select ccr from employee where designation='$designation' and location='$pcode' limit 1)";
+	// echo $sql;
 	$q=mysqli_query($db,$sql);
 	
 	if(mysqli_affected_rows($db)<1)return false;
@@ -56,21 +57,21 @@ function getEmployeeItemCodeRange(){
 }
 function departmentList($selected=null){ //backdated
 	  $designationList=array(
-			'71'=>array("code"=>"71-00-000","designation"=>"Director"),
-			'72'=>array("code"=>"72-00-000","designation"=>"Construction & Engineering Department"),
-			'73'=>array("code"=>"73-00-000","designation"=>"Manager & Executive"), //Design & Estimation Department
-			'74'=>array("code"=>"74-00-000","designation"=>""), //Accounts & MIS Department
-			'75'=>array("code"=>"75-00-000","designation"=>"Office Assistant"), //Human Resource Department
-			'76'=>array("code"=>"76-00-000","designation"=>""), //Procurement Department
-			'77'=>array("code"=>"77-00-000","designation"=>"Foreman & Supervisor"), //Store & Logistic Department
-			'78'=>array("code"=>"78-00-000","designation"=>"High Skill Labor"), //Business Development & Marketing Department
-			'79'=>array("code"=>"79-00-000","designation"=>""), //Project Department
-			'80'=>array("code"=>"80-00-000","designation"=>"Construction Department"),
-			'81'=>array("code"=>"81-00-000","designation"=>"Workshop"),
-			'82'=>array("code"=>"82-00-000","designation"=>""), //Equipment & Rental Sevices Department
-			'83'=>array("code"=>"83-00-000","designation"=>""),
-			'84'=>array("code"=>"84-00-000","designation"=>""),
-			'85'=>array("code"=>"85-00-000","designation"=>"")
+		'71'=>array("code"=>"71-00","designation"=>"Policy Makers"),
+		'72'=>array("code"=>"72-00","designation"=>"Head Of The Departments"),
+		'73'=>array("code"=>"73-00","designation"=>"Special Executive"),
+		'74'=>array("code"=>"74-00","designation"=>"Senior Executive"), 
+		'75'=>array("code"=>"75-00","designation"=>"Executive"), 
+		'76'=>array("code"=>"76-00","designation"=>"Junior Staff"), 
+		'77'=>array("code"=>"77-00","designation"=>"Office Assistance"), 
+		'78'=>array("code"=>"78-00","designation"=>"Security Personnel"), 
+		'79'=>array("code"=>"79-00","designation"=>""), 
+		'80'=>array("code"=>"80-00","designation"=>"Construction Department"),
+		'81'=>array("code"=>"81-00","designation"=>"Workshop"),
+		'82'=>array("code"=>"82-00","designation"=>"Supervisor"), 
+		'83'=>array("code"=>"83-00","designation"=>"Foreman"),
+		'84'=>array("code"=>"84-00","designation"=>"Direct Labor High Skilled (Civil)"),
+		'85'=>array("code"=>"85-00","designation"=>"Direct Labor Skilled (Civil)")
 		);
 	if($selected)return $designationList[$selected];
 	return $designationList;
@@ -78,25 +79,29 @@ function departmentList($selected=null){ //backdated
 
 function managerList($managerCode=null){
 	$managerList = (array(
-		'73-13-001'=>"Assistant Manager",
-		'73-12-000'=>"Deputy Manager",
-		'73-12-001'=>'Deputy Project Manager',
-		'73-11-000'=>'Manager',
-		'73-11-001'=>'Manager, Accounts & MIS',
-		'73-11-002'=>'Manager, Finance & Investment',
-		'73-11-003'=>'Manager, Land officer & GM',
-		'73-11-004'=>'HR Coordinator',
-		'73-11-005'=>'Coordinator, Procurement',
-		'73-11-006'=>'Manager, Store',
-		'73-11-007'=>'Manager, Marketing & Brand Establishment',
-		'73-11-008'=>'Business Development Manager(Building Project)',
-		'73-11-009'=>'Business Development Manager(Plant Construction Project)',
-		'73-11-010'=>'Business Development Manager(Infrastructure Constructoin Project)',
-		'73-11-011'=>'Poject Manager',
-		'73-11-012'=>'Construction Manager',
-		'73-11-013'=>'Workshop Manager',
-		'73-11-014'=>'Maintanance Manager',
-		'73-10-001'=>'Sr. Manager'
+		'72-01'=>"Sr. Manager, Accounts & Finance",
+		'72-02'=>"Sr. Manager, Human Resource",
+		'72-03'=>'Sr. Manager, Marketing',
+		'72-04'=>'Sr. Manager, Business Development',
+		'72-05'=>'Sr. Manager, Supply Chain',
+		'72-06'=>'Sr. Manager, Commercial',
+		'72-07'=>'Sr. Manager, Web Developer',
+		'72-08'=>'Sr. Manager, CADD Center',
+		'72-09'=>'Sr. Manager, Planning $ Control',
+		'72-10'=>'Sr. Manager, Design & Estimation',
+		'72-11'=>'Sr. Manager, Electrical',
+
+		'72-20'=>"Manager, Accounts & Finance",
+		'72-21'=>"Manager, Human Resource",
+		'72-22'=>'Manager, Marketing',
+		'72-23'=>'Manager, Business Development',
+		'72-24'=>'Manager, Supply Chain',
+		'72-25'=>'Manager, Commercial',
+		'72-26'=>'Manager, Web Developer',
+		'72-27'=>'Manager, CADD Center',
+		'72-28'=>'Manager, Planning $ Control',
+		'72-29'=>'Manager, Design & Estimation',
+		'72-30'=>'Manager, Electrical',
 	));
 	if($managerCode)
 		return $managerList[$managerCode];
@@ -1528,9 +1533,8 @@ OUTPUT: Salary amount payable
 ---------------------------------*/
 function currentWPayble($emp,$d,$p){
 
-include("config.inc.php");
-$db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
-	 
+	$localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
+	include($localPath."/includes/config.inc.php"); //datbase_connection	 
 
  $sql=" SELECT SUM(amount)  as salary FROM `empsalary` WHERE empId='$emp' AND month='$d' AND glCode='2404000-$p'";
 //echo $sql;
@@ -1579,8 +1583,8 @@ global $db;
 $daysofmonth = 30;
 //echo "**daysofmonth=$daysofmonth**<br>";
 // $otRate=2*($basic/($daysofmonth*8)); old rule 
-$otRate=($basic/($daysofmonth*8));
-$otRate*=2;
+$otRate=(($basic/$daysofmonth)/8);
+//$otRate*=2;
 
 return round($otRate,2);
 }
@@ -1648,15 +1652,17 @@ return DAILY TOTAL WORKED
 ************************************/
 
 function dailywork($empId,$d,$empType,$pcode){
-$work=0;;
+$work=0;
 $localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
 include($localPath."/includes/config.inc.php"); //datbase_connection
- $sql1="SELECT  SUM(ABS(TIME_TO_SEC(etime)-TIME_TO_SEC(stime)+60)) as total from  `emput`".
+
+$sql1="SELECT  SUM(ABS(TIME_TO_SEC(etime)-TIME_TO_SEC(stime)+60)) as total from  `emput`".
  " where  empId ='$empId' AND empType='$empType' AND edate ='$d' AND pcode='$pcode' AND iow<>'' ";
 
 	if($_GET["iowType"])$sql1.=" and iow in (select iowId from iow where iowType='$_GET[iowType]') ";
 
-// 	echo $sql1;
+ 	//echo $sql1;
+
 
  $sqlQuery1=mysqli_query($db, $sql1);
  $remainQty1=mysqli_fetch_array($sqlQuery1);
@@ -1773,20 +1779,240 @@ return $num_rows;
 }//H
 }
 
+
+function local_TotalPresentHronlyP($sdate,$edate,$empId,$type,$location){
+	global $db;
+   if($type=='H'){
+	$sqlf = "SELECT id FROM `attendance` WHERE empId='$empId'".
+	" AND edate BETWEEN '$sdate' AND '$edate'".
+	" AND action IN ('P') AND location='$location'";
+   // echo $sqlf.'<br>';
+   
+   $sqlQ= mysqli_query($db, $sqlf);
+   // echo mysqli_error($db);
+   $num_rows = mysqli_num_rows($sqlQ);
+   return $num_rows;
+   }//H
+   }
+   
+   
+   function local_TotalPresentHronlyHP($sdate,$edate,$empId,$type,$location){
+   global $db;
+   if($type=='H'){
+	$sqlf = "SELECT id FROM `attendance` WHERE empId='$empId'".
+	" AND edate BETWEEN '$sdate' AND '$edate'".
+	" AND action IN ('HP') AND location='$location'";
+   //echo $sqlf.'<br>';
+   
+   $sqlQ= mysqli_query($db, $sqlf);
+   $num_rows = mysqli_num_rows($sqlQ);
+   return $num_rows;
+   }//H
+   }
+   
+   function local_TotalPresentHronlyHA($sdate,$edate,$empId,$type,$location){
+   global $db;
+   if($type=='H'){
+	$sqlf = "SELECT id FROM `attendance` WHERE empId='$empId'".
+	" AND edate BETWEEN '$sdate' AND '$edate'".
+	" AND action IN ('HA') AND location='$location'";
+   //echo $sqlf.'<br>';
+   
+   $sqlQ= mysqli_query($db, $sqlf);
+   $num_rows = mysqli_num_rows($sqlQ);
+   return $num_rows;
+   }//H
+   }
+   
+   
+   function finalSalary($empId,$fromD,$toD,$exfor,$d){
+   global $db;
+   $daysOfmonth = date('t', strtotime($fromD)); 
+   
+   
+   
+	$sqlf = "SELECT sum(salary+allowance) as salary FROM `employee` WHERE empId='$empId'";
+	//echo $sqlf;
+	$sqlQ= mysqli_query($db, $sqlf);
+	$num_assoc = mysqli_fetch_assoc($sqlQ);
+	$salary=$num_assoc['salary'];
+   
+	$sqlf = "SELECT id FROM `attendance` WHERE empId='$empId'".
+	" AND edate BETWEEN '$fromD' AND '$toD'".
+	" AND action IN ('P') AND location='$exfor'";
+   // echo $sqlf.'<br>';
+   
+   $sqlfp = "SELECT id FROM `attendance` WHERE empId='$empId'".
+   " AND edate BETWEEN '$fromD' AND '$toD'".
+   " AND action IN ('HP') AND location='$exfor'";
+   
+   $sqlfa = "SELECT id FROM `attendance` WHERE empId='$empId'".
+   " AND edate BETWEEN '$fromD' AND '$toD'".
+   " AND action IN ('HA') AND location='$exfor'";
+   
+   
+   $sqlQ= mysqli_query($db, $sqlf);
+   // echo mysqli_error($db);
+   $totalPresentOnlyP = mysqli_num_rows($sqlQ);
+   
+   $sqlQ= mysqli_query($db, $sqlfp);
+   $totalPresentOnlyHP = mysqli_num_rows($sqlQ);
+   
+   $sqlQ= mysqli_query($db, $sqlfa);
+   $totalPresentOnlyHA = mysqli_num_rows($sqlQ);
+   // return $totalPresentOnlyHA;
+   // exit;
+   
+   $calendar_holiday = monthly_project_calender_holiday($d,$exfor);
+	   //return $calendar_holiday;
+	   //exit;
+	   // $weekend = weekend_temp($exfor);
+   $weekend = weekend($d,$exfor);
+   $project_working_day = ($daysOfmonth - $weekend - $calendar_holiday) ; 
+   $total_present = $totalPresentOnlyP;
+   $remaining = $total_present - $project_working_day;
+   $d = $a = 0;
+   if($remaining < 0){
+   $d = abs($remaining * salary_d($empId));
+   //print_r(">>$remaining>>".$d."==");
+   }
+   if($totalPresentOnlyHP>0){
+	$a = $totalPresentOnlyHP * holiday_salary($empId);
+   //print_r(">>".$a."==");
+   }
+   $total_salary = ($salary - $d) + $a ;
+   
+   
+   //$remainDay = ($daysOfmonth-$totalPresentOnlyP-$totalPresentOnlyHP-$totalPresentOnlyHA);
+   // if($remainDay>0){
+   // 	$part1 = $remainDay*($salary/26);	
+   // }
+   // else
+   //   $part1=0;
+   // $part2 = $totalPresentOnlyHP * ($salary/26);
+   
+   // // print_r(array("daysOfmonth"=>$daysOfmonth, "totalPresentOnlyP"=>$totalPresentOnlyP,"totalPresentOnlyHP"=>$totalPresentOnlyHP, "totalPresentOnlyHA"=> $totalPresentOnlyHA, "remainDay"=>$remainDay, "part1"=>$part1, "part2"=>$part2));
+   
+   // $final_salary = ($salary - $part1 ) + $part2;
+   return $total_salary > 0 ? $total_salary : 0;
+   }//H
+   
+   
+   function weekend_temp($pcode){
+	   
+	   switch($pcode){
+		 case "000": return 5;
+		 case "200":  return 5;
+		 case "008":  return 5;
+	   }
+		return 1;
+   }
+   
+   function weekend($yer_mon_01,$exfor) 
+	{ 
+		global $db;
+		$data=explode("-", $yer_mon_01);
+		//print_r($data);
+		$year  = $data[0];
+		$month = $data[1];
+		$date =  $data[2];
+	  
+		  $sql = "select weekend from project where pcode =".$exfor;
+		  $sqlQ = mysqli_query($db, $sql);
+		  $sqlR = mysqli_fetch_array($sqlQ);
+		  $val = $sqlR['weekend']; 
+	
+		if(empty($val)) return false; //echo "empty weekend";
+	  
+		$jsonArray = json_decode($val, true); 
+		$totalDaysM = cal_days_in_month(CAL_GREGORIAN, $month, $year); // returnt total days 
+	  
+		$res = 0;
+		for($i=1; $i<=$totalDaysM; $i++)
+		{
+		  $d=unixtojd(mktime(0,0,0,$month,$i,2021));
+		  $day = cal_from_jd($d,CAL_GREGORIAN);
+		  $holiday = $day['dayname'];
+		  
+		  if(in_array($holiday, $jsonArray)!='')
+		  {
+			$res++;
+		  }
+		  
+		}	  
+	  return $res;
+	}
+
+	function monthly_project_calender_holiday($edate,$exfor){
+		global $db;
+        // $edate=explode("-", $yer_mon);
+		// $data=explode("-", $yer_mon);
+		// //print_r($data);
+		// $year  = $data[0];
+		// $month = $data[1];
+		// $date =  $data[2];
+		$sql = "select count(*) as holiday from  projectcalender where hdate like '$edate%' and pcode='$exfor'";
+		$sqlQ = mysqli_query($db, $sql);
+		$sqlR = mysqli_fetch_array($sqlQ);
+		$val = $sqlR['holiday']; 
+		return $val;
+	}
+	
+function all_weekend(){
+	$weekend = array(
+			"fri" => "Friday",
+			"sat" => "Saturday",
+			"sun" => "Sunday",
+			"mon" => "Monday",
+			"tue" => "Tuesday",
+			"wed" => "Wednesday",
+			"thu" => "Thusday"
+				);
+	return $weekend;
+}
+   
+   function salary_d($emp_id){
+	global $db;
+	$sqlf = "SELECT sum(salary+allowance) as salary FROM `employee` WHERE empId='$emp_id'";
+	//echo $sqlf;
+	$sqlQ= mysqli_query($db, $sqlf);
+	$num_assoc = mysqli_fetch_assoc($sqlQ);
+	$salary=$num_assoc['salary'];
+	$salary_d = $salary/ 26;
+	return $salary_d;
+   }
+   
+   
+   function holiday_salary($emp_id){
+	global $db;
+	$sqlf = "SELECT sum(salary+allowance) as salary FROM `employee` WHERE empId='$emp_id'";
+	//echo $sqlf;
+	$sqlQ= mysqli_query($db, $sqlf);
+	$num_assoc = mysqli_fetch_assoc($sqlQ);
+	$salary=$num_assoc['salary'];
+	$holiday_salary = $salary/ 26;
+	return $holiday_salary;
+   }
+   
+
+
+
+	
+
 /*--------------------------------
 enter employee ID
 return total Present
 ---------------------------------*/
 function totalPresent($empId,$fromdat,$todat){global $db;
-$leave=0;
- $sqlf = "SELECT id FROM `attendance` 
- WHERE empId='$empId' AND edate BETWEEN '$fromdat' AND '$todat' AND action='P'";
-//echo $sqlf.'<br>';
-
-$sqlQ= mysqli_query($db, $sqlf);
-$num_rows = mysqli_num_rows($sqlQ);
-return $num_rows;
-}
+	$leave=0;
+	 $sqlf = "SELECT id FROM `attendance` 
+	 WHERE empId='$empId' AND edate BETWEEN '$fromdat' AND '$todat' AND action='P'";
+	//echo $sqlf.'<br>';
+	
+	$sqlQ= mysqli_query($db, $sqlf);
+	$num_rows = mysqli_num_rows($sqlQ);
+	return $num_rows;
+	}
 
 /*--------------------------------
 enter starting Date and End Date
@@ -1852,7 +2078,7 @@ $sqlf=mysqli_query($db, $sqlff);
 function hrDesignation($p)
 {
 	global $db;
-$sqlff="SELECT itemDes FROM itemlist where itemCode='$p'";
+ $sqlff="SELECT itemDes FROM itemlist where itemCode='$p'";
 // echo $sqlff;
 $sqlf=mysqli_query($db, $sqlff);
      $pn=mysqli_fetch_array($sqlf);
@@ -1947,7 +2173,8 @@ function empId($empId,$designation){
 	$tempf=explode('-',$designation);
 
 // 	if($empId<10) 
-return "$tempf[0]-$tempf[1]-$tempf[2]$empId";
+//return "$tempf[0]-$tempf[1]-$tempf[2]$empId";
+return "$tempf[0]-$tempf[1]-$empId";
 // 	else if($empId<100) return "$tempf[0]-$tempf[1]-000$empId";
 // 	else if($empId<1000) return "$tempf[0]-$tempf[1]-00$empId";
 // 	else if($empId<10000) return "$tempf[0]-$tempf[1]-0$empId";
@@ -2192,22 +2419,23 @@ $sqlq=mysqli_query($db, $sql);
  
 /* return total hour present in a day*/
 function toDaypresent($empId,$edate,$empType){
-global $db;
- $sql="SELECT ABS(TIME_TO_SEC(etime)-TIME_TO_SEC(stime)+60) as duration 
- FROM `attendance` 
- WHERE empId= '$empId' AND edate='$edate'";
-//echo $sql;	
+	global $db;
+	 $sql="SELECT ABS(TIME_TO_SEC(etime)-TIME_TO_SEC(stime)+60) as duration 
+	 FROM `attendance` 
+	 WHERE empId= '$empId' AND edate='$edate'";
+	//echo $sql;	
+	//SELECT ABS(TIME_TO_SEC(etime)-TIME_TO_SEC(stime)+60) as duration FROM `attendance` WHERE empId= '' AND edate='2021-10-02'
 
+	 $sqlQuery=mysqli_query($db, $sql);
+	 $rr=mysqli_fetch_array($sqlQuery);
+	 if($rr){
 	
- $sqlQuery=mysqli_query($db, $sql);
- $rr=mysqli_fetch_array($sqlQuery);
- if($rr){
-
-$empTime= $rr[duration];
-return $empTime;
-}
-else return 0;
-}
+	$empTime= $rr[duration];
+	return $empTime;
+	}
+	else return 0;
+	}
+	
 
  
 /* without pay amount */

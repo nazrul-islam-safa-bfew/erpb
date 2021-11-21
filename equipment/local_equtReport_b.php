@@ -71,7 +71,7 @@ if($project=='') $project=$loginProject;
 	
   <input type="submit" name="go" value="Go">
 	  </td> 
- <td align="right" colspan="3" ><font class='englishhead'>equipment utilization</font></td>
+ <td align="right" colspan="3" ><font class='englishheadBlack'>equipment utilization</font></td>
 </tr>
 
 	<style>
@@ -103,7 +103,7 @@ $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 				for($fDate2;$fDate2<=$tDate2;$tDate2-=86400){
 					$edat1=date("Y-m-d",$tDate2);
 					echo '<tr bgcolor="#ff8080" style="border: 2px solid #fff;">
-					<td colspan="5" align="center"><font class="englishhead" style="font-size:12px; font-weight:800;">'.date("D d/m/Y",$tDate2).'</font></td>
+					<td colspan="5" align="center"><font class="englishheadBlack" style="font-size:12px; font-weight:800;">'.date("D d/m/Y",$tDate2).'</font></td>
 					</tr>';
 if($sortBy=="equipment"){
 	
@@ -122,7 +122,7 @@ $total_per_page=10;
 if($eqDesc!=$oldEqDes){
 $oldEqDes=$eqDesc;?>
 <tr bgcolor="#CC9999" style="    border: 2px solid #fff;">
-	<td align="" colspan="5" ><font class='englishhead' style="font-size:12px;">Equipment: <?php echo $allItemRow[itemCode]." - ".$eqDesc; ?></font></td>
+	<td align="" colspan="5" ><font class='englishheadBlack' style="font-size:12px;">Equipment: <?php echo $allItemRow[itemCode]." - ".$eqDesc; ?></font></td>
 </tr>
 <?php }
 	
@@ -141,22 +141,17 @@ $sql= mysqli_query($db, $sqlquery);
 $month=date('m',strtotime($edat1));
 $year=date('Y');
 $from="$year-$month-01";
-
  while($re=mysqli_fetch_array($sql)){
-
 	$dailyworkBreakt=eq_dailyworkBreak($re[eqId],$re[itemCode],$edat1,$type,$project);
     $dailyBreakDownt=eq_dailyBreakDown($re[eqId],$re[itemCode],$edat1,$type,$project);
 	$toDaypresent=eq_toDaypresent($re[eqId],$re[itemCode],$edat1,$type,$project);
-	
     $toDaypresent=$toDaypresent-$dailyworkBreakt;	
-	
 	$workt= eq_dailywork($re[eqId],$re[itemCode],$edat1,$type,$project);
 	$overtimet = $toDaypresent-8*3600;
 	if($overtimet<0) $overtimet=0;
 	$idlet=$toDaypresent-$workt-$dailyBreakDownt;
-	  if($idlet<0) $idlet=0;
-	 
-  $totalPresent = eqTotalPresentHr($edat1,$edat1,$re[eqId],$re[itemCode],$type,$project);    
+	if($idlet<0) $idlet=0;
+    $totalPresent = eqTotalPresentHr($edat1,$edat1,$re[eqId],$re[itemCode],$type,$project);    
 	$presentHour=sec2hms($toDaypresent/3600,$padHours=true);
 	$workHour=sec2hms($workt/3600,$padHours=true);
 	$overtimeHour=sec2hms($overtimet/3600,$padHours=true);
@@ -170,8 +165,8 @@ $from="$year-$month-01";
 	 	
 	$workBreakSql="select ut.stime, ut.etime, ut.details from equt as ut where ut.eqId='$eqID' and ut.itemCode='$re[itemCode]' AND ut.pcode='$project' and (''=ut.iow and ''=ut.siow )  and ut.edate='$edat1' order by ut.stime desc  ";
 	 
-	 $UTquery=mysqli_query($db,$utSql);
-			while($UTrow=mysqli_fetch_array($UTquery)){ 
+	    $UTquery=mysqli_query($db,$utSql);
+        			while($UTrow=mysqli_fetch_array($UTquery)){ 
 				if($UTrow[iowCode] && $UTrow[siowCode]){
 					$startTime=timeConvert($UTrow[stime]);
 					$endTime=timeConvert($UTrow[etime]);
@@ -181,15 +176,13 @@ $from="$year-$month-01";
 					<td><i>$UTrow[details]</i></td></tr>";
 				}		
 			}
-	 
 	 			$workBreakQ=mysqli_query($db,$workBreakSql);
-			while($workBreakRow=mysqli_fetch_array($workBreakQ)){
+                	while($workBreakRow=mysqli_fetch_array($workBreakQ)){
 				$workedBreakArray[]=timeConvert($workBreakRow[stime])."-".timeConvert($workBreakRow[etime]);
 			}
 				
-	 
-	 $presentRow=implode(", ",$presentArray);
-	 $workedBreakRow=implode(", ",$workedBreakArray);
+	$presentRow=implode(", ",$presentArray);
+	$workedBreakRow=implode(", ",$workedBreakArray);
 	 
 	 unset($presentArray);
 	 unset($workedBreakArray);
@@ -197,10 +190,7 @@ $from="$year-$month-01";
 	 $presentArray=array();
 	 $workedBreakArray=array();?>
 
-	
-	
 	<tr><td colspan="4" height="5"></td></tr>
-	
 	
 			<tr>
 				<td colspan="4" style="font-size:10px;" rowspan="<?php echo $rowCounter; ?>">
@@ -216,9 +206,9 @@ $from="$year-$month-01";
 	}
 					?></span><br>
 					
-					Present: <span style="color:#00f"><?php echo $presentHour.' Hrs'; echo $presentRow ? " ($presentRow)" : ""; ?></span>, Work: <span style="color:#00f"><?php echo $workHour.' Hrs'; ?></span>,
+				Present: <span style="color:#00f"><?php echo $presentHour.' Hrs'; echo $presentRow ? " ($presentRow)" : ""; ?></span>, Work: <span style="color:#00f"><?php echo $workHour.' Hrs'; ?></span>,
 					
-				 Idle: <span style="color:#00f"><?php echo $idleHour.' Hrs'; ?></span>, Overtime: <span style="color:#00f"><?php echo $overtimeHour.' Hrs'; ?></span>, Workbreak: <span style="color:#00f"><?php echo $dailyworkBreakHour.' Hrs';echo $workedBreakRow ? " ($workedBreakRow)" : ""; ?></span>, Breakdown: <span style="color:#00f"><?php echo $breakdownHour.' Hrs'; ?></span>
+				Idle: <span style="color:#00f"><?php echo $idleHour.' Hrs'; ?></span>, Overtime: <span style="color:#00f"><?php echo $overtimeHour.' Hrs'; ?></span>, Workbreak: <span style="color:#00f"><?php echo $dailyworkBreakHour.' Hrs';echo $workedBreakRow ? " ($workedBreakRow)" : ""; ?></span>, Breakdown: <span style="color:#00f"><?php echo $breakdownHour.' Hrs'; ?></span>
 				</td>
 		</tr>
 	
@@ -246,7 +236,6 @@ $from="$year-$month-01";
 	<?php } ?>
 	
 	
-	
  <? foreach($utArray as $workRow){
 				echo $workRow;
 			}
@@ -266,7 +255,7 @@ $from="$year-$month-01";
 		while($isRow=mysqli_fetch_array($isQuery)){  ?>
 	
 <tr bgcolor="#CC9999" style="    border: 2px solid #fff;">
-	<td align="" colspan="5" ><font class='englishhead' style="font-size:12px;">Task: <?php echo $isRow[iowCode].": ".$isRow[siowCode]." - ".$isRow[siowName]; ?></font></td>
+	<td align="" colspan="5" ><font class='englishheadBlack' style="font-size:12px;">Task: <?php echo $isRow[iowCode].": ".$isRow[siowCode]." - ".$isRow[siowName]; ?></font></td>
 </tr>
 	
 	
@@ -362,7 +351,8 @@ $eqDesc=$itemRow[itemDes];
 	  $b = $mRow[unit];
 	  $a= $c[$b];
 	  echo "<font color='#00f'>".$last_usage_report."</font>".$a;
-	 //echo "<font color='#00f'>".$last_usage_report."</font> ".(measuerUnti()[$mRow[unit]]); ?></span>
+	 //echo "<font color='#00f'>".$last_usage_report."</font> ".(measuerUnti()[$mRow[unit]]); 
+	  ?></span>
 	<?php } ?>
 					
 					</li>

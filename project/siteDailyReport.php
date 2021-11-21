@@ -500,9 +500,7 @@ Status:<select name="Status">
 	<? } else {?>
 	 <td colspan="3" bgcolor="#FEF5F1">
 	 <? }?>
-		 
-
-		 
+		 	 
 		<input type="checkbox" name="chk14" <? if($chk14) echo 'checked'; ?> >Daywork description
 		<input type="checkbox" name="chk15" <? if($chk15) echo 'checked'; ?> >Weather interruption
 		<input type="checkbox" name="chk16" <? if($chk16) echo 'checked'; ?> >Accident records
@@ -537,10 +535,15 @@ $btn_sql1=$sql;
 <?php
  //if($project=='') $project=$loginProject;
 if($chk14 || $chk15 || $chk16 || $chk17){
-	$tSql="SELECT * FROM dailyreport WHERE edate!='$ed1' and edate!='' and edate!='0000-00-00' AND pcode='$project' order by edate desc";;
+	echo $tSql="SELECT * FROM dailyreport WHERE edate!='' and edate!='0000-00-00' AND pcode='$project' order by edate desc";;
 	$qQ=mysqli_query($db, $tSql);
 	while($cmActivity[]=mysqli_fetch_array($qQ)){}
 }
+// if($chk14 || $chk15 || $chk16 || $chk17){
+// 	echo $tSql="SELECT * FROM dailyreport WHERE edate!='$ed1' and edate!='' and edate!='0000-00-00' AND pcode='$project' order by edate desc";;
+// 	$qQ=mysqli_query($db, $tSql);
+// 	while($cmActivity[]=mysqli_fetch_array($qQ)){}
+// }
 ?>
 
 <table width="95%" align="center" style="text-size:10px;">

@@ -1,12 +1,10 @@
 <?php 
 //project main
 // echo "Project >> Ongoing project main<br><br>";
-$db = mysql_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS);
-	mysql_select_db($SESS_DBNAME,$db);
-	$as="SELECT * FROM project ";
-	$bbv = mysql_query($as);
-	
-
+include("config.inc.php");
+$db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
+$as="SELECT * FROM project ";
+$bbv = mysqli_query($db,$as);
 ?>
 
 <table align="center" width="80%" height="10" border="1" bordercolor="#E4E4E4" cellpadding="0" cellspacing="0" style="border-collapse:collapse">
@@ -16,7 +14,7 @@ $db = mysql_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS);
   <td align="center"> Project Manager Name</td>  
   <td align="center"> Project Starting Date</td>    
 </tr>  
-<? while($result=mysql_fetch_array($bbv)){?>
+<? while($result=mysqli_fetch_array($bbv)){?>
 <tr>
   <td align="center">  <?= $result[pcode] ?></td>  
   <td align="left"><? echo "<a href='./index.php?keyword=view+iow+detail&selectedPcode=$result[pcode]'>$result[pname]</a><br>";?></td>

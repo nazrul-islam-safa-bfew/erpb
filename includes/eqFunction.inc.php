@@ -1481,20 +1481,46 @@ output:
 
 function eq_dailywork($eqId,$itemCode,$d,$eqType,$pcode){
 	$work=0;
- include("config.inc.php");
+
  //include("session.inc.php"); 
-	$db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);	 
+ $localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
+ include($localPath."/includes/config.inc.php"); //datbase_connection
+ $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);	 
 
  $sql1="SELECT  SUM(ABS(TIME_TO_SEC(etime)-TIME_TO_SEC(stime)+60)) as total from  `equt`".
- " where  eqId ='$eqId' AND itemCode='$itemCode'  AND edate ='$d' AND pcode=$pcode AND iow>='1' ";
+ " where  eqId ='$eqId' AND itemCode='$itemCode'  AND edate ='$d' AND iow>='1' ";
+//  $sql1="SELECT  SUM(ABS(TIME_TO_SEC(etime)-TIME_TO_SEC(stime)+60)) as total from  `equt`".
+//  " where  eqId ='$eqId' AND itemCode='$itemCode'  AND edate ='$d' AND pcode=220 AND iow>='1' ";
 // echo $sql1;
  $sqlQuery1=mysqli_query($db, $sql1);
  $remainQty1=mysqli_fetch_array($sqlQuery1);
- if($remainQty1[total]) 
- $work= $remainQty1[total];
+ if($remainQty1['total']) 
+ $work= $remainQty1['total'];
  return $work;
 }
+
+// function dailywork($empId,$d,$empType,$pcode){
+// 	$work=0;;
+// 	$localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
+// 	include($localPath."/includes/config.inc.php"); //datbase_connection
+// 	 $sql1="SELECT  SUM(ABS(TIME_TO_SEC(etime)-TIME_TO_SEC(stime)+60)) as total from  `emput`".
+// 	 " where  empId ='$empId' AND empType='$empType' AND edate ='$d' AND pcode='$pcode' AND iow<>'' ";
+	
+// 		if($_GET["iowType"])$sql1.=" and iow in (select iowId from iow where iowType='$_GET[iowType]') ";
+// 	// 	echo $sql1;
+// 	 $sqlQuery1=mysqli_query($db, $sql1);
+// 	 $remainQty1=mysqli_fetch_array($sqlQuery1);
+// 	 if($remainQty1[total]) 
+// 		 $work= $remainQty1[total];
+// 	 return $work;
+// 	}
+
+
+
 ?>
+
+
+
 <?
 /*---------------------------
 input: 
@@ -1571,8 +1597,10 @@ $work=0;
 $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 	 
 
- $sql1="SELECT  SUM(ABS(TIME_TO_SEC(etime)-TIME_TO_SEC(stime)+60)) as total from  `equt`".
- " where  eqId ='$eqId' AND itemCode='$itemCode' AND edate ='$d' AND pcode=$pcode AND iow='0' AND siow='0' ";
+$sql1="SELECT  SUM(ABS(TIME_TO_SEC(etime)-TIME_TO_SEC(stime)+60)) as total from  `equt`".
+ " where  eqId ='$eqId' AND itemCode='$itemCode' AND edate ='$d' AND iow='0' AND siow='0' ";
+//  $sql1="SELECT  SUM(ABS(TIME_TO_SEC(etime)-TIME_TO_SEC(stime)+60)) as total from  `equt`".
+//  " where  eqId ='$eqId' AND itemCode='$itemCode' AND edate ='$d' AND pcode=$pcode AND iow='0' AND siow='0' ";
 //echo '<br>'.$sql1.'<br>';
  $sqlQuery1=mysqli_query($db, $sql1);
  $remainQty1=mysqli_fetch_array($sqlQuery1);

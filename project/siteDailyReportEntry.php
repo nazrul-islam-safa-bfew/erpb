@@ -18,8 +18,7 @@
 					if($edate2) 
 						echo $edate2; 
 					else 
-						echo date("d/m/Y",strtotime($todat));?>" >
-
+						echo date("d/m/Y",strtotime($todat));?>">
 <input type="submit" name="go" value="Go">
 </td>
 </tr>

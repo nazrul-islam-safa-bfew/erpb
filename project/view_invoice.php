@@ -193,6 +193,7 @@ $totalAmount=$totalAmount+$amount;
 </table>
 </form>
 <? }?>
+
 <table>
   <tr> 
     <td>Sales Code:</td>
@@ -202,5 +203,5 @@ $totalAmount=$totalAmount+$amount;
     <td>Accounts Receivable Code:</td>
 	<td>5000000 SUNDRY DEBTORS</td>
   </tr>
-
 </table>
+<? }?>

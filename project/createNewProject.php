@@ -160,8 +160,17 @@ echo " >> New Project Create Completed <br> You can use this project completely"
 else if($eproject) {
 include("config.inc.php");
 $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
-	
-$sqlp = "UPDATE `project` SET `pname` = '$pname', `pcode` = '$pcode',contact_amount='$contact_amount',paymentTerms='$paymentTerms',projectDuration='$projectDuration',sdate='$sdate',workingCapital='$workingCapital' WHERE id=$pid";
+
+
+$jsond = json_encode($weekend); 
+
+$jsond = str_replace(array("[","]","\\\'"), array('{','}','"'), $jsond);
+$jsond = str_replace(array('{""','""}'), array('{"','"}'), $jsond);
+$jsond = str_replace(array('"",""'), array('","'), $jsond);
+
+
+echo $sqlp = "UPDATE `project` SET `pname` = '$pname', `pcode` = '$pcode',contact_amount='$contact_amount',paymentTerms='$paymentTerms',projectDuration='$projectDuration', sdate='$sdate', workingCapital='$workingCapital', weekend='$jsond' WHERE id=$pid";
+
 //echo $sqlp;
 $sqlrunp= mysqli_query($db, $sqlp);
 echo " >> Edit Project Created";
@@ -179,6 +188,13 @@ echo " >> Edit Project Created";
 
 }
 ?>
+<?php
+
+//echo weekend_temp("2021-11-02", "000");
+
+?>
+
+
 <form name="createProject" action="./index.php?keyword=create+new+project&pid=<? echo $re[id];?>"  method="post">
 <table align="center" width="50%" height="100" border="2" bordercolor="#E4E4E4" cellpadding="0" cellspacing="0" style="border-collapse:collapse">
 <tr>  
@@ -228,7 +244,22 @@ if($selectedPcode){
 </tr>  
 <tr>
   <td > Project Duration: </td>  <td > <input type="number" name="projectDuration" value="<? echo $re[projectDuration];?>"> Months</td>
-</tr>  
+</tr> 
+<tr>
+  <td>
+    select weekend: 
+  </td>
+<td>
+  <select name="weekend[]" id="weeknd" multiple>
+  <option value=""></option>
+    <?php 
+      $wArr = all_weekend();
+      foreach($wArr as $k => $item){?>
+      <option value="<?php echo "'$k' : '$item'"; ?>"><? echo $item;?></option>
+      <? } ?>
+  </select>
+</td>
+</tr> 
 <tr>
   <td > Working Capital Amount: </td>  <td > <input type="number" name="workingCapital" value="<? echo $re[workingCapital];?>"> Tk.</td>
 </tr>  

@@ -115,7 +115,7 @@ $totalHolidayWork = totalHolidatWork($sqlresult[empId],$from,$todat);
 ?>
 
 <tr <? if($i%2==0) echo 'bgcolor=#E9D1D1';?> >
- <td> <? echo empId($sqlresult[empId],$sqlresult[designation]);?><br>
+ <td> <? echo "empId($sqlresult[empId],$sqlresult[designation])";?><br>
 
 	 <a target="_blank" href="./index.php?keyword=emp+attendance+report&year=<? echo $year;?>&empId=<? echo $sqlresult[empId];?>"><? echo $sqlresult[name];?></a><br />
 

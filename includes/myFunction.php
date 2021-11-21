@@ -458,7 +458,7 @@ function uniqueMaintenanceIOW_code($iowCode){
 
 function getAllProjectCode(){
 	global $db;
-	$sql="select pcode from project where pcode!='' order by pcode asc";
+	$sql="SELECT pcode FROM project WHERE pcode!='' order by pcode asc";
 	$q=mysqli_query($db,$sql);
 	while($row[]=mysqli_fetch_array($q)){}
 	return $row;
@@ -2424,6 +2424,7 @@ function selectPlistProject($n,$ex,$s){
 global $db; 
 	
 $sqlp = "SELECT `pcode`,pname from `project` where pcode='$s' ORDER by pcode ASC";
+//$sqlp = "SELECT `pcode`,pname from `project` ORDER by pcode ASC";
 //echo $sqlp;
 $sqlrunp= mysqli_query($db, $sqlp);
  
@@ -2738,17 +2739,33 @@ OUTPUT: mysql result seet
 ---------------------------------*/
 
 function safeQuery($query){
-global $db; 
-	
-//echo $sqlf
-$sqlrunf= mysqli_query($db,$query)
-          or die("query failed:"
-		         ."<li>errorno=".mysql_errno()
-				 ."<li>error=".mysql_error()
-				 ."<li>query=".$query
-	) ;
-return $sqlrunf;
-}
+	global $db; 
+		
+	//echo $sqlf;
+	$sqlrunf= mysqli_query($db,$query)
+			  or die("query failed:"
+					 ."<li>errorno=".mysqli_errno()
+					 ."<li>error=".mysqli_error()
+					 ."<li>query=".$query
+		) ;
+	return $sqlrunf;
+	}
+
+
+// function safeQuery($query){
+// global $db; 
+// $localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
+// include($localPath."/includes/config.inc.php"); //datbase_connection
+// $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
+// //echo $sqlf
+// $sqlrunf= mysqli_query($db,$query)
+//           or die("query failed:"
+// 		         ."<li>errorno=".mysql_errno()
+// 				 ."<li>error=".mysql_error()
+// 				 ."<li>query=".$query
+// 	) ;
+// return $sqlrunf;
+// }
 
 ?>
 
@@ -3166,9 +3183,7 @@ output: total quotation Found
 ---------------------------------*/
 function isquotationNo($itemCode){
 global $db; 
-	
-
-  
+	  
  $sql="SELECT itemCode from equipment where itemCode = '$itemCode' ";
 //echo $sql;
  $sqlQuery=mysqli_query($db, $sql);
@@ -3187,7 +3202,6 @@ global $db;
 
 
 <?
-
 /*---------------------------
 input: seconds
 output: h:m:s
@@ -3195,7 +3209,7 @@ output: h:m:s
 
 function sec2hms($sec,$padHours=false)
 {
-// echo $sec;
+$sec;
 $sec=$sec*3600;
 //holdes formated string
 $hms="";
@@ -3411,7 +3425,8 @@ OUTPUT:  total iow in that status
 function countiow_maintenance($d,$p){
  global $db;
  $sql="SELECT count(*) as total FROM `iowtemp` WHERE iowProjectCode LIKE '%$p%' AND iowStatus LIKE '%$d%' and position like '888.%'";
- $sql.=" and iowCode in (select iowCode from eqmaintenance where pcode='$p')  ";
+ $sql.=" AND iowCode in (select iowCode from eqmaintenance) ";
+ //$sql.=" AND iowCode in (select iowCode from eqmaintenance where pcode='$p')  ";
 // echo $sql;
 	
  $sqlQuery=mysqli_query($db, $sql);
@@ -3423,7 +3438,7 @@ function countiow_maintenance_eqc($d){
 	if($d=="Approved by MD" || $d=="Completed")
  $sql="SELECT count(*) as total FROM `iow` WHERE iowProjectCode LIKE '004' AND iowStatus LIKE '%$d%' and position like '888.%'";
 	else
- $sql="SELECT count(*) as total FROM `iowtemp` WHERE iowProjectCode LIKE '004' AND iowStatus LIKE '%$d%' and position like '888.%'";
+ $sql="SELECT count(*) as total FROM `iowtemp` WHERE iowProjectCode LIKE '004' AND iowStatus LIKE 'Forward to MD' and position like '888.%'";
 // echo $sql;
 	
  $sqlQuery=mysqli_query($db, $sql);
@@ -4135,4 +4150,8 @@ $r=mysqli_fetch_array($sqlf);
  return the activation date of purchase order
 -------------------------------*/
  
+
+
+
+
  ?>

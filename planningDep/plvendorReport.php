@@ -9,7 +9,7 @@ $loginDesignation = $_SESSION['loginDesignation'];
   $dmaTotal=$_GET[dmaTotal];
   $poTotal=$_GET[poTotal];
 
-if($itemCode <'99-00-000' AND $type!='eqpp') include_once('vendorBFEW.php');
+if($itemCode <'99-00-000' AND $type!='eqpp') {include_once('vendorBFEW.php');}
 ?>
 
 <?  include("./includes/config.inc.php");
@@ -38,17 +38,22 @@ if($itemCode){
 	$sqlv .=" AND q.itemCode='$itemCode' ";
 }
 
-if($type=='eqpp'){ $sqlv .=" AND q.type='1' "; }
+if($type=='eqpp'){ $sqlv .=" AND q.type='1' AND v.vid=q.vid "; }
 else { $sqlv .=" AND v.vid=q.vid  AND q.type='0' "; }
 
 if($vid) $sqlv .=" AND v.vid='$vid' and q.vid='$vid' ";
 
+// $sqlv .=" AND qr.valid >= '".date("Y-m-d")."'";
 //$sqlv.= " ORDER BY vendor.point DESC";
 // $sqlv= "SELECT v.*,i.*, q.* from `vendor` as v,`quotation` as q, itemlist as i, quotation_root as qr WHERE qr.qrId=q.qrId and q.itemCode=i.itemCode and q.vid=v.vid AND q.type='0' AND q.pCode IN ('200') AND q.itemCode='01-01-001'";
 //    echo $sqlv;
 $sqlrunq= mysqli_query($db, $sqlv);
 /* PAge */
- $total_result=mysqli_affected_rows($db);
+$total_result=mysqli_affected_rows($db);
+
+if($total_result<1){
+	echo "<h1 style='color:f00; text-align:center;'>Item code $itemCode: No valid quotation found</h1>";
+}
 
 $total_per_page=200;
 
@@ -58,7 +63,11 @@ if($page<=0)
 	}
 $curr=($page-1)*$total_per_page;
 
+$sqlv .=" group by q.itemCode,qr.valid,q.rate";
+
 $sqlv.=" order by v.vid desc LIMIT $curr,$total_per_page";
+
+
 //$sqlp11.=" ";
 //echo $sqlp11;
  	$sqlrunq1= mysqli_query($db, $sqlv);
@@ -201,6 +210,7 @@ while($vendor= mysqli_fetch_array($sqlrunq1)){
 		  <td   align="center" ><? echo $unit;?></td>
           <td align="center" width="10%" > <? echo $vendor[qRef];?></td>
       <td align="center" width="12%" > <?
+	//   print_r($vendor);
 		  if(!valid1($vendor[valid])) {
 		  $c="<font style='color:#FF0000; TEXT-DECORATION: underline'>"; }
 	      else {$c="<font color=#000000>";}

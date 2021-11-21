@@ -10,7 +10,6 @@ elseif($itemCode >'00-00-000' AND $itemCode <'50-00-000')
 
 //echo '**************'.$sqlv.'*************************';
 	$sqlrunq= mysqli_query($db,$sqlv);
-
 $vendor= mysqli_fetch_array($sqlrunq);
 ?>
 
