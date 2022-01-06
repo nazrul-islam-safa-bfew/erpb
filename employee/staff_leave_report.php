@@ -101,7 +101,7 @@ elseif($loginDesignation=='Project Manager' OR $loginDesignation=='Site Cashier'
 	$managerFound=true;
 // 	$getItemDesCode='';
 	$managerPcode=$_SESSION[loginProject];
-	$sql="SELECT `leave`.*,employee.empId,employee.name,employee.designation,employee.ccr FROM `leave`,employee
+	echo $sql="SELECT `leave`.*,employee.empId,employee.name,employee.designation,employee.ccr FROM `leave`,employee
 	 WHERE ((leave.empId=employee.empId AND leave.status like '$status') OR 
 	 (leave.empId=employee.empId AND leave.status like '1')) and employee.ccr='$getItemDesCode'
 	 and employee.location='$managerPcode' 
@@ -109,7 +109,7 @@ elseif($loginDesignation=='Project Manager' OR $loginDesignation=='Site Cashier'
 	$t=1;
 }elseif($loginDesignation=='Human Resource Executive' or $loginDesignation=='Executive, HR Productivity management'){
 	$hre_hpm=1;
-	$sql="SELECT `leave`.*,employee.empId,employee.name,employee.designation FROM `leave`,employee
+	echo $sql="SELECT `leave`.*,employee.empId,employee.name,employee.designation FROM `leave`,employee
 	 WHERE leave.empId=employee.empId and employee.location='$pcode' and `leave`.sdate like '$year%' ORDER by employee.empId DESC";
 }
 /*else {$sql="SELECT leave.*,employee.empId,employee.name,employee.designation,employee.location".

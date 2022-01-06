@@ -18,7 +18,6 @@ $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 	else if($rate>=85) $rate=90;	
 	else if($rate>=75) $rate=80;		
 	else  $rate=50;		
-	
 	$re[rate]=$rating[$rate];
 	$re[summarize]=$sqlapp[summarize];	
 	

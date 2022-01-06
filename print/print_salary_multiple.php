@@ -231,7 +231,7 @@ if($empStatus=='-1'){
  <br><br>
  <table width="100%" align="center">
  
- <tr>
+    <tr>
 		<th>
 		    <ol style="list-style-type: none;">
 				<li>Prepared by</li>
@@ -269,11 +269,29 @@ if($empStatus=='-1'){
 			</ol>	
 		</th>
 		<th>
+		<th>
 		    <ol style="list-style-type: none;">
+				<li>Paid By</li>
+				<li style="color: red; text-decoration: underline;">
+					<? 
+					$CashName = getCashierWages($exfor);
+					$CashierName =$CashName['name'];
+					if (empty($CashierName)) {
+						echo "<font color='#f00'>No Cashier found</font>";
+						}
+					else
+					echo $CashierName;          
+					?>
+				</li>		
+				<!-- <li style="color: red; text-decoration: underline;"> Mr. Shahjahan  </li> -->
+				<li>Cashier</li>
+			</ol>	
+		</th>
+		    <!-- <ol style="list-style-type: none;">
 				<li>Paid By</li>
 				<li style="color: red; text-decoration: underline;"> Mr. Shahjahan  </li>
 				<li>Cashier</li>
-			</ol>	
+			</ol>	 -->
 		</th>
     </tr>
  

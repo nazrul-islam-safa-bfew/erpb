@@ -32,7 +32,7 @@ $sqlrunp= mysqli_query($db, $sqlp);
  <td colspan="3">
  <!-- <select name="pcode" onChange="location.href='index.php?keyword=vendor+payment+report&pcode='+searchBy.pcode.options[document.searchBy.pcode.selectedIndex].value";>-->
 <select name="pcode">
-<?php if(!$loginProject){ ?>
+<?php if($loginProject){ ?>
  <option value="">All Project</option>
 <?
 }
@@ -43,7 +43,7 @@ $sqlp = "SELECT `pcode`,pname from `project` ORDER by pcode ASC";
 //echo $sqlp;
 $sqlrunp= mysqli_query($db, $sqlp);
 
-if(!$loginProject)
+if($loginProject)
  while($typel= mysqli_fetch_array($sqlrunp))
 {
 	 echo "<option value='".$typel[pcode]."'";
@@ -90,7 +90,7 @@ if($vid=='') $vid='%';
   "  location LIKE '".$pcode."' AND vid LIKE '$vid' AND posl NOT LIKE 'EP_%'". 
   " AND status >=1 order by vid,poid ASC ";    
 
-//echo $sql;
+echo $sql;
   $sqlQ=mysqli_query($db, $sql);
   $i=1;
   $bg=1;

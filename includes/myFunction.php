@@ -981,7 +981,7 @@ function allUnitJsObj($unit=null){
 					return implode(",",$unitArray);
 }
 
-function allMatItemCode($all=false,$itemCodeVisiable=true){ //all true if only lubricants & oil
+function allMatItemCode($all=false,$itemCodeVisiable=true){ //all true if onl2br y lubricants & oil
 	global $db;
 	$fuelCode=item2itemCode4Eq(null,null,null,null,true);
 	$fuelCodeLine=implode(",",$fuelCode);
@@ -1261,7 +1261,7 @@ else{
 function is_JSON(){
 	$a = func_get_args();
     call_user_func_array('json_decode',$a);
-    return (json_last_error()===JSON_ERROR_NONE);
+   // return (json_last_error()===JSON_ERROR_NONE);
 }
 
 function related_quotation($itemCode,$pcode=null,$vendorElse){
@@ -2497,7 +2497,7 @@ function itemDes($p){
  $itemDescription= array("des"=>$pn[itemDes],"spc"=>$pn[itemSpec],'unit'=>$pn[itemUnit]);
  return $itemDescription;
 }
- ?>
+?>
  
 
 <?
@@ -2744,12 +2744,23 @@ function safeQuery($query){
 	//echo $sqlf;
 	$sqlrunf= mysqli_query($db,$query)
 			  or die("query failed:"
-					 ."<li>errorno=".mysqli_errno()
-					 ."<li>error=".mysqli_error()
+					 
 					 ."<li>query=".$query
 		) ;
 	return $sqlrunf;
 	}
+// function safeQuery($query){
+// 	global $db; 
+		
+// 	//echo $sqlf;
+// 	$sqlrunf= mysqli_query($db,$query)
+// 			  or die("query failed:"
+// 					 ."<li>errorno=".mysqli_errno()
+// 					 ."<li>error=".mysqli_error()
+// 					 ."<li>query=".$query
+// 		) ;
+// 	return $sqlrunf;
+// 	}
 
 
 // function safeQuery($query){
@@ -3209,7 +3220,7 @@ output: h:m:s
 
 function sec2hms($sec,$padHours=false)
 {
-$sec;
+ $sec;
 $sec=$sec*3600;
 //holdes formated string
 $hms="";
@@ -4151,7 +4162,105 @@ $r=mysqli_fetch_array($sqlf);
 -------------------------------*/
  
 
+//Site rate function 
+function siteRate($itemCode){
+	include("config.inc.php");
+	$db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
+	$sql="SELECT * from siterate WHERE itemcode = '$itemCode'";
+	$sqlt=mysqli_query($db,$sql);
+	$rateS=mysqli_fetch_assoc($sqlt);		
+	return $rateS['amount'];
+}
 
 
+function is_po_closed($posl){
+	include("config.inc.php");
+	$db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
+	$sqlp = "SELECT * FROM `po_force_close_approval` WHERE is_complete =1 and posl = '$posl'";
+	//echo $sqlp;
+	$sqlrunp= mysqli_query($db, $sqlp);
+	$typel= mysqli_fetch_array($sqlrunp);
+	return $typel;
+}
+
+
+function is_po_in_fc_list($posl){
+	global $db;
+	$sql="select count(*) as rr from po_force_close_approval where posl='$posl'";
+	$q=mysqli_query($db,$sql);
+	$row=mysqli_fetch_array($q);
+	return $row["rr"]>0 ? true : false;
+}
+function is_po_in_fc_text($posl){
+	global $db;
+	$sql="select text from po_force_close_approval where posl='$posl'";
+	$q=mysqli_query($db,$sql);
+	$row=mysqli_fetch_array($q);
+	return $row["text"];
+}
+
+function is_po_sch_fail($p,$posl){
+	global $db;
+	$sqlp1="SELECT s.itemCode,sum(s.qty) qty,p.rate rate, sum(s.qty)*sum(p.rate) total,s.sdate, s.invoice,p.advanceType , p.activeDate
+	FROM poschedule s, porder p where p.posl='$posl' and s.posl=p.posl and p.itemCode=s.itemCode and p.itemCode=s.itemCode group by s.sdate ORDER by s.sdate,s.itemCode DESC";
+    //echo $sqlp1;
+	$sqlq=mysqli_query($db, $sqlp1); 
+	while($re=mysqli_fetch_array($sqlq)){
+		$invoice_quantity = $re['qty'];
+		$itemCode = $re['itemCode'];
+		$invoice_date = $re['sdate'];
+	    $totalRecieve = totalReceive(date('Y-m-d'),$p,$posl,$itemCode);
+	    //$totalRecieve = 210;
+		//$invoice_quantity;
+		//return $totalRecieve;
+		//return $invoice_date;
+		//die();
+		if(strtotime(date("Y-d-m")) > strtotime($invoice_date)){
+			if($totalRecieve < $invoice_quantity){
+	    			return 1;
+			}
+				
+	}
+    }
+	}
+
+// function is_po_schedule_fail($posl,$pp){
+//     //$todat = date("Y-m-d");
+// 	global $db; 
+	
+// 	$sqlp1="SELECT s.itemCode,sum(s.qty) qty,p.rate rate, sum(s.qty)*sum(p.rate) total,s.sdate, s.invoice,p.advanceType 
+// 	FROM poschedule s, porder p where p.posl='$posl'
+// 	and s.posl=p.posl and p.itemCode=s.itemCode and p.itemCode=s.itemCode group by s.sdate ORDER by s.sdate,s.itemCode DESC";
+
+// 	$sqlq=mysqli_query($db, $sqlp1);
+// 	$r=mysqli_fetch_array($sqlq);	
+
+// 	$sql="SELECT * FROM porder where posl='$posl' AND qty>0 ORDER by itemCode ASC";
+// 	//echo "$sql";
+// 	$sqlq=mysqli_query($db, $sql);
+// 	while($re=mysqli_fetch_array($sqlq)){
+// 		$po_mat_recieve = po_mat_receiveExt($re[itemCode],$posl,$pp);
+// 		$potype = $re[potype];
+		
+// 		if($potype=1)
+// 		$totalReceive=totalReceive('9999-00-00',$pp,$posl,$re[itemCode]);
+// 		else if($potype=3)
+// 		$totalReceive= subWork_Po($re[itemCode],$posl);
+// 	}
+// 	 //return $totalReceive;
+// 	 //return $po_mat_recieve;
+     
+// 	 $recieve_quantity = ($po_mat_recieve/$totalReceive);
+// 	 $invoice_quantity = $r[qty];
+    
+// 	 //return $recieve_quantity;  //9112.56
+// 	 //return $invoice_quantity;  //6.2
+	
+// 	 if($recieve_quantity < $invoice_quantity){
+// 		return 1;
+// 	}
+// 	else 
+// 	return 0;
+// }
 
  ?>

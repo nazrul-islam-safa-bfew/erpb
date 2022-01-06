@@ -82,7 +82,7 @@ $vendor = mysqli_fetch_array($sqlr);
 		if($type=='3')
 			echo "<b>Work Order for ";
 		elseif($type=='1')
-			echo "<b>Work Order for Supply of Material at";
+			echo "<b>Work Order for Supply of Material at ";
 
 			 echo myprojectName($project);?></b><br><br>
   </TD>  
@@ -91,6 +91,40 @@ $vendor = mysqli_fetch_array($sqlr);
 </table>
  </td>
  </tr>
+
+
+<!-- PO Frontend start-->
+<td>Reference: </td>
+ <tr>
+   <td>
+      <table align="left" width="98%" border="1" bordercolor="#000000" cellspacing="0" cellpadding="0" style="border-collapse:collapse">
+          <tr>
+            <th>Item Code</th>
+            <th>Iow Code</th>
+            <th>Iow Description</th>
+          </tr>
+<? 
+  $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
+  $sqlp = "select * from iow where iowId in (select dmaiow from dma where dmaItemCode in (select itemCode from pordertemp where posl = '$posl')) and iowStatus!='Completed' order by iowDes ASC";
+  //echo $sqlp;
+  $sqlrunp= mysqli_query($db, $sqlp);
+  while($typel1= mysqli_fetch_array($sqlrunp)){
+?>
+          <tr>
+            <td align="center"><? echo $typel1[itemCode];?></td>
+            <td align="left"><? echo $typel1[iowCode];?></td>
+            <td align="left"><? echo $typel1[iowDes];?></td>
+          </tr>
+
+<?
+  } //while end
+?>
+      </table>
+   </td>
+ </tr>
+ <!-- PO Frontend start-->
+
+
  <tr>
   <td>
   <table align="left" width="98%" border="1" bordercolor="#000000" cellspacing="0" cellpadding="0" style="border-collapse:collapse">

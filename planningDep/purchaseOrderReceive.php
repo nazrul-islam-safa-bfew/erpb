@@ -1,6 +1,7 @@
 <SCRIPT LANGUAGE="JavaScript" SRC="./js/CalendarPopup.js"></SCRIPT>
 <SCRIPT language=JavaScript>document.write(getCalendarStyles());</SCRIPT>
 <?
+error_reporting(E_ERROR | E_PARSE);
 $temppo1=explode("_",$posl);
 $vid=$temppo1[3];
 if($epreceive){
@@ -316,13 +317,31 @@ if(${totalQty.$i}>0){
 }
 ?>
 
-<table width="90%" border="0" align="center">
+
+<?
+	// //if($poType=='1')
+	//  $rdate=mat_receive($invtemp[$j][0],$invtemp[$j][1],$posl,$loginProject);
+	//  echo "--mat_receive--".$rdate;
+
+    //  echo "<br>";
+
+	// //if($poType=='2')
+	// echo "--eqpoActualReceiveAmount_date--".$data[$i][1]=eqpoActualReceiveAmount_date($posl,$fromDate,$dat[$i]);
+
+	// //if($poType=='3')
+	// $rdate=sub_Receive_Po($invtemp[$j][0],$invtemp[$j][1],$posl,$loginProject);	
+	// echo "<br>";
+	// echo "-sub_Receive_Po-".$rdate;
+
+
+	echo "dd".is_po_schedule_fail($posl,$todat);
+?>
+<table  width="90%" border="0" align="center">
 <tr><td align="center"><h2>BFEW LTD</h2></td></tr>
 <tr><td align="center"><U>RECEIVING FORM</U></td></tr>
 <tr><td align="center"><U><? echo $loginProjectName;?></U></td></tr>
 <tr><td align="right"><? echo date("l F d, Y h:i:s A");?></td></tr>
 </table>
-
 <br>
 
 <? 	$localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
@@ -335,30 +354,44 @@ if(${totalQty.$i}>0){
 <tr>
 <td>PO Ref.: 
         <select name="sposl" onChange="location.href='index.php?keyword=purchase+order+receive&posl='+srf.sposl.options[document.srf.sposl.selectedIndex].value">
-          <option value="">Select one</option>
-          <?
-$i=1;
-$localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
-include($localPath."/includes/config.inc.php");	
+	    <option value="">Select one</option>
+        <?
 
-if($loginDesignation=="Site Equipment Co-ordinator")
-$sqlp = "SELECT distinct posl from `porder` WHERE posl LIKE  'EQ_".$loginProject."_%' AND status=1";
-if($loginDesignation=="Store Manager")
-$sqlp = "SELECT distinct posl from `porder` WHERE potype='6' and location='004'  AND vid<>'99' AND status=1 and posl not LIKE 'EQP_%'";
-if($loginDesignation=="Store Officer")
-$sqlp = "SELECT distinct posl, sum(qty)  as qty from `porder` WHERE potype in ('1','4')  AND location='$loginProject' AND vid<>'99' AND  status=1 and posl not LIKE 'EQP_%' and posl not like 'EP_%' group by posl";
+			$i=1;
+			$localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
+			include($localPath."/includes/config.inc.php");	
+			if($loginDesignation=="Site Equipment Co-ordinator")
+			$sqlp = "SELECT distinct posl from `porder` WHERE posl LIKE  'EQ_".$loginProject."_%' AND status=1";
+			if($loginDesignation=="Store Manager")
+			$sqlp = "SELECT distinct posl from `porder` WHERE potype='6' and location='004'  AND vid<>'99' AND status=1 and posl not LIKE 'EQP_%'";
+			if($loginDesignation=="Store Officer")
+			$sqlp = "SELECT distinct posl, sum(qty)  as qty from `porder` WHERE potype in ('1','4')  AND location='$loginProject' AND vid<>'99' AND  status=1 and posl not LIKE 'EQP_%' and posl not like 'EP_%' group by posl";
 
+			
 
-// echo $sqlp;
-$sqlrunp= mysqli_query($db, $sqlp);
+			// echo $sqlp;
+			$sqlrunp= mysqli_query($db, $sqlp);
+			while($typel= mysqli_fetch_array($sqlrunp)){
+				$a= $typel[posl];
+				$b= explode('_',$a);
+				$project=$b[1];
+			 echo "<option value='".$typel[posl]."'";
+			 if($posl==$typel[posl]) echo " SELECTED ";
+			 if(check_posl_approved($typel[posl])==false){
+			 echo "disabled "." >(Pending) ";
+			
+			}
+			if(is_po_sch_fail($project,$typel[posl])==1)
+			{echo "disabled "." >(Schedule fail) "; } 
+			 else 
+			 echo ">";
+			//echo check_posl_approved($typel[posl])==false ? " disabled ".">(Pending) " : ">";
+			//echo is_po_sch_fail($project,$typel[posl])==1 ? " disabled ".">(Schedule fail) " : ">";
 
-while($typel= mysqli_fetch_array($sqlrunp)){
- echo "<option value='".$typel[posl]."'";
- if($posl==$typel[posl]) echo " SELECTED ";
- echo check_posl_approved($typel[posl])==false ? " disabled ".">(Pending) " : ">";
- echo viewPosl($typel[posl])."</option>  ";
-}
-?>
+			echo viewPosl($typel[posl])."</option>  ";
+			
+			}
+		?>
 <? 
 if($loginDesignation=="Store Officer" || $loginDesignation=='Project Purchase Officer'){
 $sqlp22 = "SELECT distinct paymentSL, sum(currentQty)  as qty from `storet$loginProject` GROUP by paymentSL HAVING qty>0";
@@ -378,7 +411,7 @@ $temppo=explode("_",$typel[paymentSL]);
  if($temppo[3]==117) 
    echo ">".viewPosl($typel[paymentSL])."</option>  ";
    
-else if($temppo[1]==99)
+ else if($temppo[1]==99)
   echo ">".$typel[paymentSL]."</option>";
   
  else   
@@ -513,6 +546,17 @@ if((remainQty($posl,$typel12[itemCode],$loginProject)>0 && $poType!=6) || (remai
 <input type="hidden" name="storeReceive" value="0">
 </td></tr>
 </table>
+
+<?
+	//echo "dd--".is_po_schedule_fail($posl,$todat);
+	//echo "eqActual--".$itemCodeAmount+=eqpoActualReceiveAmountItemCode($posl,$itemCode);
+	//echo "po_mat--". po_mat_receiveExt('01-02-003','EP_220_000050287_5','220');
+	$a=explode('_',$posl);
+	$project = $a[1];
+
+	echo "ss--".is_po_schedule_fail($posl,$project)
+?>
+
 <br><br>
 <? 
 }
@@ -621,16 +665,14 @@ if($temppo[0]=='EQ' AND $temppo[3]=='85'){?>
 		cal.setCssPrefix("TEST");		
 		cal.offsetX = -250;
 		cal.offsetY = 0;
-		
 	</SCRIPT>
       <td colspan="2" ></td>
 
  <td colspan="2" align="right" >Receiving Date: 
- <input class="yel" type="text" maxlength="10" name="edate" alt="req" title="Receiving Date" readonly="" > <a id="anchor" href="#"
-   onClick="cal.select(document.forms['srf'].edate,'anchor','dd/MM/yyyy'); return false;"
+   <input class="yel" type="text" maxlength="10" name="edate" alt="req" title="Receiving Date" readonly="" > <a id="anchor" href="#"
+    onClick="cal.select(document.forms['srf'].edate,'anchor','dd/MM/yyyy'); return false;"
    name="anchor" ><img src="./images/b_calendar.png" alt="calender" border="0">   
-      </td> 
-
+</td> 
 </tr>
 <tr>
     <th align="center" width="100" >Item</th>

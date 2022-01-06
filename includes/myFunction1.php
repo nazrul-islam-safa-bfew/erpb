@@ -10,6 +10,7 @@ function get_daily_iow_progress($ed1,$project){
 	$sql1="select sum(actual_progress) actual_progress, sum(planned_progress) planned_progress from daily_iow_progress where edate='$ed1' and project='$project'";
 	$q1=mysqli_query($db,$sql1);
 	$row1=mysqli_fetch_array($q1);
+	//echo $sql1;
 	return array(abs($row1[actual_progress]-$row[actual_progress]),abs($row1[planned_progress]-$row[planned_progress]));
 }
 

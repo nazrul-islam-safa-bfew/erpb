@@ -39,7 +39,6 @@ while($re=mysqli_fetch_array($sqlrunp)){
     }
     $extotal+=$re['rate']*$re[qty]; 
         
-        
         ?>
 		<div id="txtHint<?php print $i; 
     

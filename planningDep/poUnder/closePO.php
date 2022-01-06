@@ -11,7 +11,13 @@ $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS, $SESS_DBNAME);
 
 $project=poProject($posl);
 
+
+$insertsql = "INSERT INTO po_force_close_approval (posl, text)
+VALUES ('$posl', '$revisionTxt')";
+mysqli_query($db,$insertsql);
+echo "<br>Added successfully.<br>";
 // closed text addition
+
 $updateSql="update porder set closedTxt='$revisionTxt' where posl='$posl'";
 mysqli_query($db,$updateSql);
 $updateSql="update pordertemp set closedTxt='$revisionTxt' where posl='$posl'";
@@ -33,14 +39,16 @@ while($poRow=mysqli_fetch_array($poQ)){
 	else if($potype=3)$totalReceive=subWork_Po($itemCode,$posl);
 
 	$deQty=$qty-$totalReceive;
-// 	echo "totalReceive=$totalReceive<br>"; exit;
+	// echo "totalReceive=$totalReceive -- $deQty<br>"; exit;
 	$subTotalQty=$totalReceive;
 	$sql="select * from poschedule where posl LIKE '$posl' AND itemCode='$itemCode' ORDER by pos ASC";
-// 	echo "$sql<br>";
+	// echo "$sql<br>";
+	// exit;
 	$sqlq=mysqli_query($db, $sql);
 	while($r=mysqli_fetch_array($sqlq)){
 	$qt=$r[qty];
-	//echo "###$subTotalQty===$r[sdate]==$qt<br>";
+	// echo "###$subTotalQty===$r[sdate]==$qt<br>";
+	// exit;
 	if($qt>=$subTotalQty){
 			$sql="UPDATE poschedule set qty='$subTotalQty' where pos=$r[pos]";
 			$sql2="UPDATE poscheduletemp set qty='$subTotalQty' where pos=$r[pos]";

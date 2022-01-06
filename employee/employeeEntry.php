@@ -80,8 +80,6 @@ if($eqresult[designation]){$designation=$eqresult[designation];}
 		 </td>
 </tr>			
 			<?php } ?>
-
-
 <tr bgcolor="#FFEEEE">
    <td><LABEL for=name>Name</LABEL></td>
    <td ><input type="text" size="30"  name="name" value="<? echo $eqresult[name];?>" alt="req" title="Name"  ></td>
@@ -178,8 +176,7 @@ if($designation<'86-00-000'){?>
 	 while($typel= mysqli_fetch_array($sqlrunp))
 	{
 	
-	
-				 echo "<option value='".$typel[pcode]."'>$typel[pcode]--$typel[pname]</option>  ";
+		 echo "<option value='".$typel[pcode]."'>$typel[pcode]--$typel[pname]</option>  ";
 	 
 	 }
 	 ?>

@@ -14,8 +14,7 @@ if($_SESSION[jQuery]!=1){
 <td >Project : <select name="gproject">
 <?
 
-$localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
-include($localPath."/includes/config.inc.php");
+include("config.inc.php");
 $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 	
 
@@ -43,13 +42,9 @@ else echo "<input type=hidden name=gproject value=$loginProject>";
 </tr> -->
 </table>
 </form>
-
-<?php
-$localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
-include($localPath.'/project/siteMaterialReportEntry.f.php');
-include($localPath.'/project/siteDailyReport.f.php');
-include($localPath.'/project/findProject.f.php');
-?>
+<? include('./project/siteMaterialReportEntry.f.php');?>
+<? include('./project/siteDailyReport.f.php');?>
+<? include('./project/findProject.f.php');?>
 
 	<SCRIPT LANGUAGE="JavaScript" SRC="./js/CalendarPopup.js"></SCRIPT>
 	<SCRIPT language=JavaScript>document.write(getCalendarStyles());</SCRIPT>
@@ -66,16 +61,14 @@ include($localPath.'/project/findProject.f.php');
 		cal.offsetX = 0;
 		cal.offsetY = 0;
 	</SCRIPT>
-	<? if($loginDesignation=='Manager Planning & Control' OR $loginDesignation=='Chairman & Managing Director' OR $loginDesignation=='Managing Director' OR $loginDesignation=='Project Engineer' OR $loginDesignation=='Construction Manager' OR $loginDesignation=='Director') {?>
+	<? if($loginDesignation != 'Project Engineer' OR $loginDesignation != 'Construction Manager') {?>
       <td colspan="1" >
  
 	  Project: <select name="project" 
 onChange="location.href='index.php?keyword=site+daily+report&project='+goo.project.options[document.goo.project.selectedIndex].value+'&Status='+goo.Status.options[document.goo.Status.selectedIndex].value";>
 
 <?
-
-$localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
-include($localPath."/includes/config.inc.php");
+include("config.inc.php");
 $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 	
 	$iowC=0;
@@ -215,8 +208,7 @@ Task Type:
 						<li value="all">All Task</li>
 <? 
 if($Status=='Not-Started'){
-	$localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
-	include($localPath."/includes/config.inc.php");
+			include("config.inc.php");
 			$db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 				  
 			$sqlp = "SELECT iowId,`iowCode`,iowDes from `iow` WHERE iowProjectCode='$project' and ((iowStatus !='Completed' and iowSdate>'$today') or (iowStatus!='noStatus' and iowDate='0000-00-00' and iowCdate='0000-00-00')) ";
@@ -248,8 +240,7 @@ if($Status=='Not-Started'){
 		else{$extra=" and position like '___.000.000.000' ";$eqM=0;}
   
   if($Status=='Started'){
-	$localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
-	include($localPath."/includes/config.inc.php");
+		include("config.inc.php");
 		$db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 
 
@@ -275,43 +266,81 @@ if($Status=='Not-Started'){
 			 //echo "two ND present array data is".print_r($new_array2)."<br>"; 
   }
 $today=todat();
-$localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
-include($localPath."/includes/config.inc.php");
+include("config.inc.php");
 $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 
-$sqlp="SELECT iowId,iowCode,iowDes,position,iowStatus,iowType from `iow` WHERE iowProjectCode='$project'";
-if($Status=='completed'){$sqlp.=" AND ((iowStatus ='Completed'  and iowType=1 and position not like '999%') or iowStatus = 'noStatus') ";}
+// $sqlp="SELECT iowId,iowCode,iowDes,position,iowStatus,iowType from `iow` WHERE iowProjectCode='$project'";
+// if($Status=='completed'){$sqlp.=" AND ((iowStatus ='Completed'  and iowType=1 and position not like '999%') or iowStatus = 'noStatus') ";}
 
-if($Status=='Not-Started'){
-$sqlp.=" AND iowStatus != 'Completed' $extra and ";
-// 	if(sizeof($new_array)>0)$sqlp.=" iowId in( ".implode(",",$new_array).") and ";
-/*for($i=0; $i< $c=sizeof($new_array); $i++ )
-{
-							$sqlp.="  iowId=$new_array[$i] "; if($i<($c-1)) $sqlp.=" OR  "; else $sqlp.="";
-							//echo "<br>".$c."<br>";
-							}	*/
-				 			$sqlp.=" ((iowSdate>'$today'  and iowType=1 and position not like '999%') or iowStatus = 'noStatus') and position like '___.000.000.000' ORDER by position ASC ";
-}
+// if($Status=='Not-Started'){
+// $sqlp.=" AND iowStatus != 'Completed' $extra and ";
+// // 	if(sizeof($new_array)>0)$sqlp.=" iowId in( ".implode(",",$new_array).") and ";
+// /*for($i=0; $i< $c=sizeof($new_array); $i++ )
+// {
+// 							$sqlp.="  iowId=$new_array[$i] "; if($i<($c-1)) $sqlp.=" OR  "; else $sqlp.="";
+// 							//echo "<br>".$c."<br>";
+// 							}	*/
+// 				 			$sqlp.=" ((iowSdate>'$today'  and iowType=1 and position not like '999%') or iowStatus = 'noStatus') and position like '___.000.000.000' ORDER by position ASC ";
+// }
 
-elseif($Status=='Started'){
-/*if($new_array2==true)*/
-//if($eqM)$sqlp.=" $extra and position like '___.___.000.000'  ";
-$sqlp.=" $extra ";
+// elseif($Status=='Started'){
+// /*if($new_array2==true)*/
+// //if($eqM)$sqlp.=" $extra and position like '___.___.000.000'  ";
+// $sqlp.=" $extra ";
 	
-if(sizeof($new_array2))$sqlp.=" and ";
+// if(sizeof($new_array2))$sqlp.=" and ";
 	
-for($i=0; $i< $c=sizeof($new_array2); $i++ )
+// for($i=0; $i< $c=sizeof($new_array2); $i++ )
+// {
+// 							$sqlp.=" iowId=$new_array2[$i] "; if($i<($c-1)) $sqlp.=" OR  "; else $sqlp.="";
+// 							//echo "<br>".$c."<br>";
+// }			
+// 				 			$sqlp.=" and ((iowStatus != 'Completed' and iowSdate<='$today' and iowType=1 and position not like '999%') or iowStatus = 'noStatus')  ORDER by position ASC";
+// }
+// else{
+// 	$sqlp.="  and iowType=1  and position not like '999%' ";
+// 	$sqlp.=" $extra and iowStatus = 'noStatus' ";
+// 	$sqlp.=" ORDER by position,iowStatus ASC";
+// }
+
+
+
+	
+
+	
+$sqlp = "SELECT * from `iow` where `iowProjectCode` LIKE '$project' ";
+	
+if($Status=='completed' && $iow[0]=='all'){$sqlp.=" AND (iowStatus ='Completed' or iowStatus='noStatus') ";}	
+			
+if($Status=='Started' && $iow[0]=='all'){
+ $sqlp.=" AND iowStatus <> 'Completed' and iowSdate<='$today' and iowType=1 and position not like '999%' ";
+}
+if($Status=='Not-Started' && $iow[0]=='all')
 {
-							$sqlp.=" iowId=$new_array2[$i] "; if($i<($c-1)) $sqlp.=" OR  "; else $sqlp.="";
-							//echo "<br>".$c."<br>";
-}			
-				 			$sqlp.=" and ((iowStatus != 'Completed' and iowSdate<='$today' and iowType=1 and position not like '999%') or iowStatus = 'noStatus')  ORDER by position ASC";
+	$sqlp.=" AND iowStatus <> 'Completed'  and ((iowSdate>'$today' and iowType=1 and position not like '999%') or iowStatus='noStatus') ";
+	for($i=0; $i< $c=sizeof($new_array); $i++ )
+	{
+	if($i==0)$sqlp.=" and (";
+	$sqlp.="  iowId=$new_array[$i] "; if($i<($c-1)) $sqlp.=" OR  "; else $sqlp.="";
 }
-else{
-	$sqlp.="  and iowType=1  and position not like '999%' ";
-	$sqlp.=" $extra and iowStatus = 'noStatus' ";
-	$sqlp.=" ORDER by position,iowStatus ASC";
+	if(sizeof($new_array)>0)$sqlp.=" ) ";
+	//$sqlp.=" ORDER by iowId ASC";
 }
+if($iow[0] !="all" && sizeof($iow)>0) //stoped
+{
+	$sqlp .= " AND ";			
+	for($i=0; $i< $c=count($iow); $i++ )
+		{
+			$sqlp.=" iowId=$iow[$i] "; if($i<($c-1)) $sqlp.=" OR  "; else $sqlp.="";
+		//echo "<br>".$c."<br>";
+		}
+}		
+$sqlp.=" $extraC ";
+$sqlp.="  ORDER by position ASC";
+
+
+
+
 
 // echo $sqlp;
 // exit;
@@ -500,20 +529,21 @@ Status:<select name="Status">
 	<? } else {?>
 	 <td colspan="3" bgcolor="#FEF5F1">
 	 <? }?>
-		 	 
-		<input type="checkbox" name="chk14" <? if($chk14) echo 'checked'; ?> >Daywork description
-		<input type="checkbox" name="chk15" <? if($chk15) echo 'checked'; ?> >Weather interruption
-		<input type="checkbox" name="chk16" <? if($chk16) echo 'checked'; ?> >Accident records
-		<input type="checkbox" name="chk17" <? if($chk17) echo 'checked'; ?> >Visitors &amp; non-task comments
-		<input type="checkbox" name="chk19" <? if($chk19) echo 'checked'; ?> >Expenses
+		 		 
+		<input type="checkbox" name="chk14" <? if($chk14) echo 'checked'; ?> >Daywork description 14
+		<input type="checkbox" name="chk15" <? if($chk15) echo 'checked'; ?> >Weather interruption 15
+		<input type="checkbox" name="chk16" <? if($chk16) echo 'checked'; ?> >Accident records 16 
+		<input type="checkbox" name="chk17" <? if($chk17) echo 'checked'; ?> >Visitors &amp; non-task comments 17
+		<input type="checkbox" name="chk19" <? if($chk19) echo 'checked'; ?> >Expenses 19
 		 <br>
-		<input type="checkbox"  name="chk1" <? if($chk1 OR $chk2 OR $chk3 OR $chk4 ) echo 'checked'; ?>>Sub Task Details
-		<input type="checkbox" name="chk2" <? if($chk2) echo 'checked'; ?> >Materials Details 
-		<input type="checkbox" name="chk3" <? if($chk3) echo 'checked'; ?> >Equipments Details
-		<input type="checkbox" name="chk4" <? if($chk4) echo 'checked'; ?> >Labour Details
-		<input type="checkbox" name="chk10" <? if($chk10) echo 'checked'; ?> >Change Orders	
+		<input type="checkbox"  name="chk1" <? if($chk1 OR $chk2 OR $chk3 OR $chk4 OR $chk20  ) echo 'checked'; ?>>Sub Task Details
+		<input type="checkbox" name="chk2" <? if($chk2) echo 'checked'; ?> >Materials Details 2 
+		<input type="checkbox" name="chk3" <? if($chk3) echo 'checked'; ?> >Equipments Details 3
+		<input type="checkbox" name="chk4" <? if($chk4) echo 'checked'; ?> >Labour Details 4
+		<input type="checkbox" name="chk10" <? if($chk10) echo 'checked'; ?> >Change Orders	10
 <!-- 		<input type="checkbox" name="chk11" <? if($chk11) echo 'checked'; ?> >SE Proposals -->
-		<input type="checkbox" name="chk6" <? if($chk6) echo 'checked'; ?> >IOW Progress with SE Remarks
+		<input type="checkbox" name="chk6" <? if($chk6) echo 'checked'; ?> >IOW Progress with SE Remarks 6
+		<input type="checkbox" name="chk20" <? if($chk20) echo 'checked'; ?> >IOW 20
 <!-- 		<input type="checkbox" name="chk7" <? if($chk7) echo 'checked'; ?> >Progress by Date -->
 <!-- 		<input type="checkbox" name="chk9" <? if($chk9) echo 'checked'; ?> >Overdue -->
 	</td>
@@ -535,57 +565,59 @@ $btn_sql1=$sql;
 <?php
  //if($project=='') $project=$loginProject;
 if($chk14 || $chk15 || $chk16 || $chk17){
-	echo $tSql="SELECT * FROM dailyreport WHERE edate!='' and edate!='0000-00-00' AND pcode='$project' order by edate desc";;
+	$tSql="SELECT * FROM dailyreport WHERE edate!='' and edate!='0000-00-00' AND pcode='$project' order by edate desc";;
 	$qQ=mysqli_query($db, $tSql);
 	while($cmActivity[]=mysqli_fetch_array($qQ)){}
 }
 // if($chk14 || $chk15 || $chk16 || $chk17){
-// 	echo $tSql="SELECT * FROM dailyreport WHERE edate!='$ed1' and edate!='' and edate!='0000-00-00' AND pcode='$project' order by edate desc";;
+// 	$tSql="SELECT * FROM dailyreport WHERE edate!='$ed1' and edate!='' and edate!='0000-00-00' AND pcode='$project' order by edate desc";;
 // 	$qQ=mysqli_query($db, $tSql);
 // 	while($cmActivity[]=mysqli_fetch_array($qQ)){}
 // }
 ?>
 
-<table width="95%" align="center" style="text-size:10px;">
-<tr><td colspan="2">
+<table width="90%" align="center" style="text-size:10px;">
+<tr><td colspan="12">
 <!-- 	<b>Progress description of the day:</b> -->
 	<?php
 	list($approved,$actual_amount)=get_daily_iow_progress($ed1,$project);
 	$approved_date=date("d/m/Y",strtotime($ed1)-86400);
 	?>
-	<i> At <?= $approved_date ?> Planned progress of approved tasks was Tk. <b><?= number_format($approved) ?></b> & actual progress Tk. <b><?= number_format($actual_amount) ?></b>; <font color='#00f'><? echo $sqlr[operation];?></font></i></td></tr>
-<?php if($chk14){
+	<b>Daywork description and briefly describe issues that hampered today's planned progress:</b> <i> At <?= $approved_date ?> Planned progress of approved tasks was Tk. <b><?= number_format($approved) ?></b> & actual progress Tk. <b><?= number_format($actual_amount) ?></b>; <br> <font color='#00f'> <? echo nl2br($sqlr[operation]);?> </font></i></td></tr>
+	<?php if($chk14){
 	foreach($cmActivity as $cmDaily){
 		if($cmDaily[operation])
-			echo "<tr><td>".date("d/m/Y",strtotime($cmDaily[edate])).":</td><td> <i>$cmDaily[operation]</i></td></tr>";
-	}
-}?>
-	
-<tr><td colspan="2"><b>Weather interruption:</b> <i><? echo $sqlr[weather];?></i></td></tr>
-<?php if($chk15){
-	foreach($cmActivity as $cmDaily){
-		if($cmDaily[weather])
-			echo "<tr><td>".date("d/m/Y",strtotime($cmDaily[edate])).":</td><td> <i>$cmDaily[weather]</i></td></tr>";
-	}
-}?>
-	
-	
-	
-<tr><td colspan="2"><b>Accident records:</b> <i><? echo $sqlr[accident];?></i></td></tr>
-<?php if($chk16){
-	foreach($cmActivity as $cmDaily){
-		if($cmDaily[accident])
-			echo "<tr><td>".date("d/m/Y",strtotime($cmDaily[edate])).":</td><td> <i>$cmDaily[accident]</i></td></tr>";
-	}
-}?>
+			echo "<tr><td colspan='1' style='vertical-align: top;' colspan='2'>".date("d/m/Y",strtotime($cmDaily[edate])).":</td><td colspan='11'> <i>".nl2br($cmDaily[operation])."</i><hr></td></tr>";
+			//echo "<tr><td><b>".date("d/m/Y",strtotime($cmDaily[edate])).":</b></td></tr>";
+			//echo "<tr><td> <i>".nl2br($cmDaily[operation])."</i><hr></td></tr>";
+		}
+		}?>
+			
+		<tr><td colspan="12"><b>Weather interruption:</b> <i><? echo nl2br($sqlr[weather]);?></i></td></tr>
+		<?php if($chk15){
+			foreach($cmActivity as $cmDaily){
+				if($cmDaily[weather])
+					echo "<tr><td colspan='1' style='vertical-align: top;'>".date("d/m/Y",strtotime($cmDaily[edate])).":</td><td colspan='11'> <i>$cmDaily[weather]</i><hr></td></tr>";
+			}
+		}?>
+			
 
-<tr><td colspan="2"><b>Visitors detail with comments received:</b> <i><? echo $sqlr[vcomments];?></i></td></tr>
-<?php if($chk17){
-	foreach($cmActivity as $cmDaily){
-		if($cmDaily[vcomments])
-			echo "<tr><td>".date("d/m/Y",strtotime($cmDaily[edate])).":</td><td> <i>$cmDaily[vcomments]</i></td></tr>";
-	}
-}?>
+		<tr><td colspan="12"><b>Accident records:</b> <i><? echo nl2br($sqlr[accident]);?></i></td></tr>
+		<?php if($chk16){
+			foreach($cmActivity as $cmDaily){
+				if($cmDaily[accident])
+					echo "<tr><td colspan='1' style='vertical-align: top;'>".date("d/m/Y",strtotime($cmDaily[edate])).":</td><td colspan='11'> <i>". nl2br($cmDaily[accident]) ."</i><hr></td></tr>";
+			}
+		}?>
+
+		<tr><td colspan="12"><b>Details of visitors with comments received, meeting decisions, letter  & email correspondences with CM remarks:</b> <i><? echo nl2br($sqlr[vcomments]);?></i></td></tr>
+		<?php if($chk17){
+			foreach($cmActivity as $cmDaily){
+				if($cmDaily[vcomments])
+					echo "<tr><td colspan='1' style='vertical-align: top;'>".date("d/m/Y",strtotime($cmDaily[edate])).":</td><td colspan='11'> <i>".nl2br($cmDaily[vcomments])."</i><hr></td></tr>";
+			}
+		}?>
+
 
 </table>
 <br>
@@ -595,7 +627,9 @@ if($chk14 || $chk15 || $chk16 || $chk17){
 
 
 
-
+<?
+	if($chk20 OR $chk1 OR $chk2 OR $chk3 OR $chk4 OR $chk10 OR $chk6){
+?>
 
 <table align="center" width="98%" border="1" bordercolor="#99CC99" cellpadding="5" cellspacing="0" style="border-collapse:collapse">
 <tr bgcolor="#D9F9D0">
@@ -609,8 +643,7 @@ if($chk14 || $chk15 || $chk16 || $chk17){
 <?php } ?>
 </tr>
  <tr><td colspan="5" height="2"></td></tr>
-<? $localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
-include($localPath."/includes/config.inc.php");
+<? include("config.inc.php");
 // 	exit;
 $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 	
@@ -716,7 +749,7 @@ echo '<font class=out> ('.number_format(($directCost/$totalCost)*100).'%) </font
 	$ed=formatDate($edate,'Y-m-j');
 	// ====================================================================================================================
 	echo $iowActualProgress=iowActualProgress($re[iowId],$project,$ed,$re[iowQty],$re[iowUnit],0);
-	//echo number_format($iowActualProgress);
+	// echo number_format($iowActualProgress);
 // 	echo "($re[iowId],$project,$ed,$re[iowQty],$re[iowUnit],0)";
   //iowActualProgress($edate,$re[iowId],1);
 ?></td>
@@ -882,10 +915,29 @@ $get_all_data=iow_progerss_variance($re[iowId],$d[edate]);
 			
 			
 	// 	echo "$re[iowSdate] - $re[iowCdate] = $date_differ ($dailyNeeded)";
-	echo "On date planned progress: ".number_format($dailyNeededP,2)."% (".round($dailyNeededQty,2)." $re[iowUnit]), workdone ";
+	echo	"On date planned progress: ".number_format($dailyNeededP,2)."% (".round($dailyNeededQty,2)." $re[iowUnit]), workdone ";
 
 	echo iowActualProgressRange($re[iowId],$project,date("Y-m-d",strtotime($d[edate])),date("Y-m-d",strtotime($d[edate])),$re[iowQty],$re[iowUnit],1);
-				
+		
+	
+
+	//Daily comments from iowdaily for IOW Progress with SE Remarks  start (safa)
+
+	$dd=date("Y-m-d",strtotime($d[edate]));	
+	$sq="SELECT * FROM iowdaily WHERE edate='$dd' AND iowId=$re[iowId]";
+	$a=mysqli_query($db,$sq);
+	$b=mysqli_fetch_array($a);
+	//print_r($b);
+	$des=$b[des];
+	if (empty($des)) {
+		echo "; <i><font color='#00f'>"."No description found"."</font></i>";
+		}
+	else
+	echo "; <i><font color='#00f'>".$des."</font></i>";
+
+	//Daily comments from iowdaily for IOW Progress with SE Remarks end
+
+
 				
 // 			echo "select clientdes from iowdaily where edate='$d[edate]' and clientdes!=''";
 				$clientdesQ=mysqli_query($db,"select clientdes from iowdaily where edate='$d[edate]' and clientdes!=''");
@@ -926,7 +978,7 @@ echo $deg;
 ?>-->
 <?php
 if($re[supervisor])
-echo supervisorDetails_withcontact($re[supervisor]);
+//echo supervisorDetails_withcontact($re[supervisor]);
 ?>
 </td></tr>
 <?
@@ -1143,7 +1195,9 @@ if(count($billingArray)==1){
 ?>
 </table>
 
-<? }//if edate?>
+<?
+}
+ }//if edate?>
 <form name="print" method="post" action="./project/print_siteDailyReport.php" target="_blank">
 <input type="hidden" name="btn_sql1" value="<? echo $btn_sql1;?>">
 <input type="hidden" name="btn_sql2" value="<? echo $btn_sql2;?>">

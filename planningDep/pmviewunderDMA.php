@@ -2,6 +2,7 @@
 	Under construction.
 </h1> -->
 <?
+error_reporting(E_ERROR | E_PARSE);
 include('./project/siteDailyReport.f.php');
 if($Save){
 include("config.inc.php");
@@ -283,7 +284,10 @@ $totalAmount='';
 	   <td width="25%" align="right">	<? $approvedQty =approvedQty($siow[siowId],$itemCode); 
 	   if($test[0]>='35' AND $test[0]<'99')  echo sec2hms($approvedQty,$padHours=false);
 	   else  echo number_format($approvedQty); ?> </td>
-	   <td width="25%" align="right">	<? $approvedRate =approvedRate($siow[siowId],$itemCode); echo number_format($approvedRate,2); ?> </td>
+	   <td width="25%" align="right">	
+		   <? $approvedRate =approvedRate($siow[siowId],$itemCode); 
+		   echo number_format($approvedRate,2); ?> 
+		</td>
 	   <td width="50%" align="right"><?
 		 $approvedAmount=$approvedQty*$approvedRate; echo number_format($approvedAmount,2);
 		 if($test[0]>='01' AND $test[0]<'35'){$approvedmaterialCost+=$approvedAmount;}
@@ -356,7 +360,15 @@ else
 		$vid='99';
 		}	
 	}
-	echo number_format($rate,2);
+	//echo number_format($rate,2);
+	$srate=siteRate($itemCode);
+	if($itemCode >= '82-00-000' && $itemCode < '95-00-000' ){
+		echo  number_format($srate,2);
+	}
+	else 
+	{
+		echo number_format($rate,2);
+	 }
 	// echo $rate;
 	?>
 			
@@ -366,7 +378,16 @@ else
 	</td>
 
     <td align="right" width="50%"><?
-	 $amount=$rate*$iowResult[dmaQty]; echo number_format($amount,2);
+
+	 //$amount=$rate*$iowResult[dmaQty]; echo number_format($amount,2);
+	 if($itemCode >= '82-00-000' && $itemCode < '95-00-000' ){
+		$amount=$srate*$iowResult['dmaQty']; echo number_format($amount,2);
+	}
+	else 
+	{
+		$amount=$rate*$iowResult[dmaQty]; echo number_format($amount,2);
+	}
+
 	 if($test[0]>='01' AND $test[0]<'35'){$materialCost+=$amount;}
 	 elseif($test[0]>='35' AND $test[0]<'70'){$equipmentCost+=$amount;}
 	 elseif($test[0]>='70'){$humanCost+=$amount;}

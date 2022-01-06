@@ -229,7 +229,7 @@ if($w==5 OR $w==51 OR $w==7){?>
 
 <? if($w==8){?>
  <tr>
-   <td>Paid to</td>
+   <td>Paid to </td>
    <td colspan="3"><input type="text" name="paidTo" value="<? echo $paidTo;?>" size="50"></td>
  </tr>
 
@@ -307,7 +307,7 @@ $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 	
 echo '</select>';?></td></tr>
  <tr>
-   <td>transfer to</td>
+   <td>Transfer to</td>
       <td colspan="3"> 
 <? echo "<select name='ct_to_account'>";	  
    include("./includes/config.inc.php");
@@ -317,7 +317,7 @@ $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 	//echo $sqlp;
 	$sqlrunp= mysqli_query($db, $sqlp);
 	while($typel= mysqli_fetch_array($sqlrunp))
-	{
+{
 		$sqlp2 = "SELECT * from `lander` where accountId='$typel[accountID]' order by landerName ASC";
 		//echo $sqlp;
 		$sqlrunp2= mysqli_query($db, $sqlp2);

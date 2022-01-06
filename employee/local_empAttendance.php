@@ -23,7 +23,7 @@ if($loginDesignation=='Human Resource Manager' || $loginDesignation=='Human Reso
       cal.offsetY = 0;
 	</SCRIPT>
 <?
-$ex=array('Select one','');
+$ex=array('Select One','');
 //if($loginDesignation=='Human Resource Manager')
 echo selectPlist('project',$ex,$project);
 //echo selectPlistProject('project',"",$loginProject);
@@ -160,6 +160,21 @@ $empStayDate=todat_new_format("d-m-Y");
 	<input type="hidden" name="n" value="<? echo $i;?>">
 	<input type="hidden" name="m" value="<? echo $j;?>">
 	</form>
+
+<?
+
+$dateFormat = $year."-".$month."-01";
+echo "weekend".   weekend('2021-11-01',$project);
+echo "<br>";
+$format="Y-m-j";
+$edat1=$edat;
+$edat = formatDate($edat,$format);
+echo "Holiday".isHoliday('2021-11-26');
+
+echo '<br>';
+
+?>
+
 
 <script>
 $(document).ready(function(){

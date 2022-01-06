@@ -140,7 +140,10 @@ elseif($loginDesignation=='Site Cashier'){?>
 		<? }else {?>
 		 <td  align="center"><a href='./index.php?keyword=site+payments'>Payments</a></td>		
  		 <td  align="center"><a href='./index.php?keyword=receive&w=3'>Receive</a></td><? }?>				 
-		<? if($loginProject=='000'){?> <td  align="center"><a href='./index.php?keyword=general+ledger'>General Ledger</a></td><? }?>
+		<? if($loginProject=='000'){?> 
+			<td  align="center"><a href='./index.php?keyword=general+ledger'>General Ledger</a></td>
+			<td  align="center"><a href='./index.php?keyword=lander+ledger'>lander ledger</a></td>
+		<? }?>
 		<? if($loginProject=='000'){?> 
 		<td  align="center"><a href='./index.php?keyword=hcash+disbursment'>Cash Disbursment</a></td>
 		<td  align="center"><a href='./index.php?keyword=cash+receivejournal'>Cash Receive Journal</a></td>
@@ -171,8 +174,8 @@ elseif($loginDesignation=='Accounts Manager'){?>
 	<table width="100%"  height="20" >
 	   <tr bgcolor="#CCCCCC">
 		 <td  align="center"><h4>Entry Form</h4></td>
-		 <td  align="center"><a href='./index.php?keyword=item+require'>Create Purchase Order</a></td>
-		 <td  align="center"><a href='./index.php?keyword=purchase+order+report&s=0'>All Purchase Order</a></td>		  
+		 <td  align="center"><a  href='./index.php?keyword=item+require'>Create Purchase Order</a></td>
+		 <td  align="center"><a  href='./index.php?keyword=purchase+order+report&s=0'>All Purchase Order</a></td>		  
 		 <td  align="center"><a href='./index.php?keyword=mca'>Maintain Chart of Accounts</a></td>
 		 <td  align="center"><a href='./index.php?keyword=payments'>Payments</a></td>
 		 <td  align="center"><a href='./index.php?keyword=salary+advance'>Salary Advance</a></td>
@@ -215,7 +218,6 @@ elseif($loginDesignation=='Accounts Manager'){?>
 		<td  align="right"<? if($keyword=='financial overview')echo " id='current' ";?>><a   href='./index.php?keyword=financial+overview'>Financial  Overview</a></td>
 		<td  align="right"<? if($keyword=='lander ledger')echo " id='current' ";?>><a   href='./index.php?keyword=lander+ledger'>lander  ledger</a></td>
 		<td  align="right"<? if($keyword=='lander ledger')echo " id='current' ";?>><a   href='./index.php?keyword=lander+ledger'>Advance Ledger</a></td>
-		
 		<td  align="center"><a href='./index.php?keyword=closing+cash+inventory'>Closing Cash &amp; Inventory</a></td>
 		<td  align="center"><a href='./index.php?keyword=Daily+Site+Cash+Report'>Daily site cash report</a></td>
 			
@@ -225,12 +227,18 @@ elseif($loginDesignation=='Accounts Manager'){?>
 
 	  <td   align="center"><a href='./angular/itemcodes.php'>All Item Code</a></td>
 
+	  <td  align="center"><a href='./index.php?keyword=site+daily+report'>Daily Progress Report</a></td>
+      <td align="center"><a href='./index.php?keyword=local+eq+ut+report+b'>Equipment Utilization</a></td>
+      <td align="center"><a href="./index.php?keyword=subCon+poreport">Subcontractor report</a></td>	
+
+
+
 		</tr>
 	   
 	 </table>
    </td>
 </tr>
-<? }
+<? } //new designation == MIS
 elseif($loginDesignation == 'MIS'){?>
 	<tr>
 	   <td>
@@ -264,39 +272,6 @@ elseif($loginDesignation == 'MIS'){?>
 	   </td>
 	</tr>
 	<? }
-	elseif($loginDesignation == 'MIS'){?>
-		<tr>
-		   <td>
-			<table width="100%"  height="20" >
-			   <tr bgcolor="#CCCCCC">
-				 <td  align="center"><h4>Entry Form</h4></td>
-				 <td  align="center"><a  href='./index.php?keyword=purchase+order+report&s=0'>All Purchase Order</a></td>		  
-				 <td  align="center"><a href='./index.php?keyword=mca'>Maintain Chart of Accounts</a></td>
-			   </tr>
-		<tr bgcolor="#E4E4E4">
-				<td  align="center"><h4>Report</h4></td>
-				<td  align="center"><a href='./index.php?keyword=cash+receivejournal'>Cash Receive Journal</a></td>
-				<td  align="center"<? if($keyword=='store')echo " id='current' ";?>><a  href='./index.php?keyword=store'>Inventory Status</a></td>
-				<td  align="center"<? if($keyword=='inventory activity')echo " id='current' ";?>><a href='./index.php?keyword=inventory+activity'>Inventory Unit Activity</a></td>
-				<td  align="center"<? if($keyword=='mr report')echo " id='current' ";?>><a href='./index.php?keyword=mr+report'>MR Report</a></td>
-				<td  align="center"<? if($keyword=='po ledger')echo " id='current' ";?>><a href='./index.php?keyword=po+ledger'>PO Ledger</a></td>
-				<td  align="right"<? if($keyword=='aged vendor payables')echo " id='current' ";?>><a href='./index.php?keyword=aged+vendor+payables'>Aged Vendor Payables</a></td>
-				<td  align="center"><a href='./index.php?keyword=equipment+details&page=1'>Equipment Details</a></td>
-		</tr>	  
-		<tr bgcolor="#E4E4E4">
-				<td  align="left"<? if($keyword=='cash disbursment')echo " id='current' ";?>><a href='./index.php?keyword=cash+disbursment'>Cash Disbursment</a></td>
-				<td  align="left"<? if($keyword=='bank disbursment')echo " id='current' ";?>><a href='./index.php?keyword=bank+disbursment'>Bank Disbursment</a></td>
-				<td  align="center"<? if($keyword=='general ledger')echo " id='current' ";?>><a href='./index.php?keyword=general+ledger'>General Ledger</a></td>
-				<td  align="center"<? if($keyword=='htrial balance')echo " id='current' ";?>><a href='./index.php?keyword=htrial+balance'>Trial Balance</a></td>
-				<td  align="center"<? if($keyword=='income statement')echo " id='current' ";?>><a href='./index.php?keyword=income+statement'>Income Statement</a></td>
-				<td  align="center"<? if($keyword=='balance sheet')echo " id='current' ";?>><a href='./index.php?keyword=balance+sheet'>Balance Sheet</a></td>
-				<td  align="right"<? if($keyword=='financial overview')echo " id='current' ";?>><a   href='./index.php?keyword=financial+overview'>Financial  Overview</a></td>
-				<td  align="right"<? if($keyword=='lander ledger')echo " id='current' ";?>><a   href='./index.php?keyword=lander+ledger'>lander  ledger</a></td>
-		</tr>	   
-			 </table>
-		   </td>
-		</tr>
-		<? }
 elseif($loginDesignation=='MIS Manager'){?>
 <tr><!-- main link-->
    <td>
@@ -334,7 +309,11 @@ elseif($loginDesignation=='MIS Manager'){?>
 		<td  align="center"<? if($keyword=='htrial balance')echo " id='current' ";?>><a   href='./index.php?keyword=htrial+balance'>Trial Balance</a></td>
 		<td  align="center"<? if($keyword=='income statement')echo " id='current' ";?>><a   href='./index.php?keyword=income+statement'>Income Statement</a></td>
 		<td  align="center"<? if($keyword=='balance sheet')echo " id='current' ";?>><a   href='./index.php?keyword=balance+sheet'>Balance Sheet</a></td>
-		
+		<td  align="center"><a href='./index.php?keyword=site+daily+report'>Daily Progress Report</a></td>
+        <td align="center"><a href='./index.php?keyword=local+eq+ut+report+b'>Equipment Utilization</a></td>
+        <td align="center"><a href="./index.php?keyword=subCon+poreport">Subcontractor report</a></td>	
+
+
 				
 		</tr>
 	   
@@ -576,10 +555,12 @@ elseif($loginDesignation=='Human Resource Manager'){?>
 	   <td rowspan="2"> Reports</td>
 		 <td  align="center"><a   href='./index.php?keyword=employee+details&page=1'>Human Resource Details</a></td>
 		 <td  align="center"><a   href='./index.php?keyword=released+employee+details&page=1'>Released Human Resource Details</a></td>
-		 <td  align="center"><a   href='./index.php?keyword=staff+leave+report&status=0'>Leave (<? echo countLeave(0,$loginProject);?>)</a></td>
-	   <td  align="center"><a  href="./index.php?keyword=site+item+require&type=mat&page=0">Current Req. Material</a></td>	   
+		 <!-- <td  align="center"><a   href='./index.php?keyword=staff+leave+report&status=0'>Leave (<? echo countLeave(0,$loginProject);?>)</a></td> -->
+		 <td  align="center"><a   href='./index.php?keyword=staff+leave+report&status=0'>Leave(<? echo countLeaveHrm(0,$status);?>)</a></td>
+		 <td  align="center"><a  href="./index.php?keyword=site+item+require&type=mat&page=0">Current Req. Material</a></td>	   
 	   <td  align="center"><a  href="./index.php?keyword=site+item+require&type=eqp&page=0">Current Req. Equipment</a></td>	   
 	   <td  align="center"><a  href="./index.php?keyword=site+item+require&type=lab&page=0">Current Req. Labour</a></td>  
+	   <td  align="center"><a   href='./index.php?keyword=site+rate'>Direct Labour Rate</a></td>
 		 <td  align="center"><a   href='./index.php?keyword=month+attendance+report'>Monthly Attendance Report</a></td>
 		 <td  align="center"><a   href='./index.php?keyword=daily+attendance+report'>Daily Attendance Report</a></td>
 	     <tr> 
@@ -591,9 +572,13 @@ elseif($loginDesignation=='Human Resource Manager'){?>
 		 <td  align="center"><a   href='./index.php?keyword=empsalaryAdv+report'>Adv Salary Report</a></td>		 		 
 
 
-		       <td align="center"><a href='./index.php?keyword=local+emp+ut+report+b'>Direct Labour Utilization</a></td>	
-			  
-			</tr>
+		       <td align="center"><a href='./index.php?keyword=local+emp+ut+report+b'>Direct Labour Utilization</a></td>
+			   <td  align="center"><a href='./index.php?keyword=site+daily+report'>Daily Progress Report</a></td>
+               <td align="center"><a href='./index.php?keyword=local+eq+ut+report+b'>Equipment Utilization</a></td>
+               <td align="center"><a href="./index.php?keyword=subCon+poreport">Subcontractor report</a></td>	
+
+	
+         </tr>
 	 </table>
    </td>
 </tr>
@@ -649,6 +634,7 @@ elseif($loginDesignation=='Executive, HR Productivity management'){?>
 		 <td  align="center"><a href='./index.php?keyword=equipment+entry'>New Equipment Receive</a></td>
 		 <td  align="center"><a href='./index.php?keyword=equipment+details&page=1'>Equipment Details</a></td>
 		 <td  align="center"><a   href='./index.php?keyword=rate+Item'>Enter Rate of Item</a></td>
+		 <td  align="center"><a href='./angular/itemcodes.php'>All Item Code</a></td>
 	   </tr>
 	   
 	   <tr bgcolor="#E4E4E4">
@@ -741,6 +727,17 @@ elseif($loginDesignation=='Procurement Manager'){?>
       <tr ><td  ><a  href='./index.php?keyword=purchase+order+report&s=0'>All Purchase Order</a></td>		</tr>  
       <tr ><td  ><a href='./index.php?keyword=equipment+purchase'>Equipment Purchase</a></td></tr>
 	  <tr ><td  align=""><a href='./index.php?keyword=aged+vendor+payables'>Aged Vendor Payable</a></td></tr>
+	  <tr><td><a href='./index.php?keyword=rate+Item'>Enter Rate of Item</a></td></tr>
+	  <tr><td><a href='./angular/itemcodes.php'>All Item Code</a></td></tr>
+
+	  <tr><td  align="center"><a href='./index.php?keyword=site+daily+report'>Daily Progress Report</a></td></tr>
+	  <tr><td align="center"><a href='./index.php?keyword=local+eq+ut+report+b'>Equipment Utilization</a></td></tr>
+	  <tr><td align="center"><a href="./index.php?keyword=subCon+poreport">Subcontractor report</a></td></tr>
+	  
+
+	
+
+
 	
 <!--      <tr ><td  ><a href='./index.php?keyword=vendor+payment+report'>Vendor Payment Rep.</a></td></tr>-->
 <!--      <tr ><td  align="right"<? if($keyword=='aged vendor payables')echo " id='current' ";?>><a href='./index.php?keyword=aged+vendor+payables'>Aged Vendor Payables</a></td></tr>
@@ -865,10 +862,15 @@ elseif($loginDesignation=='Project Engineer'){?>
 <!--    	     <td  align="center"><a href='./index.php?keyword=ongoing+project+main'>Ongoing Projects</a></td> -->
    	     <td  align="center"><a  href='./index.php?keyword=pmview+IOW&status=Raised by PM'>IOW</a></td>
          <td align="center"><a  href='./index.php?keyword=site+iow+detail&status=Not+Ready'> View IOW Detail</a></td>
-		 <td  align="center"><a href='./index.php?keyword=site+daily+report'>Daily Progress Report</a></td>
+		 <!-- <td  align="center"><a href='./index.php?keyword=site+daily+report'>Daily Progress Report</a></td> -->
 		 <td  align="center"><a   href='./index.php?keyword=daily+attendance+report'>Daily Attendance Report</a></td>		 
 		 <td  align="center"><a href='./index.php?keyword=mdvendor+payment'>Vendor Payment</a></td>	
-	   <td align="center"><a href="./index.php?keyword=subCon+poreport">Subcontractor report</a></td>
+	     <td align="center"><a href="./index.php?keyword=subCon+poreport">Subcontractor report</a></td>
+	     <td  align="center"><a href='./index.php?keyword=site+daily+report'>Daily Progress Report</a></td>
+         <td align="center"><a href='./index.php?keyword=local+eq+ut+report+b'>Equipment Utilization</a></td>
+
+
+
 		 <td  align="center" <? if($keyword=='item require')echo " id='current' ";?>><a  href='./index.php?keyword=item+require&p=1'>Material Schedule</a></td>
 
 		 <td  align="center" <? if($keyword=='item require')echo " id='current' ";?>><a  href='./index.php?keyword=item+require&p=1'>Sub-Contractor Schedule</a></td>
@@ -915,7 +917,10 @@ elseif($loginDesignation=='Manager Planning & Control'){?>
    	     <td  align="center"><a  href='./index.php?keyword=pmview+IOW&status=Raised by PM'>All IOW</a></td>
 		 <td  align="center"><a href='./index.php?keyword=site+daily+report'>Daily Progress Report</a></td>
 		 <td  align="center"><a   href='./index.php?keyword=daily+attendance+report'>Daily Attendance Report</a></td>		 
-		 <td  align="center"><a href='./index.php?keyword=mdvendor+payment'>Vendor Payment</a></td>				 
+		 <td  align="center"><a href='./index.php?keyword=mdvendor+payment'>Vendor Payment</a></td>		 
+        <td align="center"><a href="./index.php?keyword=subCon+poreport">Subcontractor report</a></td>	
+
+			 
 
 	   </tr>
 	   
@@ -1276,8 +1281,8 @@ elseif($loginDesignation=='Chairman & Managing Director'){?>
 <tr><!-- main link-->
 <td>
 <table class="dblue" cellpadding="0" cellspacing="0">
-<tr bgcolor="#CCCCCC"><td align="center"  rowspan="17">Waiting for Approval:</td></tr>
-<tr bgcolor="#0066FF"><td rowspan="16" width="2"></td></tr>
+<tr bgcolor="#CCCCCC"><td align="center"  rowspan="19">Waiting for Approval:</td></tr>
+<tr bgcolor="#0066FF"><td rowspan="18" width="2"></td></tr>
 <tr><td <? if($keyword=='mdview IOW')echo " id='current' ";?>>
 <a href="index.php?keyword=mdview+IOW&status=Forward%20to%20MD"> Task (<? echo countiow ("Forward to MD",'');?> nos)</a></td></tr>
 
@@ -1327,6 +1332,13 @@ elseif($loginDesignation=='Chairman & Managing Director'){?>
 	
 	<tr><td <? if($keyword=='aged vendor payables entry')echo " id='current' ";?>>
 <a href='./index.php?keyword=appraisal+action+md&aa=6'>Incentive ( <?php echo appraisalActionCounter(6); ?> nos)</a></td></tr>
+	
+<tr><td <? if($keyword=='show force close po')echo " id='current' ";?>>
+<a href='./index.php?keyword=show+force+close+po'>PO Force Close Approval ( <?php// echo count_po_fc_approval(); ?> nos)</a></td></tr>
+	
+	<tr><td <? if($keyword=='show force close po invoice')echo " id='current' ";?>>
+<a href='./index.php?keyword=show+force+close+po+invoice'>PO Invoice Force Close Approval ( <?php// echo count_po_invoice_fc_approval(); ?> nos)</a></td></tr>
+	
 	
 	
 	

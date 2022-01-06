@@ -26,7 +26,6 @@ $position=$row["position"];
   $q=mysqli_query($db,$sqliow);
 
 
-
  if(mysqli_affected_rows($db)>0){
    echo "done"; 
 }

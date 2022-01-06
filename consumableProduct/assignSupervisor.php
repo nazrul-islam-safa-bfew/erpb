@@ -10,7 +10,9 @@ $iow=$_GET['iow'];
 $iowProjectCode=$_GET['iowProjectCode'];
 	
 //$sql="SELECT * from employee where location='$iowProjectCode' AND status='0'";	//stop by salma
-$sql="SELECT * from employee where designation like '73-22-%' and location='$iowProjectCode' AND status='0'";
+//$sql="SELECT * from employee where designation like '73-22-%' and location='$iowProjectCode' AND status='0'";
+echo $sql="SELECT * from employee where (designation >= '74-00-000' and designation < '76-00-000')  and location='$iowProjectCode' AND status='0' ORDER BY designation ASC";
+//echo $sql="SELECT * from employee where designation like '75-%' or designation like '83-%' and location='$iowProjectCode' AND status='0'";
 // echo "$sql<br>";
 $sqlq=mysqli_query($db, $sql);
 

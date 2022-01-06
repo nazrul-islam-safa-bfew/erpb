@@ -5,7 +5,7 @@
 <td colspan="2">
  <select name="pcode"  onChange="location.href='./index.php?keyword=item+require&pcode='+fpcode.pcode.options[document.fpcode.pcode.selectedIndex].value";>
 <?	include("./includes/config.inc.php");
-$db = mysql_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS);
+$db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS);
 	 
 $sqlp = "SELECT `pcode`,pname from `project` ORDER by pcode ASC";
 //echo $sqlp;
@@ -77,7 +77,7 @@ if($pcode=='004')
    <th class="th1">Quotation<br> at Hand</th>   
  </tr>
 <?   include("config.inc.php");
-$db11 = mysql_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS);
+$db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS);
 	 
 	
 $sql="SELECT * FROM quotation where itemCode BETWEEN '50-00-000' AND '69-99-999' AND type='1' ORDER by itemCode ASC";
@@ -107,7 +107,7 @@ $t=itemDes($re[itemCode]);
    <th class="th1">Quotation<br> at Hand</th>   
  </tr>
 <?   include("config.inc.php");
-$db11 = mysql_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS);
+$db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS);
 	 
 	
 $sql="SELECT DISTINCT itemCode
@@ -141,7 +141,7 @@ $t=itemDes($re[itemCode]);
  </tr>
  <?
  include("config.inc.php");
-$db11 = mysql_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS);
+$db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS);
 	 
 
 /*$sql="SELECT dmaItemCode,dmaProjectCode,SUM(dmaQty) as dmaTotal,iowStatus,iow.iowId from dma,iow WHERE".

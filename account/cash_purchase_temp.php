@@ -4,6 +4,7 @@
   .pending_table{font-size:10px;}
 </style>
 <?php
+error_reporting(E_ERROR | E_PARSE);
 class cash_purchase_temp{
   public $db;
   public function __construct(){
@@ -305,7 +306,7 @@ class cash_purchase_temp{
 	
 		
 		$empSql="select designation,empId from employee where ccr='$designation' and location='$pcode' ";
-// 		echo $empSql;
+		//echo $empSql;
 		$empQ=mysqli_query($this->db,$empSql);
 		while($empRow=mysqli_fetch_array($empQ)){
 			$empLineArr[]="'".$empRow[designation].$empRow[empId]." %'";
@@ -317,10 +318,12 @@ class cash_purchase_temp{
 		
 		
     $sql="select * from cash_purchase_temp where accepted!='1' and project='$pcode'";
-		$sql.=" and (paid_to not like '71-%' and (paid_to like '73-11-%' or ($empLine))) ";
+		$sql.="and ($empLine) ";
+		//$sql.=" and (paid_to not like '71-%' and (paid_to like '73-11-%' or ($empLine))) ";
 		
 // 		if($designation=="73-11-006")
-// 		echo 		$sql;
+echo "<br>";
+		echo $sql;
 		
     $q=mysqli_query($this->db,$sql);
     while($row=mysqli_fetch_array($q)){

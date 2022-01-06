@@ -199,6 +199,8 @@ function sub_perdayRequired($siow,$itemCode,$dat,$pp){
 	}
  } 
 }
+ 
+
 
 ?>
 <? 
@@ -209,7 +211,7 @@ $dat='0000-00-00';
 $sql1="SELECT qty,edate 
 from  `subut` 
 where  itemCode ='$itemCode' AND posl='$posl' AND pcode='$pp' 
-ORDER by  edate ASC ";
+ORDER by edate ASC ";
 //echo "$sql1<br>";
  $sqlQuery1=mysqli_query($db, $sql1);
  while($remainQty1=mysqli_fetch_array($sqlQuery1)){

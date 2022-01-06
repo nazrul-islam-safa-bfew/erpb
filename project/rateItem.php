@@ -77,7 +77,7 @@ $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 	
 	$itemCode="$itemCode1-$itemCode2-$itemCode3";	
 	$itemCodef="$itemCode1-$itemCode2-";	
-    echo $sqlitem = "UPDATE `itemlist` SET itemCode='$itemCode', itemDes='$itemDes', itemSpec='$itemSpec', itemUnit='$itemUnit', GLsit='$GLsit',GLsales='$GLsales',GLinventory='$GLinventory',GLcost='$GLcost',itemType='$itemClass' WHERE (itemCode='$itemCodef' OR itemCode='$itemCode')";
+    echo $sqlitem = "UPDATE `itemlist` SET itemCode='$itemCode', itemDes='$itemDes', itemSpec='$itemSpec', itemUnit='$itemUnit', GLsit='$GLsit',GLsales='$GLsales',GLinventory='$GLinventory',GLcost='$GLcost',itemType='$itemClass'";
 //echo $sqlitem;
 $sqlrunItem= mysqli_query($db, $sqlitem);
 

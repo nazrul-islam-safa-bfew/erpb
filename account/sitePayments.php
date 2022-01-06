@@ -1,13 +1,12 @@
 <?
 //include("./account/payments.sql.php");
-$localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
-include($localPath."/includes/config.inc.php"); //datbase_connection
+
+include("./includes/config.inc.php");
 $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 
 ?>
 <SCRIPT LANGUAGE="JavaScript" SRC="./js/CalendarPopup.js"></SCRIPT>
 <SCRIPT language=JavaScript>document.write(getCalendarStyles());</SCRIPT>
-
 
 <? 
 $sql = "SELECT * FROM accounts WHERE accountID='$accountID'";
@@ -126,9 +125,7 @@ if($w){?>
 	<option value="">Select one</option>
 	<?
 	$i=1;
-	$localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
-   include($localPath."/includes/config.inc.php");
-	// include("./includes/config.inc.php");
+	include("./includes/config.inc.php");
 	$db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 
 	if($loginProject=='000')
@@ -159,9 +156,7 @@ if($t[0]=='EP') $exfor=$t[1];
    <td colspan="3"><select name="vid" onChange="location.href='index.php?keyword=site+payments&w=<? echo $w;?>&vid='+payments.vid.options[document.payments.vid.selectedIndex].value";>
  <option value="">Select </option>
 <?
-$localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
-include($localPath."/includes/config.inc.php");
-//include("./includes/config.inc.php");
+include("./includes/config.inc.php");
 $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 	
 $sqlp = "SELECT distinct vendor.vid,vendor.vname,porder.vid from `vendor`,porder WHERE vendor.vid=porder.vid AND porder.location='$loginProject' AND porder.itemCode>='99-00-000' ORDER by vendor.vname ASC ";
@@ -209,12 +204,11 @@ $sqlrunp= mysqli_query($db, $sqlp);
 			$ssDate=$ccDate[2]."-".$ccDate[1]."-".$ccDate[0];
 		}
 		
-		
-		$sql="select e.*,i.itemDes from employee as e,itemlist as i where e.location='$loginProject' and e.empId in (select empId from attendance where  location='$loginProject' and edate='$ssDate' and `action` in ('P','HP') 
-		and (designation like '73%' or designation like '75-01-%')
+		$sql="select e.*,i.itemDes from employee as e,itemlist as i where e.location='$loginProject' and e.empId in (select empId from attendance where  location='$loginProject'
+		and (designation like '72%')
 		
 		group by empId) and e.designation=i.itemCode order by e.designation asc";
-		echo $sql;
+		//echo $sql;
 		$q=mysqli_query($db,$sql);
 		while($row=mysqli_fetch_array($q)){
 			echo "<option value='$row[designation]$row[empId] $row[name], $row[itemDes]'>$row[designation] $row[name], $row[itemDes]</option>";
@@ -273,6 +267,7 @@ $sqlrunp= mysqli_query($db, $sqlp);
    <td>Cash Account</td><td>5502000-Site Cash<? echo $loginProjectName;?></td>
    <input type="hidden" name="account" value="5502000-<? echo $loginProject;?>">
    <input type="hidden" name="exfor" value="<? echo $loginProject;?>">   
+   
    <?  $exfor=$loginProject; }   ?>
 </tr>
   
@@ -304,16 +299,14 @@ $sqlrunp= mysqli_query($db, $sqlp);
 <br>
 <br>
 <br>
-<?
-$localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
- if($w==1 AND $cashPurchase==0){include($localPath."/account/ep.php");$paidAmount=$extotal;} 
-else if($w==2 ){include($localPath."/account/ex.php");} 
-else if($w==3 ){include($localPath."/account/ex_fuel.php");} 
- else if($w==8){include($localPath."/account/ct.php");} 
-  else if($w==4 ){include($localPath.'/account/vendor_payment.php');}
-   else if(($w=='5' OR $w=='51' )AND $month!='' AND $exfor!=''){ include($localPath.'/account/salary.php');}
-	  else if($w==6){   include($localPath.'/account/advanceSalary.php'); }// else ifw=6
-	   else if($w==7 and $month)include($localPath.'/account/wages.php');?>
+<? if($w==1 AND $cashPurchase==0){include("./account/ep.php");$paidAmount=$extotal;} 
+else if($w==2 ){include("./account/ex.php");} 
+else if($w==3 ){include("./account/ex_fuel.php");} 
+ else if($w==8){include("./account/ct.php");} 
+  else if($w==4 ){include('./account/vendor_payment.php');}
+   else if(($w=='5' OR $w=='51' )AND $month!='' AND $exfor!=''){ include('./account/salary.php');}
+	  else if($w==6){   include('./account/advanceSalary.php'); }// else ifw=6
+	   else if($w==7 and $month)include('./account/wages.php');?>
 
 
 
@@ -345,6 +338,8 @@ echo 'all_month=[';
 		}
 	}
 
+
+
 ?>];
 function check_lock(get_selected_date_value){
 	get_selected_date_value=get_selected_date_value.split("/");
@@ -355,6 +350,7 @@ function check_lock(get_selected_date_value){
 			document.getElementById('the_selected_date').value="";
 		}		
 	}catch(e){
+		
 	}
 }
 </script>

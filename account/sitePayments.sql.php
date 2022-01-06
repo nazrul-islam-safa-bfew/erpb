@@ -97,6 +97,7 @@ if($loginProject!='000'){${remainAmount.$i}= ${currentPayable.$i};}
  }//for
 
 
+ 
  $paidAmount=$totalAmount;
  if($paidAmount > 0){
   $query="INSERT INTO purchase (prId, paymentSL, paymentDate, paidTo, account,exFor, paidAmount, reff,location)".
@@ -127,7 +128,6 @@ $qqf=mysqli_query($db, $query);
 	$sql1 = "UPDATE popayments SET paidAmount='$amount' WHERE posl='${posl.$i}'";
 	//echo $sql1.'<br>';
 	$sqlQuery = mysqli_query($db, $sql1);
-
 	$totalAmount+=${amountPaid.$i};
 	}//if
  }//for
@@ -228,8 +228,7 @@ for($i=1;$i<$n;$i++){
      if($amount1>0 && $amount>0){
 			
 			 if($amount>=$amount1)$payAmount=$amount1;
-			 if($amount<$amount1)$payAmount=$amount;
-			 
+			 if($amount<$amount1)$payAmount=$amount;	 
 			 $sqlitem1 = "INSERT INTO `empsalary` (id,empId,designation,month,glCode,
 			amount,paymentSL,pdate,account)
 			VALUES ('','${empId.$i}','${designation.$i}','$salarymonth','$glCode',
@@ -238,7 +237,7 @@ for($i=1;$i<$n;$i++){
 			$query= mysqli_query($db, $sqlitem1);
 			if(mysqli_affected_rows($db)>0)	$paidAmount+=$payAmount;
 			 
-			 			 $query="INSERT INTO purchase (prId, paymentSL, paymentDate, paidTo, account,exFor, paidAmount, reff,location)".
+			$query="INSERT INTO purchase (prId, paymentSL, paymentDate, paidTo, account,exFor, paidAmount, reff,location)".
   "VALUES ('','$paymentSL','$paymentDate1', '$paidTo', '$account','$exfor','$payAmount', '$reff','$loginProject')";
 
 $qqf=mysqli_query($db, $query);
@@ -268,8 +267,8 @@ $qqf=mysqli_query($db, $query);
 
 $qqf=mysqli_query($db, $query);
 										
-											 if($amount<$amount2)$amount2-=$amount; //amount2 = amount2 - amount
-			 								 else $amount2=0;
+		 if($amount<$amount2)$amount2-=$amount; //amount2 = amount2 - amount
+		 else $amount2=0;
 			}		
 				 
 		}//for
@@ -336,13 +335,8 @@ $the_ch_i_0=${ch.$i};
   }
 }//w==51
   
-
 }//ifif($salaryPay)
-
 ?>
-
-
-
 
 <?
 if($wagesPay){
@@ -355,7 +349,6 @@ $ch_i_1=${ch.$i};
   if($ch_i_1)
 		{
 			$glCode="2404000-".$loginProject;
-
 			$sqlitem1 = "INSERT INTO `empsalary` (id,empId,designation,month,glCode,amount,paymentSL,pdate,account)
 			VALUES ('','${ch.$i}','${designation.$i}','$salarymonth','$glCode',
 			'${currentPayable.$i}','$paymentSL','$paymentDate1','$account')";
@@ -383,12 +376,7 @@ $qqf=mysqli_query($db, $query);
  $paidAmount=0;
 // 	exit;
 }//if wagesPay
-
 ?>
-
-
-
-
 
 <?
 if($adsalaryPayment){
@@ -429,7 +417,7 @@ else
 	mysqli_query($db, "COMMIT;");
 }
 
-echo "YOUR INFORMATION IS SAVING PLEASE WAIT....";
+echo "INFORMATION IS SAVING PLEASE WAIT....";
 echo "<meta HTTP-EQUIV=\"refresh\" CONTENT=\"1; URL=../index.php?keyword=site+payments&w=$w&year=$year&month=$month&vid=$vid&exfor=$exfor\">";
 exit;
 ?>

@@ -981,6 +981,56 @@ $r=mysqli_fetch_array($sqlq);
 	return $amount;
 }
 ?>
+
+<?
+
+function is_po_schedule_fail($posl,$pp){
+    //$todat = date("Y-m-d");
+	global $db; 
+	
+	$sqlp1="SELECT s.itemCode,sum(s.qty) qty,p.rate rate, sum(s.qty)*sum(p.rate) total,s.sdate, s.invoice,p.advanceType 
+	FROM poschedule s, porder p where p.posl='$posl'
+	and s.posl=p.posl and p.itemCode=s.itemCode and p.itemCode=s.itemCode group by s.sdate ORDER by s.sdate,s.itemCode DESC";
+
+	$sqlq=mysqli_query($db, $sqlp1);
+	$r=mysqli_fetch_array($sqlq);	
+
+	$sql="SELECT * FROM porder where posl='$posl' AND qty>0 ORDER by itemCode ASC";
+	//echo "$sql";
+	$sqlq=mysqli_query($db, $sql);
+	while($re=mysqli_fetch_array($sqlq)){
+		$po_mat_recieve = po_mat_receiveExt($re[itemCode],$posl,$pp);
+		$potype = $re[potype];
+		
+		if($potype=1)
+		$totalReceive=totalReceive('9999-00-00',$pp,$posl,$re[itemCode]);
+		else if($potype=3)
+		$totalReceive= subWork_Po($re[itemCode],$posl);
+	}
+	 //return $totalReceive;
+	 //return $po_mat_recieve;
+     
+	 $recieve_quantity = ($po_mat_recieve/$totalReceive);
+	 $invoice_quantity = $r[qty];
+    
+	 //return $recieve_quantity;  //9112.56
+	 //return $invoice_quantity;  //6.2
+	
+	 if($recieve_quantity < $invoice_quantity){
+		return 1;
+	}
+	else 
+	return 0;
+}
+
+?>
+
+
+
+
+
+
+
 <? 
 function eqpoActualReceiveAmount_date($posl,$fromdate,$todate){
 	global $db;

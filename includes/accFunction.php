@@ -1588,7 +1588,7 @@ if($t=='2')
    // print $baseOpening=baseOpening("5501000",$pcode);
    	$sql2="select SUM(paidAmount) as receiveAmount from `purchase` WHERE  exFor='$pcode' 
 	AND paymentDate between '$fromDate' and '$toDate'  AND paymentSL LIKE 'CT_%'";  
-	//echo "$sql2<br>";
+	echo "$sql2<br>";
 	$sqlQ2=mysqli_query($db, $sql2);
 	$r=mysqli_fetch_array($sqlQ2);
 	$receiveCash= $r[receiveAmount]+$baseOpening;
@@ -1605,7 +1605,7 @@ if($t=='2')
 	//$sql2="select SUM(examount) as expensestosite from ex130 WHERE  exgl not like '%-$pcode' and exgl like '%-___' AND exDate between '$fromDate' and '$toDate'";//AND account='5501000-$pcode'  
 	$sql2="select SUM(examount) as expensestosite from ex130 WHERE  exgl like '5502000-%' AND account like '5501000-000' AND exDate between '$fromDate' and '$toDate'";//AND account='5501000-$pcode'  //add line by salma
 	
-	//echo $sql2;
+	echo $sql2;
 	$sqlQ2=mysqli_query($db, $sql2);
 	$r=mysqli_fetch_array($sqlQ2);
 	 $expenses= $r[expensestosite];
@@ -1632,7 +1632,7 @@ if($t=='2')
 	$balance=$receiveCash-$expenses;
 	*/
 	$array_date=array();
-   $i=1;  
+    $i=1;  
 	$drAmount=0;
 	$crAmount=0;
 
@@ -1640,7 +1640,7 @@ if($t=='2')
 	$sql="select * from `purchase` WHERE  paymentDate between '$fromDate' and '$toDate'  
 	AND account='5502000-$pcode' AND  paymentSL not LIKE 'ct_%'  AND exfor='$pcode' 
 	order by paymentDate ASC";  
-	//echo $sql;
+	echo $sql;
 	$sqlQ=mysqli_query($db, $sql);
 	while($re=mysqli_fetch_array($sqlQ)){
 	$array_date[$i][3]=$re[paidAmount];
@@ -1653,7 +1653,7 @@ if($t=='2')
 	AND  (exgl='5502000-$pcode' OR account='5502000-$pcode')  
 	order by exDate ASC";  
 	$ckgl="5502000-$pcode";
-	//echo "$sql2<br>";
+	echo "$sql2<br>";
 	//echo "<br>$ckgl";
 	$sqlQ=mysqli_query($db, $sql2);
 	while($re=mysqli_fetch_array($sqlQ)){
@@ -1698,6 +1698,67 @@ else {
 return $balance;		
 		
 }
+
+
+function test($pcode,$fromDate,$toDate){global $db;
+	$sqlp = "SELECT * from `project` ORDER by pcode ASC";
+	//echo $sqlp;
+	$sqlrunp= mysqli_query($db, $sqlp);
+	
+	 while($typel= mysqli_fetch_array($sqlrunp))
+	{
+    echo "<br>";
+	 $pcode= $typel[pcode] ;
+	 
+	 if($fromDate<'2013-01-01')   $baseOpening=baseOpening("5502000",$pcode);    
+	 
+		 $array_date=array();
+		 $i=1;  
+		 $drAmount=0;
+		 $crAmount=0;
+	 
+	 
+		 $sql="select * from `purchase` WHERE  paymentDate between '$fromDate' and '$toDate'  
+		 AND account='5502000-$pcode' AND  paymentSL not LIKE 'ct_%'  AND exfor='$pcode' 
+		 order by paymentDate ASC";  
+		 echo $sql;
+		 $sqlQ=mysqli_query($db, $sql);
+		 while($re=mysqli_fetch_array($sqlQ)){
+		 $array_date[$i][3]=$re[paidAmount];
+		 $array_date[$i][4]=2;
+		 $i++;    
+		 }//while
+	 
+		 $sql2="select * from `ex130` WHERE  exDate  between '$fromDate' and '$toDate' 
+		 AND (paymentSL LIKE 'ct_%' OR paymentSL LIKE 'CT_%') 
+		 AND  (exgl='5502000-$pcode' OR account='5502000-$pcode')  
+		 order by exDate ASC";  
+		 $ckgl="5502000-$pcode";
+		 echo "$sql2<br>";
+		 //echo "<br>$ckgl";
+		 $sqlQ=mysqli_query($db, $sql2);
+		 while($re=mysqli_fetch_array($sqlQ)){
+		 
+		 $array_date[$i][3]=$re[examount];      
+		 if($re[exgl]==$ckgl) $array_date[$i][4]=1;  
+		 else  $array_date[$i][4]=2;  
+		 
+		 $i++;
+		 }//while
+	  sort($array_date);
+	 $r=sizeof($array_date);
+		 for($i=0;$i<$r;$i++){
+		 if($array_date[$i][4]=='1'){$drAmount+=$array_date[$i][3]; }
+		 if($array_date[$i][4]=='2'){ $crAmount+=$array_date[$i][3];}
+		 }//for
+	 //echo "<br>** $drAmount-$crAmount **<br>";
+	 $balance=$drAmount-$crAmount;
+	return $balance;
+	}
+}
+
+
+
 
 /* return false is salary paid*/
 function isSalaryPaid($empId,$month,$year){global $db;

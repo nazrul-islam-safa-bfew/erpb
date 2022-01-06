@@ -57,7 +57,7 @@ $todat=todat();
    <th valign="top" width="50" rowspan="2" >SL</th>
    <th valign="top" width="100" rowspan="2" >EmployeeID,<br> Designation</th>
    <th valign="top" rowspan="2" >Employee Name</th>
-    <th valign="top" width="150" rowspan="2" >Days <br>Present (<?
+    <th valign="top" width="120" rowspan="2" >Working Days: <?
      $daysOfmonth = date('t', strtotime("$year-$month-01")); 
 
      $dateFormat = $year."-".$month;
@@ -67,15 +67,15 @@ $todat=todat();
      $weekend = weekend($dateFormat,$exfor);
      
      $total_day = $daysOfmonth- $weekend - $project_holidy;
-     echo 'Total: '.$total_day;
+     echo $total_day;
      
-     ?>)</th>
-   <th valign="top" rowspan="2" width="150" >Total OT<br> Hours</th>      
+     ?></th>
+   <th valign="top" rowspan="2" width="150" >Total <br> Hours</th>      
    <th valign="top" width="50" colspan="2"  >Wages</th>
    <th valign="top" width="50" rowspan="2" >OT Rate<br>/ Hour</th>
    <th valign="top"  colspan="2" >Amount (Tk)</th>
    <th valign="top" rowspan="2" >Payable <br>Amount(Tk.)</th>
-   <th valign="top" rowspan="2" width="100" >Signature</th>       
+   <th valign="top" rowspan="2" width="130" >Signature</th>       
  </tr>
  <tr bgcolor="#EEEEEE">
    <th valign="top" >Basic</th>
@@ -132,7 +132,7 @@ else $bg = "#D5D5D5";
     <input type="hidden" name="designation<? echo $b;?>" value="<? echo $re[designation];?>">
     </td>
    <td  align="left" > <? echo $re[name];?>  </td> 
-	<td align="center" > 
+	<td align="left" > 
       <? 
 	//$wagesDate1=formatDate($wagesDate,'Y-m-d');
 $TotalPresentHr=TotalPresentHr($fromD,$toD,$re[empId],'H');
@@ -169,15 +169,12 @@ $TotalPresentHr=TotalPresentHr($fromD,$toD,$re[empId],'H');
 
    //$totalPresent = finalSalary($re[empId],$fromD,$toD,$exfor); 
 	 //echo $totalPresent; 
-   echo '<font class=out>'. 'Total: '. $totalPresent ."<br>".'P: '.$local_TotalPresentHronlyP ."<br>".'HP: '.$local_TotalPresentHronlyHP .'</font>';
-   
+   echo '<font class=out>'. 'Worked:'. $totalPresent ."<br>".'P: '.$local_TotalPresentHronlyP ."<br>".'HP: '.$local_TotalPresentHronlyHP .'</font>';
   
    ?>
      
- 
-
     </td>
-	<td align="right" ><? 
+	<td align="left" ><? 
 $presentTotal=0;
 $overtimeTotal=0;
 $workedTotal=0;
@@ -192,79 +189,81 @@ $sqlquery1="SELECT * FROM attendance".
 
  $sql1= mysqli_query($db, $sqlquery1);
  while($re1=mysqli_fetch_array($sql1)){
+
+
  
-	$dailyworkBreakt=dailyworkBreak($re[empId],$re1[edate],'H',$exfor);
+$dailyworkBreakt=dailyworkBreak($re['empId'],$re1['edate'],'H',$exfor); //return total break hour in day, 1*60*60 =3600
+$toDaypresent=toDaypresent($re['empId'],$re1['edate'],'H',$exfor); //returnt total hour present in a day, 9*60*60=32400
+$toDaypresent=$toDaypresent-$dailyworkBreakt;	 // actual work; 32400-3600=28800 => 8 hours
+$workt= dailywork($re['empId'],$re1['edate'],'H',$exfor); //rerutn actual work => 28800 >> emput 
+//echo $toDaypresent."===".$workt."<br>";
 
-	$toDaypresent=toDaypresent($re[empId],$re1[edate],'H',$exfor);
+//overtime cal
+$overtimet = $toDaypresent-(8*3600); //we get extra hours ;; like 28800-(8*3600)
+if($overtimet<0) $overtimet=0;
 
-	$toDaypresent=$toDaypresent-$dailyworkBreakt;	
+ 
+//idle time
+$idlet=$toDaypresent-$workt;
+if($idlet<0) $idlet=0;
 
-//echo "<br>toDaypresent:$toDaypresent<br>";
-	
-	$workt= dailywork($re[empId],$re1[edate],'H',$exfor);
-	
-	// if(date('D',strtotime($re1[edate]))=='Fri')
-	//  $overtimet = $toDaypresent-(4*3600);
-	// else 
-		$overtimet = $toDaypresent-(8*3600);
 
-//	$overtimet = $toDaypresent-8*3600;
-	if($overtimet<0) $overtimet=0;
-	$idlet=$toDaypresent-$workt;
-	  if($idlet<0) $idlet=0;
+//================
+$presentTotal=$presentTotal+$toDaypresent;   //added hour full month ==>>432000(28800*15)
+$overtimeTotal=$overtimeTotal+$overtimet; //added extra hours -->overtime 
+$workedTotal=$workedTotal+$workt; //added actual work time  //28000
+$idleTotal=$idleTotal+$idlet;  //added actual work time 
 
-$presentTotal=$presentTotal+$toDaypresent;   
-$overtimeTotal=$overtimeTotal+$overtimet;
-$workedTotal=$workedTotal+$workt;
-$idleTotal=$idleTotal+$idlet; 
-
-//echo "<br>date:$re1[edate]= Present:$toDaypresent--worked:$workt--overtime:$overtimet--idle:$idlet***presentTotal:$presentTotal **<br>";
 $toDaypresent=0;
 $overtimet=0;
 $workt=0;
 $idlet=0;
-
  }
+
+
 ?>	
-	<? 
-	$presentTotal=sec2hms($presentTotal/3600,$padHours=false);
-	$overtimeTotal1=sec2hms($overtimeTotal/3600,$padHours=false);
-	$workedTotal=sec2hms($workedTotal/3600,$padHours=false);
-	$idleTotal=sec2hms($idleTotal/3600,$padHours=false);
-  $i="rvr";
-	//echo "<br>presentTotal:$presentTotal--idleTotal:$idleTotal<br>";		
-	?>
+<? 
+//====================
+$presentTotal=sec2hms($presentTotal/3600,$padHours=false); //return convert:sec->hour
+$overtimeTotal1=sec2hms($overtimeTotal/3600,$padHours=false); //return convert:sec->hour
+$workedTotal=sec2hms($workedTotal/3600,$padHours=false); //return convert:sec->hour
+$idleTotal=sec2hms($idleTotal/3600,$padHours=false); //return convert:sec->hour 
+
+$i="rvr";
+$idlT = $presentTotal-$workedTotal;
+?>
 <? 
  
-echo '<font class=out>'. 'P: '. $presentTotal ."<br>".'OT: '.$overtimeTotal1 ."<br>".'IDLE: '.$idleTotal .'</font>'; ?>
+echo '<font class=out>'. 'Present:'. $presentTotal ."<br>".'Worked:'. $workedTotal ."<br>".'OT: '.$overtimeTotal1 ."<br>".'IDLE: '.$idleTotal .'</font>'; ?>
+
 	 </td>
-   <td  align="right" ><? echo number_format($re[salary],2);?> </td> 
-   <td  align="right" ><? echo number_format($re[allowance],2);?> </td> 
-   <td  align="right" > <? echo number_format(otRate($re[salary],$fromD),2);?></td>   
-    <td  align="right" >
+   <td  align="left" ><? echo number_format($re['salary'],2);?> </td> 
+   <td  align="left" ><? echo number_format($re['allowance'],2);?> </td> 
+   <td  align="left" > <? echo number_format(otRate($re['salary'],$fromD),2);?></td>   
+    <td  align="left" >
       <? $atAmount=normalDayAmount($re[salary],$re[allowance],$fromD,$totalPresent);
     echo number_format($atAmount,2);
    ?></td>
 
-   <td align="right" >        <? 
+   <td align="left" >        <? 
   $desig=explode("-",$re[designation]); 
       if($desig[0]!='90' && $desig[0]!='91' && $desig[0]!='87'){
         $otAmount=otRate($re[salary],$fromD)*($overtimeTotal/3600);
-        echo number_format($otAmount,2);
+        echo  number_format($otAmount,2);
       }else{
         $otAmount=0;
         echo number_format($otAmount,2);
       }
     ?></td>
 
-    <td align="right"> 
+    <td align="left"> 
       <? $amount=$otAmount+$atAmount; 
 	  
 	  // $paid=currentWPayble($re[empId],"$year-$month-01",$exfor);
 	  // $payable= $amount-$paid;
 	  //echo "**$loginProject**	  $payable= $amount-$paid; +++";
 	  //echo number_format($payable,2);
-
+    $overtimeTotal1 = $overtimeTotal1*number_format(otRate($re['salary'],$fromD),2);
 	  $dateFormat = $year."-".$month."-01";
     $payable = finalSalary($re[empId],$fromD,$toD,$exfor,$dateFormat) + $overtimeTotal1; 
     echo number_format($payable,2);
@@ -278,6 +277,7 @@ echo '<font class=out>'. 'P: '. $presentTotal ."<br>".'OT: '.$overtimeTotal1 ."<
  </tr> 
  <? 
  if(${ch.$b}) $totalAmount+= $amount; $amount=0;
+ $lm_designation = $re['designation'];
  $b++;
  $ta=0;
 // }
@@ -294,12 +294,66 @@ echo '<font class=out>'. 'P: '. $presentTotal ."<br>".'OT: '.$overtimeTotal1 ."<
  <br><br>
  <table width="100%" align="center">
   
- <tr>
-		<th>Prepared by HR Executive</th>
-		<th>Forwarded to Check by Line Manager <br>(OK)..............(Not OK)</th>   
-		<th>Approved by HR Manager</th>  
-		<th>Paid By Cashier</th>
-  </tr>
+<tr>
+		<th>
+		    <ol style="list-style-type: none;">
+				<li>Prepared by</li>
+				<li style="color: red; text-decoration: underline;">Najifa Anjum </li>
+				<li>HR Executive,</li>
+				<li>Payroll management</li>
+			</ol>	
+		</th>
+    <th>
+		    <ol style="list-style-type: none;">
+				<li>Checked & recommended by</li>
+        <li style="color: red; text-decoration: underline;">
+				<?
+        $str = $chk; //_3147
+        $a=explode("_",$str);
+        $eid=$a[1];
+
+        $efor = '000' OR '004';
+					$managerArr=getManager($lm_designation,$exfor,$eid);
+					if (empty($managerArr)) {
+						echo "<font color='#f00'>No Line manager found</font>";
+					}
+						else
+						echo "<font color='#f00'>$managerArr[name]</font>";
+				?>
+			    </li>
+				<li>
+				<?
+         echo "Designation"; 
+        ?>
+				</li>
+			</ol>	
+		</th>
+		<th>
+		    <ol style="list-style-type: none;">
+				<li>Approved by</li>
+				<li style="color: red; text-decoration: underline;"> Mr.Harun Or Rashid </li>
+				<li>HR Manager</li>
+			</ol>	
+		</th>
+		<th>
+		    <ol style="list-style-type: none;">
+				<li>Paid By</li>
+        <li style="color: red; text-decoration: underline;">
+            <? 
+            $CashName = getCashierWages($exfor);
+            $CashierName =$CashName['name'];
+            if (empty($CashierName)) {
+                echo "<font color='#f00'>No Cashier found</font>";
+                }
+              else
+              echo $CashierName;          
+            ?>
+			   </li>		
+				<!-- <li style="color: red; text-decoration: underline;"> Mr. Shahjahan  </li> -->
+				<li>Cashier</li>
+			</ol>	
+		</th>
+    </tr>
 
   <!-- <tr>
 		<th>Prepared by HR</th>
@@ -310,6 +364,15 @@ echo '<font class=out>'. 'P: '. $presentTotal ."<br>".'OT: '.$overtimeTotal1 ."<
 		<th>Director Admin.</th>  
 		<th>Managing Director</th>  
   </tr> -->
+
+<?
+
+// $str = $chk; //_3147
+// $a=explode("_",$str);
+// $eid=$a[1];
+
+?>
+
  </table>
   <br>
   <br>

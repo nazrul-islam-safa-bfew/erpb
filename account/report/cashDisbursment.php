@@ -99,7 +99,7 @@
 		 if($hd)$sql.=" (exFor='$pcode' OR account='5502000-$pcode') order by paymentSL ASC";  
 		 else $sql.="  account='5502000-$pcode' order by paymentDate DESC";  
     }
-  //echo $sql;
+  echo $sql;
   $sqlQ=mysqli_query($db, $sql);
   $i=1;
   while($re=mysqli_fetch_array($sqlQ)){
@@ -126,7 +126,7 @@
 //  echo "<br>$reff[$i]<br>";
   if($temp[0]=='CP' OR $temp[0]=='ex'  OR $temp[0]=='ct' OR $temp[0]=='CT' ){
    $sql1="SELECT * FROM ex130 WHERE paymentSl='$reff[$i]'";
-  // echo $sql1.'<be>';
+   echo $sql1.'<be>';
    $sqlq1= mysqli_query($db, $sql1);
    while($exre=mysqli_fetch_array($sqlq1)){?>
  <tr>
@@ -256,7 +256,7 @@
    <td valign="top"></td>
    <td> <?  echo $glCode.'<br>'.accountName($glCode);?></td>
    <td> <?  echo viewposl($exre[posl]);?></td>
-   <td align="right"> <? $drtotal+=$exre[paidAmount]; echo number_format($exre[paidAmount],2);?></td>
+   <td align="right"> <? $drtotal+=$exre[paidAmount]; echo "number_format($exre[paidAmount],2)";?></td>
    <td></td>      
  </tr>
    <?

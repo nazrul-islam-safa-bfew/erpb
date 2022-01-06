@@ -146,7 +146,7 @@
 		 if($hd)$sql.=" (exFor='$pcode' OR account='5502000-$pcode') $extra order by paymentSL ASC";  
 		 else $sql.=" account='5502000-$pcode' $extra order by paymentDate DESC";  
   }
-//   echo $sql;
+   echo $sql;
   $sqlQ=mysqli_query($db, $sql);
   $i=1;
   while($re=mysqli_fetch_array($sqlQ)){

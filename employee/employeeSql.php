@@ -30,8 +30,9 @@ if($id){
 					" `pament`='$pament' , `salaryType`='$salaryType' , `salary`='$salary' ,`allowance`='$allowance' ,`edate`='$todat' ".
 					" WHERE empId=$id"; 
 					*/
-	 $sqlitem = "UPDATE `employee` SET  name='$name',`salary`='$salary' ,`nationalid`='$nationalid' ,`allowance`='$allowance',email_personal='$email_personal', email_office='$email_office', phone_personal='$phone_personal', phone_office='$phone_office',designation='$designation',ccr='$mc'  WHERE empId=$id";
-	}
+ $sqlitem = "UPDATE `employee` SET  name='$name',`salary`='$salary' ,`nationalid`='$nationalid' ,`allowance`='$allowance',email_personal='$email_personal', email_office='$email_office', phone_personal='$phone_personal', phone_office='$phone_office',designation='$designation',ccr='$mc'  WHERE empId=$id";
+
+}
 }
 else{
 $sqlitem = "INSERT INTO `employee` ( `empId` , `name`, `nationalid` , `designation` ,`addJob` , `empDate` ,`creDate` ,`proDate` ,`jobTer`,".

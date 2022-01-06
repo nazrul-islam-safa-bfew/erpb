@@ -36,15 +36,37 @@ function empId2Designation($empId){
 	return $row[designation];
 }
 
+// function getManager($designation,$pcode,$eid){
+// 	global $db;
+// 	$sql="select * from employee where location='$pcode' and designation=(select ccr from employee where empId='$eid' and designation='$designation' and location='$pcode' limit 1)";
+// 	 echo $sql;
+// 	$q=mysqli_query($db,$sql);
+	
+// 	if(mysqli_affected_rows($db)<1)return false;
+	
+// 	$row=mysqli_fetch_array($q);
+// 	return $row;
+// }
+
 function getManager($designation,$pcode){
 	global $db;
 	$sql="select * from employee where location='$pcode' and designation=(select ccr from employee where designation='$designation' and location='$pcode' limit 1)";
-	// echo $sql;
+	 echo $sql;
 	$q=mysqli_query($db,$sql);
 	
 	if(mysqli_affected_rows($db)<1)return false;
 	
 	$row=mysqli_fetch_array($q);
+	return $row;
+}
+
+function getCashierWages($pcode){
+	global $db;
+    $sqly="SELECT  employee.name  FROM itemlist,employee
+	WHERE itemlist.itemDes = 'Cashier' AND itemlist.itemCode=employee.designation
+	AND location = $pcode";
+	$a= mysqli_query($db,$sqly);
+	$row = mysqli_fetch_assoc($a);
 	return $row;
 }
 
@@ -403,11 +425,16 @@ if($num_rows>=1) return 1;
 
 function supervisorDetails($supId){global $db;
 $tt=explode('-',$supId);
+
+//echo $tt[2];
 //echo $supId.'<br>'.empName($tt[2]).'<br>'.hrDesignation("$tt[0]-$tt[1]-000");
 
-$tt[2]=substr($tt[2],3);
+//echo $tt[2]=substr($tt[2],3);
+
 echo $supId.', '.empName($tt[2]).', '.hrDesignation("$tt[0]-$tt[1]-$tt[2]");
 }
+
+
 function supervisorDetails_simple($supId){
 $tt=explode('-',$supId);
 //echo $supId.'<br>'.empName($tt[2]).'<br>'.hrDesignation("$tt[0]-$tt[1]-000");
@@ -424,7 +451,7 @@ function fullDesignationToEmpID($designation){
 function supervisorDetails_withcontact($supId){
 global $db;
 $tt=fullDesignationToEmpID($supId);
-$sql="SELECT * from employee where empId='$tt[2]'";
+echo $sql="SELECT * from employee where empId='$tt[2]'";
 $sqlq1=mysqli_query($db, $sql);
 $re1=mysqli_fetch_array($sqlq1);
 
@@ -782,7 +809,7 @@ OUTPUT:  total LEAVE in given Status and Project
 ---------------------------------*/
 function countLeave($p,$project){
 if($p==0){
-$sql="SELECT count(leave.id) as total 
+ $sql="SELECT count(leave.id) as total 
  FROM `leave`, `employee` WHERE leave.empId=employee.empId AND location='$project' 
  AND leave.status=$p ";
 }
@@ -798,6 +825,28 @@ else   $sql="SELECT count(id) as total FROM `leave` WHERE status=$p";
 
 return $rr[total];
 }
+
+
+
+function countLeaveHrm($status){
+	$getItemDesCode=getItemDesCode('Manager, Human Resource');
+	$sql="SELECT count(leave.id) as total FROM `leave`,employee
+	WHERE ((leave.empId=employee.empId AND leave.status like '$status') OR 
+	(leave.empId=employee.empId AND leave.status like '1'))  and employee.ccr='$getItemDesCode'
+    ORDER by leave.edate DESC";
+    include("config.inc.php");
+    $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
+	
+    $sqlQuery=mysqli_query($db, $sql);
+    $rr=mysqli_fetch_array($sqlQuery);
+	return $rr[total];
+}
+
+
+
+//  v 
+
+
 
 /*--------------------------------
 INPUT: employee ID, LEAVE START DATE AND LEAVE END DATE
@@ -1161,27 +1210,28 @@ foreach ($leaveday as $value) {
 enter DATE and pcode
 return is Holiday
 ---------------------------------*/
+
+
 function isHoliday($df,$pcode='000'){
- include("config.inc.php");
-$db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
+	global $db;
+   //$db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
+			   
+   $sql2="select hdate from projectcalender where hdate='$df' AND pcode='$pcode'";
+   //echo "$sql2<br>";
+   $sqlq2=mysqli_query($db, $sql2);
+   $r=mysqli_num_rows($sqlq2);
+   if($r>0) return 1;
+   
+   $wholiday=project_wholiday($pcode);
+   
+   $t=date("D", strtotime($df));
 	 
-		
-$sql2="select hdate from projectcalender where hdate='$df' AND pcode='$pcode'";
-//echo "$sql2<br>";
-$sqlq2=mysqli_query($db, $sql2);
-$r=mysqli_num_rows($sqlq2);
-if($r>0) return 1;
-
-$wholiday=project_wholiday($pcode);
-
-$t=date("D", strtotime($df));
-  
-if($t=="Sat" && $pcode=="000")return 1; //sat special holiday for head office.
-
-//echo "$t==$df<br>";
-if($t==$wholiday) return 1;
-
-}
+   if($t=="Sat" && $pcode=="000")return 1; //sat special holiday for head office.
+   
+   //echo "$t==$df<br>";
+   if($t==$wholiday) return 1;
+   
+   }
 
 /*
 function isHoliday($df){
@@ -1826,89 +1876,78 @@ function local_TotalPresentHronlyP($sdate,$edate,$empId,$type,$location){
    
    
    function finalSalary($empId,$fromD,$toD,$exfor,$d){
-   global $db;
-   $daysOfmonth = date('t', strtotime($fromD)); 
-   
-   
-   
-	$sqlf = "SELECT sum(salary+allowance) as salary FROM `employee` WHERE empId='$empId'";
-	//echo $sqlf;
-	$sqlQ= mysqli_query($db, $sqlf);
-	$num_assoc = mysqli_fetch_assoc($sqlQ);
-	$salary=$num_assoc['salary'];
-   
-	$sqlf = "SELECT id FROM `attendance` WHERE empId='$empId'".
+
+	global $db;
+	$daysOfmonth = date('t', strtotime($fromD)); 
+	
+	 $sqlf = "SELECT sum(salary+allowance) as salary FROM `employee` WHERE empId='$empId'";
+	 //echo $sqlf;
+	 $sqlQ= mysqli_query($db, $sqlf);
+	 $num_assoc = mysqli_fetch_assoc($sqlQ);
+	 $salary=$num_assoc['salary'];
+	
+	 $sqlf = "SELECT id FROM `attendance` WHERE empId='$empId'".
+	 " AND edate BETWEEN '$fromD' AND '$toD'".
+	 " AND action IN ('P') AND location='$exfor'";
+	// echo $sqlf.'<br>';
+	
+	$sqlfp = "SELECT id FROM `attendance` WHERE empId='$empId'".
 	" AND edate BETWEEN '$fromD' AND '$toD'".
-	" AND action IN ('P') AND location='$exfor'";
-   // echo $sqlf.'<br>';
-   
-   $sqlfp = "SELECT id FROM `attendance` WHERE empId='$empId'".
-   " AND edate BETWEEN '$fromD' AND '$toD'".
-   " AND action IN ('HP') AND location='$exfor'";
-   
-   $sqlfa = "SELECT id FROM `attendance` WHERE empId='$empId'".
-   " AND edate BETWEEN '$fromD' AND '$toD'".
-   " AND action IN ('HA') AND location='$exfor'";
-   
-   
-   $sqlQ= mysqli_query($db, $sqlf);
-   // echo mysqli_error($db);
-   $totalPresentOnlyP = mysqli_num_rows($sqlQ);
-   
-   $sqlQ= mysqli_query($db, $sqlfp);
-   $totalPresentOnlyHP = mysqli_num_rows($sqlQ);
-   
-   $sqlQ= mysqli_query($db, $sqlfa);
-   $totalPresentOnlyHA = mysqli_num_rows($sqlQ);
-   // return $totalPresentOnlyHA;
-   // exit;
-   
-   $calendar_holiday = monthly_project_calender_holiday($d,$exfor);
-	   //return $calendar_holiday;
-	   //exit;
-	   // $weekend = weekend_temp($exfor);
-   $weekend = weekend($d,$exfor);
-   $project_working_day = ($daysOfmonth - $weekend - $calendar_holiday) ; 
-   $total_present = $totalPresentOnlyP;
-   $remaining = $total_present - $project_working_day;
-   $d = $a = 0;
-   if($remaining < 0){
-   $d = abs($remaining * salary_d($empId));
-   //print_r(">>$remaining>>".$d."==");
-   }
-   if($totalPresentOnlyHP>0){
-	$a = $totalPresentOnlyHP * holiday_salary($empId);
-   //print_r(">>".$a."==");
-   }
-   $total_salary = ($salary - $d) + $a ;
-   
-   
-   //$remainDay = ($daysOfmonth-$totalPresentOnlyP-$totalPresentOnlyHP-$totalPresentOnlyHA);
-   // if($remainDay>0){
-   // 	$part1 = $remainDay*($salary/26);	
-   // }
-   // else
-   //   $part1=0;
-   // $part2 = $totalPresentOnlyHP * ($salary/26);
-   
-   // // print_r(array("daysOfmonth"=>$daysOfmonth, "totalPresentOnlyP"=>$totalPresentOnlyP,"totalPresentOnlyHP"=>$totalPresentOnlyHP, "totalPresentOnlyHA"=> $totalPresentOnlyHA, "remainDay"=>$remainDay, "part1"=>$part1, "part2"=>$part2));
-   
-   // $final_salary = ($salary - $part1 ) + $part2;
-   return $total_salary > 0 ? $total_salary : 0;
-   }//H
-   
-   
-   function weekend_temp($pcode){
-	   
-	   switch($pcode){
-		 case "000": return 5;
-		 case "200":  return 5;
-		 case "008":  return 5;
-	   }
-		return 1;
-   }
-   
-   function weekend($yer_mon_01,$exfor) 
+	" AND action IN ('HP') AND location='$exfor'";
+	
+	$sqlfa = "SELECT id FROM `attendance` WHERE empId='$empId'".
+	" AND edate BETWEEN '$fromD' AND '$toD'".
+	" AND action IN ('HA') AND location='$exfor'";
+	
+	
+	$sqlQ= mysqli_query($db, $sqlf);
+	// echo mysqli_error($db);
+	$totalPresentOnlyP = mysqli_num_rows($sqlQ);
+	
+	$sqlQ= mysqli_query($db, $sqlfp);
+	$totalPresentOnlyHP = mysqli_num_rows($sqlQ);
+	
+	$sqlQ= mysqli_query($db, $sqlfa);
+	$totalPresentOnlyHA = mysqli_num_rows($sqlQ);
+	
+	$calendar_holiday = monthly_project_calender_holiday($d,$exfor);
+
+	
+	$weekend = weekend($d,$exfor);
+
+	$project_working_day = ($daysOfmonth - $weekend - $calendar_holiday) ;  //31-5-0 //26
+	
+
+	$total_present = $totalPresentOnlyP;
+	
+	$remaining = $total_present - $project_working_day;
+	$d = $a = 0;
+	if($remaining < 0){
+	$d = abs($remaining * salary_d($empId));
+	//echo $d;exit;
+	//print_r(">>$remaining>>".$d."==");
+	}
+	if($totalPresentOnlyHP>0){
+	 $a = $totalPresentOnlyHP * holiday_salary($empId);
+	//print_r(">>".$a."==");
+	}
+	$total_salary = ($salary - $d) + $a ;
+	
+	
+	return $total_salary > 0 ? $total_salary : 0;
+	}//H
+	
+	
+	function weekend_temp($pcode){
+		
+		switch($pcode){
+		  case "000": return 5;
+		  case "200":  return 5;
+		}
+		 return 1;
+	}
+
+	function weekend($yer_mon_01,$exfor) 
 	{ 
 		global $db;
 		$data=explode("-", $yer_mon_01);
@@ -1942,21 +1981,62 @@ function local_TotalPresentHronlyP($sdate,$edate,$empId,$type,$location){
 		}	  
 	  return $res;
 	}
+	
+	// function weekend($yer_mon_01,$exfor) 
+	// { 
+	// 	global $db;
+	// 	$data=explode("-", $yer_mon_01);
+	// 	//print_r($data);
+	// 	$year  = $data[0];
+	// 	$month = $data[1];
+	// 	$date =  $data[2];
+	  
+	// 	  $sql = "select weekend from project where pcode =".$exfor;
+	// 	  $sqlQ = mysqli_query($db, $sql);
+	// 	  $sqlR = mysqli_fetch_array($sqlQ);
+	// 	  $val = $sqlR['weekend']; 
+	
+	// 	if(empty($val)) return false; //echo "empty weekend";
+	  
+	// 	$jsonArray = json_decode($val, true); 
+	// 	$totalDaysM = cal_days_in_month(CAL_GREGORIAN, $month, $year); // returnt total days 
+	// 	$a=	$jsonArray['fri'];
+	// 	$b=$jsonArray['sat'];
+	//   print_r($a);
+	//   print_r($b);
+	//   exit;
+	// 	$res = 0;
+	// 	for($i=1; $i<=$totalDaysM; $i++)
+	// 	{
+	// 	  $d=unixtojd(mktime(0,0,0,$month,$i,2021));
+	// 	  $day = cal_from_jd($d,CAL_GREGORIAN);
+	// 	  $holiday = $day['dayname'];
+		
 
-	function monthly_project_calender_holiday($edate,$exfor){
-		global $db;
-        // $edate=explode("-", $yer_mon);
-		// $data=explode("-", $yer_mon);
-		// //print_r($data);
-		// $year  = $data[0];
-		// $month = $data[1];
-		// $date =  $data[2];
-		$sql = "select count(*) as holiday from  projectcalender where hdate like '$edate%' and pcode='$exfor'";
-		$sqlQ = mysqli_query($db, $sql);
-		$sqlR = mysqli_fetch_array($sqlQ);
-		$val = $sqlR['holiday']; 
-		return $val;
-	}
+	// 	  if(in_array($holiday, $jsonArray)!='')
+	// 	  {
+	// 		$res++;
+	// 	  }
+		  
+	// 	}	  
+	//   return $jsonArray;
+	// }
+	
+ 
+	 function monthly_project_calender_holiday($edate,$exfor){
+		 global $db;
+		 
+		 $data=explode("-", $edate);
+		 $year  = $data[0];
+		 $month = $data[1];
+		 $edate = $year."-".$month;
+
+		 $sql = "select count(*) as holiday from  projectcalender where hdate like '$edate%' and pcode='$exfor'";
+		 $sqlQ = mysqli_query($db, $sql);
+		 $sqlR = mysqli_fetch_array($sqlQ);
+		 $val = $sqlR['holiday']; 
+		 return $val;
+	 }
 	
 function all_weekend(){
 	$weekend = array(

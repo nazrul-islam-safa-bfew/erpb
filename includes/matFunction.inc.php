@@ -88,13 +88,14 @@ if($p[3]=='99'){
  $sqlQuery1=mysqli_query($db, $sql1);
  while($remainQty1=mysqli_fetch_array($sqlQuery1)){
  $remainQty+=$remainQty1[receiveQty];
-$remainQty=str_replace(",","",number_format($remainQty,3) ); 
+ $remainQty=str_replace(",","",number_format($remainQty,3) ); 
  if($remainQty >= $qty) {$dat=$remainQty1[todat];break;}
  }
  }	
 //echo $sql1;
  return $dat;
 }
+
 
 
 /*---------------------------

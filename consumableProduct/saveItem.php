@@ -22,6 +22,8 @@ if(ch) { tx.disabled=false;	tx.className='yel';}
 </script>
 
 </head>
+ 
+
 
 <body bgcolor="#FFFFFF">
 <form name="itm" action="./saveItem.php" method="post">
@@ -85,6 +87,15 @@ if(ch) { tx.disabled=false;	tx.className='yel';}
 <option value="66" <? if($s=='66') echo 'selected';?>>66-00-000	Office Equipment</option>
 <option value="69" <? if($s=='69') echo 'selected';?>>69-00-000	MISCULLINEOUS EQUIPMENT</option>
 
+
+<?
+$loginproject = $_SESSION["loginProject"];
+if($loginproject=='224'){
+    ?>
+    <option value="77" <? if($s=='77') echo 'selected';?>>77-00 Test</option>
+<?
+}
+?>
 
 
 <option value="82" <? if($s=='82') echo 'selected';?>>82-00 Supervisor</option>

@@ -35,15 +35,15 @@
 <form name="iowdaily" action="./project/siteDailyReportEntry.sql.php" method="post">
 <table align="center" width="98%" border="1" bordercolor="#99CC99" cellpadding="0" cellspacing="0" style="border-collapse:collapse">
 <input type="hidden" name="submitted" value="<? echo $loginUname;?>" />
-<tr><td colspan="6">Briefly describe issues that hampered today's planned progress:<br> 
-<input type="text" name="operation" value="<?php echo $row_daily[operation]; ?>" width="100" size="100" maxlength="2000"></td></tr>
+<tr><td colspan="6"> <b>Daywork description and briefly describe issues that hampered today's planned progress:</b><br> 
+<textarea name="operation" style='width:98%; min-height:100px;' ><?php echo $row_daily[operation]; ?></textarea></td></tr>
 
-<tr><td colspan="6">Weather Condition:<br> 
-<input type="text"  name="weather" width="100"  size="100" maxlength="2000" value="<?php echo $row_daily[weather] ? $row_daily[weather] : 'Progress of Work did not hampered because of weather.'; ?>" style="color:#FF3333"></td></tr>
-<tr><td colspan="6">Accident Record:<br>
- <input type="text" name="accident" width="100" size="100" maxlength="2000" value="<?php echo $row_daily[accident] ? $row_daily[accident] : 'No accident happened'; ?>" style="color:#FF3333"></td></tr>
-<tr><td colspan="6">Meeting minutnes/visitors detail with comments received:<br> 
-<input type="text" name="vcomments" width="100" size="100" maxlength="2000" value="<?php echo $row_daily[vcomments] ? $row_daily[vcomments] : 'Nobody from Head Office or Client\'s side have visited the site.'; ?>" style="color:#FF3333"><br><br></td></tr>
+<tr><td colspan="6"><b>Weather interruption:</b><br> 
+<textarea  name="weather" style="color:#FF3333; width:98%; min-height:100px;"><?php echo $row_daily[weather] ? $row_daily[weather] : 'Progress of Work did not hampered because of weather.'; ?></textarea></td></tr>
+<tr><td colspan="6"><b>Accident records:</b><br>
+<textarea  name="accident" style="color:#FF3333; width:98%; min-height:100px;"><?php echo $row_daily[accident] ? $row_daily[accident] : 'No accident happened'; ?></textarea></td></tr>
+<tr><td colspan="6"><b>Details of visitors with comments received, meeting decisions, letter & email correspondences with CM remarks:</b><br> 
+<textarea name="vcomments"  style="color:#FF3333; width:98%; min-height:100px;"><?php echo $row_daily[vcomments] ? $row_daily[vcomments] : 'Nobody from Head Office or Clients side have visited the site.'; ?></textarea><br><br></td></tr>
 
 <tr><td align="center" colspan="4"><input type="button" name="save" value="Save" onClick="iowdaily.submit();"></td></tr>
 

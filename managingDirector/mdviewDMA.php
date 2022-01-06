@@ -236,8 +236,37 @@ $sqlrunp= mysqli_query($db, $sqlp);
 	echo "$temp[des], $temp[spc]";?></td>
     <td align="center"><? echo $unit;?></td>
     <td align="right"><? echo number_format($iowResult['dmaQty'],3);?></td>
-    <td align="right"><? echo number_format($iowResult['dmaRate'],2);?></td>
-    <td align="right"><? $amount=$iowResult['dmaRate']*$iowResult['dmaQty']; echo number_format($amount,2);?></td>
+
+    <td align="right"><? 
+    
+    //echo number_format($iowResult['dmaRate'],2);
+    
+  
+    $srate=siteRate($iowResult[dmaItemCode]);
+		if($iowResult[dmaItemCode] >= '82-00-000' && $iowResult[dmaItemCode] < '95-00-000' ){
+			echo  round($srate,2);
+		}
+		else 
+		{
+			echo number_format($iowResult['dmaRate'],2);
+ 		}
+
+    ?></td>
+    
+    <td align="right"><? 
+    
+    //$amount=$iowResult['dmaRate']*$iowResult['dmaQty']; echo number_format($amount,2);
+    
+    if($iowResult[dmaItemCode]>='82-00-000' && $iowResult[dmaItemCode]<'95-00-000' ){
+      $amount=$srate*$iowResult[dmaQty]; echo round($amount,2);
+    }
+    else 
+    {
+      $amount=$iowResult[dmaRate]*$iowResult[dmaQty];
+      echo number_format($amount,2);
+    }
+
+    ?></td>
   </tr>
   <? $totalAmount+= $amount; $i++; } ?>
   <tr><td colspan="3" align="center" bgcolor="#AAAADD"><? echo "SIOW Unit Rate: Tk.".number_format($totalAmount/$siow['siowQty'],2).$siow['siowUnit'];?></td>

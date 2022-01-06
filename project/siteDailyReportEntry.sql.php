@@ -5,8 +5,8 @@ include("../includes/myFunction.php");
 $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 
 $todat=todat();
-$edate=formatDate($edate,'Y-m-j');
-$e=date("Y-m-d");
+$edate = $todat = $e =formatDate($edate,'Y-m-d');
+// $e=date("Y-m-d");
 if($_GET[id] && $_GET[action]=="closed"){
 	$sql="update iowdaily set closed=1 where id='$_GET[id]'";
 	mysqli_query($db,$sql);
@@ -158,9 +158,6 @@ $c_iow_id=${iowid.$i};
 		}
 	}//if
 }//for
-$weather= $_POST['weather'];
-$accident= $_POST['accident'];
-$vcomments= $_POST['vcomments'];
 
 if($weather || $accident || $vcomments){
 	$sql="insert into dailyreport(pcode,edate,operation,weather,accident,vcomments,submitted) 

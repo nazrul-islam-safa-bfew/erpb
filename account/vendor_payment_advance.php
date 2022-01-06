@@ -20,6 +20,7 @@ else
 if($loginProject){
 	$sqlp="SELECT po.*,pc.condition from `porder` po,pcondition pc WHERE po.location='$exfor' and pc.posl=po.posl and pc.condition like '%_ch24_%' and po.status!='2' /*and po.posl='PO_207_09273_1184'*/ group by po.posl";
 	
+
 // echo $sqlp;
 $sqlrunp=mysqli_query($db, $sqlp);
 
@@ -31,8 +32,16 @@ $paid=poPaidAmount($re[posl]);
 $poAdv=extractAdvanceCondition($re[condition],$potype);
 ${remainAmount.$i}=round($re[totalAmount]-$re[paidAmount],2);
 $poAdv[amount]-=$paid;
-if($poAdv[parcent]<=0 || $poAdv[amount]<=0 || $re[paidAmount]>=$poAdv[amount])continue;
 
+// po closed check start (safa)
+$p=$re[posl];
+$sqlpl = "SELECT * FROM `po_force_close_approval` WHERE is_complete =1 and posl = '$p'";
+//echo $sqlpl;
+$sqlrunpl= mysqli_query($db, $sqlpl);
+$typel= mysqli_fetch_array($sqlrunpl);
+// po closed check end
+
+if($poAdv[parcent]<=0 || $poAdv[amount]<=0 || $re[paidAmount]>=$poAdv[amount])continue;
 // echo "** potype=$potype **";
 // 	print_r($re[condition]);
 $t=explode('_',$re[posl]);
@@ -45,18 +54,53 @@ if($potype==4) $receiveAmount=eqPurchaseReceive($re[posl]);
   {
    ?>
  <tr>
-   <td align="center">
-   	<a target="_blank" href="./planningDep/printpurchaseOrder1.php?posl=<? echo $re[posl];?>">
+
+<?
+  if($typel[posl]==viewPosl($re[posl])){
+    ?>
+      <td align="center" style="color: red;"><small><?$vtemp=vendorName($re[vid]); echo $typel[posl]."<br /> ".$vtemp[vname]; ?></small></td>
+    <?
+  }
+  else
+  {
+       ?>
+  <td align="center">
+   	<a target="_blank" href="./planningDep/printpurchaseOrder1.php?posl=<? // echo $re[posl];?>">
    <? 
 		 $vtemp=vendorName($re[vid]);
-		 echo viewPosl($re[posl])."<br />
-	 ".$vtemp[vname].'</a>';
+		 echo viewPosl($re[posl])."<br /> ".$vtemp[vname].'</a>';
    ?>
-   <input type="hidden" name="posl<? echo $i;?>" value="<? echo $re[posl];?>"> <input type="hidden" value="<?php echo $re[vpa]; ?>" name="vpa_<?php echo $re[posl]; ?>" /> </td> 
-   <td align="right"><? echo number_format($receiveAmount,2);?></td>
-   <td align="right"><? echo number_format($paid,2);?></td>
-   <td align="right"><? echo number_format($poAdv[amount],2);?></td>
-   <td align="right"> 
+   <input type="hidden" name="posl<? echo $i;?>" value="<? echo $re[posl];?>"> <input type="hidden" value="<?php echo $re[vpa]; ?>" name="vpa_<?php echo $re[posl]; ?>" />
+   </td> 
+<?
+  }
+?>
+
+<?
+  if($typel[posl]==viewPosl($re[posl])){
+       ?>
+          <td colspan="5"  align="left" style="color: red;"><? echo "This po has been force closed. You can not able to pay po advance."; ?></td>
+       <?
+  }
+  else
+  {
+      ?>
+<td align="right"><? echo number_format($receiveAmount,2);?></td>
+<?}?>
+ 
+ 
+<? if($typel[posl]!=viewPosl($re[posl])){  ?>
+  <td align="right"><? echo number_format($paid,2);?></td>
+<?}?>
+
+
+<? if($typel[posl]!=viewPosl($re[posl])){  ?>
+  <td align="right"><? echo number_format($poAdv[amount],2);?></td>
+<?}?>
+
+
+<? if($typel[posl]!=viewPosl($re[posl])){  ?>
+  <td align="right"> 
 <!--   <input type="text" size="10" alt="cal"  name="amountPaid<? echo $i;?>"   style="text-align:right"  
    onBlur="if(<? echo 'amountPaid'.$i;?>.value > <? echo ${remainAmount.$i};?>)
     {alert('Amount exceeds PO Total'); <? echo 'amountPaid'.$i;?>.value=0;}">  
@@ -69,14 +113,24 @@ if($potype==4) $receiveAmount=eqPurchaseReceive($re[posl]);
    <input type="hidden" name="<? echo 'remainAmount'.$i;?>"  value="<? echo ${remainAmount.$i};?>">
 	 <input type="hidden" name="vid_<?php echo $i; ?>" value="<? echo $row_approved['vid'];?>">
   </td>
-	 <td><input type="text" name="desc_<?php echo $i; ?>" value=""></td>
- </tr>
+<?}?>
+
+<? if($typel[posl]!=viewPosl($re[posl])){  ?>
+  <td><input type="text" name="desc_<?php echo $i; ?>" value=""></td>
+<?}?>
+
+</tr>
+
  <? 
  }//if of visibaility
   	$paymentpototal+=${amountPaid.$i};
   	$i++;
 } //while
  ?>
+
+
+
+
   <input type="hidden" name="n" value="<? echo $i;?>">
     <tr>
 <td colspan="6" align="right" bgcolor="#FFFFCC">
@@ -144,25 +198,65 @@ if($potype==3) $receiveAmount=subWorkTotalReceive_Po($re[posl]);
 $paid=poPaidAmount($re[posl]);
 ?>
  <tr>
-  <td align="center">
+
+ <?
+  if($typel[posl]==viewPosl($re[posl])){
+    ?>
+      <td style="color: red;"><small><? echo $typel[posl]; ?></small></td>
+    <?
+  }
+  else
+  {
+       ?>
+   <td align="center">
 	 <a target="_blank" href="./planningDep/printpurchaseOrder1.php?posl=<? echo $re[posl];?>">
 	 <? echo viewPosl($re[posl]);?></a>
 	 <input type="hidden" name="posl<? echo $i;?>" value="<? echo $re[posl];?>">
 	</td>
-  <td align="right"><? echo number_format($re[totalAmount],2);?> </td>   
+<?
+  }
+?>
+
+<?
+  if($typel[posl]==viewPosl($re[posl])){
+    ?>
+      <td colspan="5"  align="left" style="color: red;"><? echo "This po has been force closed. You can not able to pay po advance"; ?></td>
+    <?
+  }
+  else
+  {
+      ?>
+ <td align="right"><? echo number_format($re[totalAmount],2);?> </td>   
+<?}?>
+
+<? if($typel[posl]!=viewPosl($re[posl])){  ?>
   <td align="right"><? echo number_format($receiveAmount,2);?> </td>
+<?}?>
+
+
+<? if($typel[posl]!=viewPosl($re[posl])){  ?>
   <td align="right"><? echo number_format($paid,2);?> </td>   
+<?}?>
+
+
+<? if($typel[posl]!=viewPosl($re[posl])){  ?>
   <td align="right"><? $currentPayable=foodinfAmount($re[totalAmount],$receiveAmount,$paid,$re[posl]); 
    $currentPayable=round($currentPayable,2);   
 //  echo $re[totalAmount]." // ".$receiveAmount." // ".$paid." // ".$re[posl]." // ".$potype." // ";
   echo number_format($currentPayable,2);?> 
   <input type="hidden" name="currentPayable<? echo $i;?>" value="<? echo $currentPayable;?>">
-  </td>      
+  </td>
+<?}?>
+
+<? if($typel[posl]!=viewPosl($re[posl])){  ?>
   <td align="right">
   <input type="text" size="10" alt="cal"  name="amountPaid<? echo $i;?>" <? if($currentPayable<=0 )echo ' disabled ';?>   value="<? if($POpayment) echo ''; else echo ${amountPaid.$i};?>"  style="text-align:right"  
    onBlur="if(<? echo 'amountPaid'.$i;?>.value > <? echo $currentPayable;?>) {alert('Amount exceeds payable Amount'); <? echo 'amountPaid'.$i;?>.value=0;}" onchange="disableSave(this.form);">  
   </td>
+<?}?>
+  
  </tr>
+
  <?
   	$paymentpototal+=${amountPaid.$i};
   $i++;} //while?>

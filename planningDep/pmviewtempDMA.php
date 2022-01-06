@@ -324,7 +324,7 @@ $totalAmount='';
     <td align="center">
 	 <table border="1" width="100%" bordercolor="#AAAAAA" cellpadding="0" cellspacing="0" style="border-collapse:collapse">
 	   <tr>
-	   <th width="25%">Qty </th>
+	   <th width="25%">Qty</th>
 	   <th width="25%">Rate </th>
 	   <th width="50%">Amount </th>	   	   
 	   </tr>
@@ -424,7 +424,16 @@ else
        <td align="right"  width="25%" style=" <?php echo $lineExtra; ?>"><? echo $iowResult['dmaQty'];?></td>		
     <td align="right" width="25%"><? 
 	$rate=$iowResult['dmaRate'];
-	echo number_format($rate,2);
+	//echo number_format($rate,2);
+
+	$srate=siteRate($itemCode);
+	if($itemCode >= '82-00-000' && $itemCode < '95-00-000' ){
+		echo  round($srate,2);
+	}
+	else 
+	{
+		echo number_format($rate,2);
+	 }
 	//echo $rate;
 	?>
 	<input type="hidden" name="dmaRate<? echo $i;?>" value="<? echo $rate?>">
@@ -433,7 +442,15 @@ else
 	</td>''
 
     <td align="right" width="50%"><?
-	 $amount=$rate*$iowResult['dmaQty']; echo number_format($amount,2);
+	if($itemCode >= '82-00-000' && $itemCode < '95-00-000' ){
+		$amount=$srate*$iowResult['dmaQty']; echo round($amount,2);
+	}
+	else 
+	{
+		$amount=$rate*$iowResult['dmaQty']; echo number_format($amount,2);
+	}
+	 //$amount=$rate*$iowResult['dmaQty']; echo number_format($amount,2);
+	
 	 if($test[0]>='01' AND $test[0]<'35'){$materialCost+=$amount;}
 	 elseif($test[0]>='35' AND $test[0]<'70'){$equipmentCost+=$amount;}
 	 elseif($test[0]>='70'){$humanCost+=$amount;}

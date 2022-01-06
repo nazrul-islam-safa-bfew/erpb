@@ -121,7 +121,7 @@ include("./includes/config.inc.php");
 $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 	
 if($w==5){
-$sqlp = "SELECT * from `employee` WHERE location='$exfor' AND empDate<='$year-$month-$daysofmonth' AND status<>'-2'".
+ $sqlp = "SELECT * from `employee` WHERE location='$exfor' AND empDate<='$year-$month-$daysofmonth' AND status<>'-2'".
 "  AND salaryType='Salary' AND designation>'70-99-999' AND designation<='85-00-000'".
 "  order by designation ASC ";
 }

@@ -15,16 +15,19 @@ if(!$year)$year=date("Y");
 		<tr bgcolor="#CC9999" align='center'><td colspan=2><font class='englishhead'>leave report <? echo $year;?></font></td></tr>
 		<tr>
 			<td width=100>Select Year:</td>
-	<td><select name='year' style='width:100%'>
-	<?php
-	$current_year=date("Y");
-	$final_year=date("Y")-5;
+	<td>
+	<select name="yearr">
+		 
+   <?php
+		$start = date('Y');
+		$end = date('2000');
+		for($i=$start;$i>=$end;$i--){
+		echo '<option value="'.$i.'"'.($year == $i ? ' selected="selected"' : '').'>' . $i . '</option>';
+		}
+		?>
+   </select>
 
-	for($current_year;$current_year>$final_year;$current_year--){
-		echo "<option value='$current_year' ".($year==$current_year ? "selected" : "") ." >$current_year</option>";
-	}
-	?>
-	</select></td>
+	</td>
 		</tr>
 		<tr align=center>
 			<td colspan=2><input type='submit'>
@@ -34,7 +37,7 @@ if(!$year)$year=date("Y");
 	</table>
 </form>
 
-
+<? echo "dd". $yearr?>
 <table align="center" width="98%" border="3"  bordercolor="CC9999" cellpadding="3" cellspacing="0" style="border-collapse:collapse">
 <tr bgcolor="#CC9999">
   <td align="right" valign="top" colspan="7" ><font class='englishhead'>leave report <? echo date("Y");?></font></td>
@@ -57,7 +60,7 @@ if($_SESSION[loginDesignation]=="Procurement Manager"){
 }else{
 	echo $getItemDesCode=getItemDesCode($_SESSION[loginDesignation]);
 }
-
+//echo $_SESSION[loginDesignation];
 	
 // $sql11=mysqli_query($db, "SELECT * FROM leave WHERE empId='$empId' ORDER by edate");
 if($loginDesignation=='Chairman & Managing Director'){
@@ -78,11 +81,13 @@ elseif($loginDesignation=='Project Manager' OR $loginDesignation=='Site Cashier'
 	 WHERE leave.empId=employee.empId AND location='$loginProject' AND leave.status like '$status' 
 	  ORDER by leave.edate DESC";
 }elseif($loginDesignation=='Human Resource Manager'){
+	$getItemDesCode=getItemDesCode('Manager, Human Resource');
 	if($getItemDesCode){
-			$sql="SELECT `leave`.*,employee.empId,employee.name,employee.designation FROM `leave`,employee
+	 $sql="SELECT `leave`.*,employee.empId,employee.name,employee.designation FROM `leave`,employee
 	 WHERE ((leave.empId=employee.empId AND leave.status like '$status') OR 
-	 (leave.empId=employee.empId AND leave.status like '1'))  and employee.ccr='$getItemDesCode'
+	 (leave.empId=employee.empId AND leave.status like '1'))  and employee.ccr='$getItemDesCode' and leave.sdate like '$yearr-%'
 	ORDER by leave.edate DESC";
+	//echo $sql;
 	}
 	$t=1;
 }elseif($getItemDesCode && managerList($getItemDesCode)){
@@ -190,3 +195,26 @@ if(getReleasedDate($typel11[empId]))
 </tr>
 <? $i++;}// while?>
 </table>
+
+<?
+
+// $getItemDesCode=getItemDesCode('Manager, Human Resource');
+	
+// 	// 	echo $sql="SELECT count(leave.id) as total FROM `leave`,employee
+// 	//  WHERE ((leave.empId=employee.empId AND leave.status like '$status') OR 
+// 	//  (leave.empId=employee.empId AND leave.status like '1'))  and employee.ccr='$getItemDesCode'
+// 	// ORDER by leave.edate DESC";
+
+
+// $sql="SELECT count(leave.id) as total FROM `leave`,employee
+// 	WHERE ((leave.empId=employee.empId AND leave.status like '$status') OR 
+// 	(leave.empId=employee.empId AND leave.status like '1'))  and employee.ccr='$getItemDesCode'
+//    ORDER by leave.edate DESC";
+//    include("config.inc.php");
+//    $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
+	
+//   $sqlQuery=mysqli_query($db, $sql);
+//   $rr=mysqli_fetch_array($sqlQuery);
+// print_r($rr);
+
+?>

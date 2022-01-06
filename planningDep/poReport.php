@@ -125,7 +125,6 @@ if($posl){
 <? 
 
 	
-	
 if($s=='-1' OR $s=='-2' OR $s=='0' OR $s=='3')
 {
 	if($loginDesignation=='Project Manager' || $loginDesignation=='Procurement Executive')
@@ -211,8 +210,19 @@ $potype=potype($typel1[posl]);
 ?>
 <tr><td colspan="6" bgcolor="#0066FF" height="1" ></td></tr>
 <tr><td valign="top"  <? echo " rowspan=$r"; if($i%2==0) echo "  class=po "; else echo "  class=po_off ";?>> 
-<? echo $viewPosl;?><br>
-<? echo myDate($typel1[activeDate]);?><br>
+<?  echo $viewPosl;?><br>
+
+<? $invoice_date =  myDate($typel1[activeDate]);
+echo $invoice_date;
+// echo "<br>";
+//  $today_date =  myDate(date("d-m-Y"));
+// if(strtotime($today_date) < strtotime($invoice_date)){
+// 	echo "Scedual Failed";
+// 	echo "<br>";
+// 	echo "sfds".$it = $typel1[itemCode];
+// }
+//echo "Check".is_po_sch_fail(220,$viewPosl);
+?><br>
 <? 
 if($loginDesignation=='Procurement Manager' OR $loginDesignation=='Procurement Executive'){?>
 <?
@@ -256,10 +266,30 @@ echo "<p>".$vendorInfo[vname]."</p>";
 
 <br>
 <? }?>
+<?
+	if($potype!=2 && $s==1){
+		$a=explode('_',$viewPosl);
+		$project= $a[1];
+		if(is_po_sch_fail($project,$viewPosl)==1){
+			?>
+				<div style="
+				display: inline-block;
+				padding: 5px;
+				background: #f00;
+				color: #fff;
+				border-radius: 5px;
+				font-size: 10px;
+				">
+					Po schedule fail
+				</div>
+			<?
+		};
+	}
+?>
 <? if($typel1[status]==2 OR $typel1[status]==1){
 $vendorInfo=posl2vendorDetails($typel1[posl]);
 echo "<p>".$vendorInfo[vname]."</p>";
-	
+
 	if($isEQP>-1){ 
 	?>
 	[<a target="_blank" href="./index.php?keyword=Forwardfor+Approval&posl=<? echo $typel1[posl];?>">Print</a>]
@@ -286,6 +316,7 @@ $pdfLoc=check_posl_approved($typel1[posl],false);
     font-size: 10px;
     ">
 		pending
+	
 	</div>
 	
 	<? }else{ ?>
@@ -300,7 +331,11 @@ $pdfLoc=check_posl_approved($typel1[posl],false);
     background: #ff0;
     border-radius: 5px;">PDF</a>
 	</div>
-<?php } }?>
+<?php } }
+
+
+
+?>
 	<? if($typel1[status]==2 && ($loginDesignation=="Procurement Executive")) {?>
     <a href='./planningDep/poUnder/poDelete.php?posl=<? echo $typel1[posl];?>&open=1'><font class='out'>[ Open ]</font></a> 
     <a href='./planningDep/poDiscount.php?posl=<? echo $typel1[posl];?>' target="_blank"><font class='out'>[ Discount ]</font></a> 
@@ -352,7 +387,7 @@ else{ ?>
 	[<a target="_blank" href="./index.php?keyword=Forwardfor+Approval&posl=<? echo $typel1[posl];?>">Print</a>]
 	<?php }else{ ?>
 	[<a target="_blank" href="./planningDep/printpurchaseOrder1.php?posl=<? echo $typel1[posl];?>">Print</a>]
- <? if(($loginDesignation=='Accounts Executive' AND $loginProject=="000") AND $typel1[status]=='1'){?>
+ <? if(($loginDesignation=='Procurement Executive' AND $loginProject=="000") AND $typel1[status]=='1'){?>
 	<a href="./index.php?keyword=close+purchaseOrder&posl=<? echo $typel1[posl];?>
 	&itemCode=<? echo $typel[itemCode];?>&potype=<? echo $typel1[potype];?>&rate=<? echo $typel[rate];?>&qty=<? echo $typel[qty];?>" class="closeBTN"><font class="outr">[Close]</font></a><? }?>
 	<? viewRevisionPOSL($typel1[posl]); }  }?>
@@ -367,15 +402,25 @@ else{ ?>
 
 <? }//else $loginDesignation?>
 <?
-  if($loginDesignation=='admin' OR $loginDesignation=='Accounts Manager' OR $loginDesignation=='Accounts Executive'){?> 
+if(is_po_in_fc_list($typel1[posl])){
+	?><p>
+<p style="border-radius: 5px; background:#0f0; color:#000; text-align:center; border: 1px solid #000;" title="<?= is_po_in_fc_text($typel1[posl]) ?>">Force Close</p>
+</p>	
+<? 
+ }
+ ?>
+
+<?
+  if($loginDesignation=='admin' OR $loginDesignation=='Accounts Manager' OR $loginDesignation=='Procurement Executive'){?> 
 <!--    <br><a href='./planningDep/poUnder/poDelete.php?posl=<? echo $typel1[posl];?>&status=<? echo $typel1[status];?>'><font class='out'>[ Delete ]</font></a>	
 	-->	
 <!--  <a onClick='if(confirm("Are you sure ?")) window.location="./planningDep/poUnder/poDelete.php?posl=<? echo $typel1[posl];?>&status=<? echo $typel1[status];?>"'  title="Click to Edit Project"><font class='out'>[ Delete ]</font></a> -->
 	
-	 <? if(($loginDesignation=='Accounts Executive' AND $loginProject=="000") AND $typel1[status]=='2'){?>
+	<? if(($loginDesignation=='Procurement Executive') AND $typel1[status]=='1' and !is_po_in_fc_list($typel1[posl]) ){?>
 	<a href="./index.php?keyword=close+purchaseOrder&posl=<? echo $typel1[posl];?>
-	&itemCode=<? echo $typel[itemCode];?>&potype=<? echo $typel1[potype];?>&rate=<? echo $typel[rate];?>&qty=<? echo $typel[qty];?>" class="closeBTN"><font class="outr">[Close]</font></a> 
- <? }?>
+	&itemCode=<? echo $typel[itemCode];?>&potype=<? echo $typel1[potype];?>&rate=<? echo $typel[rate];?>&qty=<? echo $typel[qty];?>" class="closeBTN"><font class="outr">[Close]</font></a>
+ <? } ?>
+
 	
 <?   
 	$tvendor=vendorName($te[3]);
@@ -472,6 +517,7 @@ echo "<br></td>";
 <script>	
 			$(document).ready(function(){
 				var revisionBTN=$("a.closeBTN");
+				var revisionHref="";
 				var fullScreenBlack=$("div.fullScreenBlack");
 				var dialog=$("div#dialog");
 				var closeBTN=$("button#closeBTN");
@@ -480,6 +526,7 @@ echo "<br></td>";
 				var errorMsg=$("div.errorMsg");
 				var Revision2=$("#Revision2");
 				revisionBTN.click(function(){
+					revisionHref=$(this).attr("href");
 					fullScreenBlack.fadeIn();
 					return false;
 				});
@@ -489,9 +536,9 @@ echo "<br></td>";
 				
 				revSubmitBTN.click(function(){
 					var revisionData=revisionTxt.val();
-					if(revisionData.length>15 || 1==1){
+					if(revisionData.length>15){
 						errorMsg.html("");
-						window.location.href=revisionBTN.attr("href")+"&revisionTxt="+revisionData;
+						window.location.href=revisionHref+"&revisionTxt="+encodeURI(revisionData);
 					}else{
 						var msg="Closed reason should be minimum 15 character."
 						errorMsg.html(msg);

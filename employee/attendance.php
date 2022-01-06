@@ -17,6 +17,11 @@ if($_REQUEST["paginationMode"]=="on"){
 <SCRIPT language=JavaScript>document.write(getCalendarStyles());</SCRIPT>
 
 
+<?php
+$todat=todat();
+if($d == date("d/m/Y", strtotime($todat))){ $disFlag = ''; }
+else{ $disFlag = 1; }
+?>
 
 <form name="attendance" action="./employee/attendance.sql.php" method="post">
 <table align="center" width="90%" border="3"  bordercolor="CC9999" cellpadding="3" cellspacing="0" style="border-collapse:collapse">
@@ -24,6 +29,24 @@ if($_REQUEST["paginationMode"]=="on"){
    <? 
 if($loginProject=='000' || $loginDesignation=='Human Resource Executive'){ //open calander for all project 21-10-2017
 ?>
+<?php if($loginUname == 'hre000'){?>
+	<SCRIPT LANGUAGE="JavaScript">
+	var now=new Date();
+	var toDate = now.getFullYear()+'-'+(now.getMonth()+1)+'-'+(now.getDate()+1);     
+	var YesterDate = now.getFullYear()+'-'+(now.getMonth()+1)+'-'+(now.getDate()-2); 
+	//now.setDate(now.getDate()-2);
+	//alert(now);
+	var cal = new CalendarPopup("testdiv1");
+    cal.showNavigationDropdowns();
+		cal.setWeekStartDay(6); // week is Monday - Sunday
+	//	cal.addDisabledDates(null,formatDate(now,"yyyy-MM-dd")); 
+		cal.setCssPrefix("TEST");
+		cal.offsetX = 0;
+		cal.offsetY = 30;
+		cal.addDisabledDates(null, YesterDate);
+		cal.addDisabledDates(toDate, null);
+	</SCRIPT>
+<?php } else{ ?>
 	<SCRIPT LANGUAGE="JavaScript">
 	var now=new Date();
 	//now.setDate(now.getDate()-2);
@@ -36,6 +59,8 @@ if($loginProject=='000' || $loginDesignation=='Human Resource Executive'){ //ope
 		cal.offsetX = 0;
 		cal.offsetY = 30;
 	</SCRIPT>
+<?php } ?>
+
  <td colspan="5">
 	<input type="text" maxlength="10" name="d" value="<? echo $d?>">
 	<a id="anchor" href="#"
@@ -138,10 +163,12 @@ $dd = formatDate($d,$format);
 
 	
 if($loginProject!='000') $project=$loginProject;
- $sqlq="SELECT * FROM employee WHERE designation < '82-00-000' AND designation!='70-01-000' AND location='$project' AND status=0 AND empDate<='$dd' and empId not in (select empId from appaction where action='1' and details='Termination from Job' and actionStatus='0') group by designation,empId";
-// echo $sqlq;
- $sql=mysqli_query($db, $sqlq);
+ //$sqlq="SELECT * FROM employee WHERE /*designation < '82-00-000' AND*/ designation!='70-01-000' AND location='$project' AND status=0 AND empDate<='$dd' and empId not in (select empId from appaction where action='1' and details='Termination from Job' and actionStatus='0') group by designation,empId";
+ $sqlq="SELECT * FROM employee WHERE designation!='70-01-000' AND location='$project' AND status=0 AND empDate<='$dd' and empId not in (select empId from appaction where action='1' and details='Termination from Job' and actionStatus='0') and empId not in (SELECT empId FROM attendance WHERE empId in (SELECT empId FROM employee WHERE designation LIKE '91-01-%' AND salaryType = 'Wages Monthly Master Roll') AND action = 'A' AND  edate > '2021-12-13') group by designation,empId";
 
+//echo $sqlq;
+
+ $sql=mysqli_query($db, $sqlq);
  // navigration coded by suvro
  $page_counter=0;
  $page="";
@@ -171,7 +198,6 @@ if($loginProject!='000') $project=$loginProject;
  $sql=mysqli_query($db, $new_sql);
  }
  
-
  //end of code
  
  
@@ -219,8 +245,11 @@ $sql1="select * from attendance WHERE empId='$typel[empId]' and edate='$dd' and 
 
 ?>
  <td>
+
  	<input type="radio" name="action<? echo $i;?>" value="<? echo $acv1?>"  <? echo $t;?> onClick="attendance.remarks<? echo $i;?>.disabled=true; attendance.remarks<? echo $i;?>.className='disabled'">Absent 
  	<input type="radio" name="action<? echo $i;?>" value="<? echo $acv2?>" <? echo $t1;?> onClick="attendance.remarks<? echo $i;?>.disabled=false;attendance.remarks<? echo $i;?>.className=''" >Present
+
+
 	<!--Added by suvro-->
 <?php
 /*
@@ -266,7 +295,7 @@ $confelit_location='';}
   $date_exp=explode("/",$d);
   $edat11=$date_exp[2]."-".$date_exp[1]."-".$date_exp[0];
   $j=1;
-  $sql_dma="select dmaItemCode,dmaiow,sum(dmaQty) as dmaQty from dma where dmaItemCode >= '82-00-000' AND dmaItemCode <= '94-99-999' and dmaProjectCode='$project' group by dmaItemCode";
+  $sql_dma="select dmaItemCode,dmaiow,sum(dmaQty) as dmaQty from dma where dmaItemCode1 >= '82-00-000' AND dmaItemCode <= '94-99-999' and dmaProjectCode='$project' group by dmaItemCode";
   //$sql_dma="select dmaItemCode,dmaiow,sum(dmaQty) as dmaQty from dma where dmaItemCode >= '85-01-000' AND dmaItemCode <= '94-99-999' and dmaProjectCode='$project' group by dmaItemCode";
   $q_dma=mysqli_query($db,$sql_dma);
   while($r_dma=mysqli_fetch_array($q_dma)){

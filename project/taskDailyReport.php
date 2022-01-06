@@ -209,6 +209,7 @@ $sqlp="SELECT * from `iow` where `iowProjectCode` LIKE '$project' AND iowStatus 
 $sqlrunpp= mysqli_query($db, $sqlp);
 $ree=mysqli_fetch_array($sqlrunpp);
 // print_r($ree);
+echo $sqlp;
 ?>	
 <tr>
 	<td colspan=4 align=center>
@@ -351,6 +352,7 @@ $perDayQty=$perPercent*$dailyNeededP;
 	}
 
 $iowProgressRange=iowActualProgressRange($re[iowId],$project,date("Y-m-d",strtotime("yesterday")),$ed,$re[iowQty],$re[iowUnit],1);
+//$test= iowActualProgressRange($re[iowId],$project,date("Y-m-d",strtotime($d[edate])),date("Y-m-d",strtotime($d[edate])),$re[iowQty],$re[iowUnit],1);
 $iowProgress=iowActualProgress($re[iowId],$project,$ed,$re[iowQty],$re[iowUnit],0);
 	
 // 	echo "//($re[iowId],$project,$ed,$re[iowQty],$re[iowUnit],1)";
@@ -360,11 +362,12 @@ $some_note[1]="Planned Progress: ".$planned_progress_arr[1]."% (".round($planned
 
 /*R3 Planned Progress: 85% (6588 RM), Actual Progress: 57% (4,450 RM )*/
 
-$extra="Planned progress of ".date("d/m/Y",strtotime($ed))." was ".round($dailyNeededP)."% (".round($perPercent)." $re[iowUnit]), workdone ";
+//$extra="Planned progress of ".date("d/m/Y",strtotime($ed))." was rrr ".$dailyNeededP."% (".round($perPercent)." $re[iowUnit]), workdone ";
+$extra="On date planned progress testtt ".number_format($dailyNeededP,2)."% (".round($dailyNeededQty)." $re[iowUnit]), workdone ";
 
 echo ' <font color="#FF0000" style="text-align:right; text-transform:capitalize; font-stretch:wider">'.$some_note[1].'</font>, ';
 echo $extra;
-echo $iowProgressRange;
+echo iowActualProgressRange($re[iowId],$project,date("Y-m-d",strtotime($ed)),date("Y-m-d",strtotime($ed)),$re[iowQty],$re[iowUnit],1);
 // $some_note[1]=$extra;
 ?>
 </td>

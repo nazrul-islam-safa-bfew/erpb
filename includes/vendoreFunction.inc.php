@@ -788,24 +788,51 @@ $rr=mysqli_fetch_array($sqlQuery);
  return $rr[qty];
 }
 ?>
+
 <? 
-function totalReceive($d,$p,$posl,$itemCode){
-//$d=formatDate($d,'Y-m-d');
+function totalReceivePo($d,$p,$posl){
+ //$d=formatDate($d,'Y-m-d');
  include("config.inc.php");
  $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
-	 
 
 $t=explode('_',$posl);
 //print_r($t);
 if($t[3]=='99'){
- $sql="SELECT SUM(receiveQty) as totalReceive from storet$p WHERE todat<='$d' AND  reference='$posl' AND itemCode='$itemCode'";
-// echo "$sql";
+ $sql="SELECT SUM(receiveQty) as totalReceive from storet$p WHERE todat<='$d' AND  reference='$posl'";
+ echo "$sql";
  $sqlQuery=mysqli_query($db, $sql);
  $rr=mysqli_fetch_array($sqlQuery);
  $totalReceive=$rr[totalReceive];
  if($totalReceive>0) return $totalReceive;
  else return 0;
-}else{
+ }else{
+	 $sql="SELECT SUM(receiveQty) as totalReceive From store$p 
+	 where todat<='$d' AND paymentSL='$posl'";
+	echo $sql;
+	 $sqlQuery=mysqli_query($db, $sql);
+	 $rr=mysqli_fetch_array($sqlQuery);
+	 $totalReceive=$rr[totalReceive];
+	 if($totalReceive>0) return $totalReceive;
+	 else return 0;
+ }
+}
+
+function totalReceive($d,$p,$posl,$itemCode){
+ //$d=formatDate($d,'Y-m-d');
+ include("config.inc.php");
+ $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
+
+$t=explode('_',$posl);
+//print_r($t);
+if($t[3]=='99'){
+ $sql="SELECT SUM(receiveQty) as totalReceive from storet$p WHERE todat<='$d' AND  reference='$posl' AND itemCode='$itemCode'";
+ //echo "$sql";
+ $sqlQuery=mysqli_query($db, $sql);
+ $rr=mysqli_fetch_array($sqlQuery);
+ $totalReceive=$rr[totalReceive];
+ if($totalReceive>0) return $totalReceive;
+ else return 0;
+ }else{
 	 $sql="SELECT SUM(receiveQty) as totalReceive From store$p 
 	 where todat<='$d' AND paymentSL='$posl' AND itemCode='$itemCode'";
 	//echo $sql;

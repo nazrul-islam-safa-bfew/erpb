@@ -13,7 +13,7 @@ error_reporting(0);
 <td colspan="2">
 	<select name="pcode" onChange="location.href='./index.php?keyword=item+require&pcode='+fpcode.pcode.options[document.fpcode.pcode.selectedIndex].value";>
 		<?
-		if($loginDesignation!="Chairman & Managing Director")
+		if($loginDesignation!="Chairman & Managing Director" AND $loginDesignation!="Manager Planning & Control" )
 			$pcode=$_SESSION[loginProject];
 
 		include("./includes/config.inc.php");
@@ -253,7 +253,7 @@ $sql="SELECT dmaItemCode,dmaProjectCode,SUM(dmaQty) as dmaTotal,avg(dmaRate) as 
 $sql.=" AND dmaItemCode>='$itemCode1' AND dmaItemCode<='$itemCode2' ";
 
 $sql.=" Group by dmaItemCode ";
-//echo $sql;
+echo $sql;
 $sqlrunq= mysqli_query($db, $sql);
 /* PAge */
 $total_result=mysqli_affected_rows($db);

@@ -345,8 +345,29 @@ if($item_receiving_completation==1){
 ?>
 
    
- <br>PO Amount: <? echo  number_format(poTotalAmount($mr['posl']),2).' dated '.mydate($mr['activeDate']); ?>
-<div class="invoiceList">
+ <br>PO Amount d: <? echo  number_format(poTotalAmount($mr['posl']),2).' dated '.mydate($mr['activeDate']); ?>
+<br>
+<?
+if($poType!=2){
+	$a=explode('_',$posl);
+	$project= $a[1];
+	if(is_po_sch_fail($project,$posl)==1){
+		?>
+			<div style="
+			display: inline-block;
+			padding: 4px;
+			background: #f00;
+			color: #fff;
+			border-radius: 5px;
+			font-size: 10px;
+			">
+				Po schedule fail
+			</div>
+		<?
+	}
+};
+?>
+ <div class="invoiceList">
 <?php
 
 $sqlp1="SELECT s.itemCode,sum(s.qty) qty,p.rate rate, sum(s.qty)*sum(p.rate) total,s.sdate, s.invoice,p.advanceType FROM poschedule s, porder p where p.posl='$posl' and s.posl=p.posl and p.itemCode=s.itemCode group by s.sdate ORDER by s.sdate,s.itemCode DESC";
@@ -355,6 +376,7 @@ $sqlrunp1= mysqli_query($db, $sqlp1);
 $fromDate="0000-00-00";
 $totalInvoiceAmount=0;
 $itemCodeAmount=0;
+$i=1;
 $blankRowData="<p>&nbsp;</p>";
 $st1=$st2=$st3=$st4=$st5=$st6=$poPaidAmount=$totalPoPaidAmount=null;
 $totalPoPaidAmount=$poPaidAmount=poPaidAmount($posl);
@@ -368,7 +390,8 @@ $totalPoPaidAmount=$poPaidAmount=poPaidAmount($posl);
 		$visualDate=mydate($mr['activeDate']);
 		$poAdvanceParcent=$poAdvanceArr['parcent'];
 		
-		echo "<p>Advance <font color='#00f'>$poAdvanceParcent%</font>: Raised on <span>$visualDate</span></p>";
+		//echo "<p>Advance <font color='#00f'>$poAdvanceParcent%</font>: Raised on <span>$visualDate</span></p>";
+		echo "<p>Invoice $i: Raised on <span>$visualDate</span></p>";
 		
 		$advancePayableAmount=number_format($advancePayableAmount,2);
 		$RowData=$advancePayableAmount>0 ? "<p><font color='#00f'>$advancePayableAmount</font></p>" : "<p>&nbsp;</p>";
@@ -388,11 +411,24 @@ $st6.=$blankRowData;$st5.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;
 	//advance info end
 
 // if($advancePayableAmount>0 && $poAdvanceArr["parcent"]>0) //only advance payment
+if($advancePayableAmount>0 && $poAdvanceArr["parcent"]>0){
+	$i=1;
+}       
+else
+$i=0;
+
 while($typel2=mysqli_fetch_array($sqlrunp1)){
-	$i=0;
+	
 	$edate=$typel2['sdate'];
 	$indate=$mr['activeDate']; 
 	$itemCode=$typel2['itemCode'];
+
+	$posl = $mr['posl'];
+	$typell=is_po_closed($posl);
+		 if($typell)$flag=1;
+		 else
+		 $flag=0;
+
 
   $InvoiceDiff=(strtotime($todat)-strtotime($edate))/86400;
 	if($poType==1 || $poType==3){
@@ -409,7 +445,7 @@ while($typel2=mysqli_fetch_array($sqlrunp1)){
 		$invoiceActualAmount=round(floatval($invoiceAmount),2);
 		
 		unset($itemPOArray);
-
+        
 		$poIsClosedQty=poIsClosedQty($posl,$itemCode);
 		if($poIsClosedQty>0 && $poType==1)
 			echo $itemCodeAmount+=po_mat_receiveExt($itemCode,$posl,$location);
@@ -420,17 +456,26 @@ while($typel2=mysqli_fetch_array($sqlrunp1)){
 		 else{$invoiceActualAmount-=$poPaidAmount;$poPaidAmount=0;}
 	 }
 	}
-		
+	
 	$invoiceActualAmount-=$poAdvanceParcent>0 ? pOAdvanceAdjustment($invoiceActualAmount,$poAdvanceParcent,$poAdvanceArr["amount"],$typel2['advanceType']) : 0; //advance adjustment
-
 		$totalInvoiceAmount+=$invoiceActualAmount; //total amount collection
 
-echo "<p>Invoice $i: Raised on <span>$visualDate</span>";
+		
 
+echo "<p>Invoice $i: Raised on <span>$visualDate</span>";
+echo "<br>";
+//echo "Check".is_po_sch_fail(220,$posl);
+
+
+//echo $i++;
 vendorpayable_approved_function($posl,$indate,$mr,$location);
 		$formatedInvoiceActualAmount=number_format($invoiceActualAmount,2);
+		if($flag==1){
+
+			$RowData=$invoiceActualAmount>0 ? "<p><font color='#00f'></font></p>" : "<p>&nbsp;</p>";
+		}
+        else
 		$RowData=$invoiceActualAmount>0 ? "<p><font color='#00f'>$formatedInvoiceActualAmount</font></p>" : "<p>&nbsp;</p>";
-		
 		
 if($InvoiceDiff>=91){$st6.=$RowData;	$st5.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;$st2.=$blankRowData;$st1.=$blankRowData; $ct91+=$invoiceActualAmount;}
  elseif($InvoiceDiff>=61) {$st5.=$RowData;
@@ -524,10 +569,15 @@ $st6.=$blankRowData;$st5.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;
 	$ctClosingAmount+=$closingAmount;
 	
 // 	echo "$posl po receive=$actualPoAmount c/l $closingAmount f/l $FinalAmount<br>";
-}
+} //whileee
+
+
+
 ?>
+
 </div>
 	</td>
+
  <td align="right" class="invoiceList"><? if($st1)echo $st1;?></td>
  <td align="right" class="invoiceList"><? if($st2)echo $st2;?></td>
  <td align="right" class="invoiceList"><? if($st3)echo $st3;?></td>
@@ -561,22 +611,125 @@ $payableSummery+=$currentPayable;
 }
 	 ?> 
  </td>
+
+
+
+
 </tr>
+
+
+
+
+<?
+
+$localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
+include($localPath."/includes/config.inc.php"); //datbase_connection
+$db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
+
+$posl = $mr['posl'];
+$a = explode('_',$posl);
+$p = $a[1];
+$sqlp = "SELECT * FROM `po_force_close_approval` WHERE is_complete =1 and posl = '$posl'";
+//echo $sqlp;
+$sqlrunp= mysqli_query($db, $sqlp);
+$typel = is_po_closed($posl);
+ while($typel= mysqli_fetch_array($sqlrunp)){
+	 $i++;
+	 if($typel){
+		
+	?>
+			<tr align="left" class="invoiceList">
+				<td>
+					<? echo "<p>Invoice $i: Raised on <span>$typel[edate]</span>"; ?>
+				</td>
+				<td colspan="6" style='border-right:none'>
+					<?
+					echo "<p>Paid amount is: $typel[text]"; 
+					echo "<br>";
+					$poTotalRecieve = number_format(poTotalreceive($posl,$p),2);
+					$poPaidAmount =number_format(poPaidAmount($posl),2);
+					echo "<p>Recieve amount : <span>$poTotalRecieve</span> , Paid amount : <span>$poPaidAmount</span> ";
+					//echo "<br>";
+					//echo "<p>Paid amount : <span>$poPaidAmount</span>";
+					?>
+				</td>
+				<td colspan="2" style='border-left:none;border-right:none'>
+					<?
+					$poTotalRecieve = poTotalreceive($posl,$p);
+					$poPaidAmount = poPaidAmount($posl);
+					$amount = number_format(($poTotalRecieve-$poPaidAmount),2);
+					echo "<p>Force close amount : <span>$amount</span>"; 
+					
+					?>
+				</td>
+			</tr>
+
+<?	    
+    }  
+}
+
+?>
+
+
+
+
+
 <tr>
-	<td colspan="6" align="right">
+	<td colspan="6" align="right">	
+<?php
+//Total Amount Information	
 	
+	if($poIsClosedQty>0 && ($itemCodeAmount>0 || $poType==3)){
+		
+	if($poType==3){
+		$itemCodeAmount+=subWorkTotalReceive_Po($posl);
+	}
+		$sql_aux="select * from auxiliary_vendorpayment where posl like '$posl'";
+		$q_aux=mysqli_query($db,$sql_aux);
+		$row_aux=mysqli_fetch_array($q_aux);
+
+	//	echo "<p class='closedClass'>Force Close</p>"; //closing row
+		if($mr[closedTxt])echo "<b>Reason: </b><i>$mr[closedTxt]</i>";
+			echo "<br>";
+			if($row_aux["amount"])
+				echo "F.C amount: ".number_format($row_aux["amount"],2)." ";
+			
+			if($row_aux["edate"])
+				echo "F.C Date: ".date("d/m/Y",strtotime($row_aux["edate"]));
+		$FinalAmountRow="<p><b><font color='#00f' ";
+		
+		if($isClosingVerified){
+			$i++;
+			vendorpayable_approved_function($posl,"",$mr,$location,"c");	$FinalAmountRow.=" onclick=\"add_this_in_function(".str_replace(',','',number_format($FinalAmount,2)).",$r,the_row_data_switch[$r$i],$r$i,7)\"";
+		}
+		
+		$FinalAmountRow.=">".number_format($FinalAmount,2)."</font></b></p>";
+	}else{
+		$FinalAmountRow=$blankRowData;
+	} ?></td>
+	<td align=right><?php	echo $FinalAmountRow; ?></td>
+	<td></td>
+	<td></td>
+	</tr>
+
+
+
+
+
+
+<tr>
+	<td colspan="6" align="right">  
 <?php
 // Total Amount Information
 	
 
-	
 	if($poIsClosedQty>0 && ($itemCodeAmount>0 || $poType==3)){
 		
 		if($poType==3){
 			$itemCodeAmount+=subWorkTotalReceive_Po($posl);
 		}
 		
-		echo "<p class='closedClass'>Forced Closed</p>"; //closing row
+	//	echo "<p class='closedClass'>Forced Closed</p>"; //closing row
 		$isClosingVerified=isClosingVerified($posl);
 		if($isClosingVerified || 1==1){
 			vendorpayable_approved_function($posl,"",$mr,$location,"c");
@@ -590,7 +743,7 @@ $payableSummery+=$currentPayable;
 	}
 		
 		?></td>
-	<td align=right><?php	echo $FinalAmountRow; ?></td>
+	<td align=right><?php $FinalAmountRow; ?></td>
 	<td></td>
 	</tr>
 	

@@ -54,10 +54,37 @@ $sqlrunp= mysqli_query($db, $sqlp);
  echo ">$typel[vname]</option>  ";
  }
 ?>
-
 	 </select>
 	</td>
+ </tr>
+<tr>
+<td>Select Project</td>
+    <td>
+    <select name="pcode">
+          <option value="">All Project</option>
+          <?
+            include("./includes/config.inc.php");
+          $db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
+          
+          if($loginDesignation=='Chairman & Managing Director' OR $loginDesignation=='Construction Manager' OR $loginDesignation=='Manager Planning & Control' OR $loginDesignation=='Accounts Manager' OR $loginDesignation=='Human Resource Manager'){
+            //$project=$loginProject;
+            $sqlp = "SELECT `pcode`,pname from `project` ORDER by pcode ASC";
+          }else
+          $sqlp = "SELECT * from `project` where pcode='$loginProject'  ORDER  by  pcode ASC";
+            
+          //echo $sqlp;
+          $sqlrunp= mysqli_query($db, $sqlp);
 
+          while($typel= mysqli_fetch_array($sqlrunp))
+          {
+            echo "<option value='".$typel[pcode]."'";
+            if($pcode==$typel[pcode])  echo " SELECTED";
+            echo ">$typel[pcode]--$typel[pname]</option>  ";
+          }
+          ?>
+      </select>
+    </td>
+    
  </tr>
  <tr><td colspan="4" align="center"><input type="button" name="go" value="Go" onClick="mr.submit();"></td></tr>
 </table>
@@ -73,13 +100,13 @@ $sqlrunp= mysqli_query($db, $sqlp);
 <table align="center" width="95%" border="1" bordercolor="#ADA5F8" cellpadding="0" cellspacing="0" style="border-collapse:collapse">
 <? 
 //$sql="SELECT DISTINCT reference,todat,paymentSL from store$loginProject WHERE".
-$sql="SELECT DISTINCT posl from subut WHERE pcode='$loginProject' AND 
+$sql="SELECT DISTINCT posl from subut WHERE pcode='$pcode' AND 
  subut.edate between '$fromDate'  AND '$toDate'";
 if($vid){
- $sql.=" AND posl like '%_".$loginProject."%_$vid'";
+ $sql.=" AND posl like '%_".$pcode."%_$vid'";
 }
 $sql.=" AND posl like 'PO_%' ORDER by posl ASC";
-// echo $sql.'<br>';
+ //echo $sql.'<br>';
 $sqlq=mysqli_query($db, $sql);
 while($mr=mysqli_fetch_array($sqlq)){
 $tt=1;

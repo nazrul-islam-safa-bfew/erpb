@@ -96,7 +96,7 @@ $sqlp.=" ORDER BY position ASC";
 $sqlrunp= mysqli_query($db, $sqlp);
 }
 }
-// echo "$sqlp<br>";
+ echo "$sqlp<br>";
 // echo mysqli_affected_rows($db);
 // echo mysqli_error($db);
 ?>

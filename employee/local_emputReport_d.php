@@ -150,7 +150,7 @@ $workt=dailywork($empId,$reut[edate],'H',$project);
 else 
 	$overtimet = $toDaypresent-(8*3600);*/
 	$overtimet = $toDaypresent-(8*3600);
- 
+
 
 if($overtimet<0) $overtimet=0;
 $idlet=$toDaypresent-$workt;

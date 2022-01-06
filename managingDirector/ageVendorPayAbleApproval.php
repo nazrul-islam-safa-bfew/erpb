@@ -1,4 +1,5 @@
 <?php 
+error_reporting(E_ERROR | E_PARSE);
 include("./includes/config.inc.php");
 
 if($loginDesignation=="Chairman & Managing Director"){$extraSqlU=" ,approved=1 ";$extraSqlI=" ,approved ";$valSql=",1";}
@@ -120,37 +121,64 @@ $r=0;
 		 </td>
 			</tr>
 		
-		
-		<tr>
-   <th width="200">Select Vendor</th>
- <td >
+<tr>
+	<th width="200">Select Project</th>
+	<td>
+		<select name="pcode" onChange="location.href='./index.php?keyword=aged+vendor+payable+approval&pcode='+searchBy.pcode.options[document.searchBy.pcode.selectedIndex].value";>
+		<option value="">----</option>
+		<?
+		$sqlp = "SELECT `pcode`,pname from `project`";
+		if($loginDesignation=="Procurement Executive")
+		$sqlp.=" where pcode='$loginProject' ";
+		$sqlp.=" ORDER by pcode ASC";
+		//echo $sqlp;
+		$sqlrunp= mysqli_query($db, $sqlp);
+		while($typel= mysqli_fetch_array($sqlrunp))
+		{ 
+			echo "<option value='".$typel[pcode]."'";
+			if($pcode==$typel[pcode])  echo " SELECTED";
+			if(vendorApprovalCounterProject($typel[pcode],"cr")>0)echo " style=\"background:#ddd; color:red; font-size:14px;\" ";
+			echo ">$typel[pcode]--$typel[pname]--(".vendorApprovalCounterProject($typel[pcode],"cr")." nos)  </option>  ";
+		}
+		?>
+		</select>
+	</td>
+</tr>
 
-<select name="vid">
- <option value="">All Vendor</option>
-<?
-include("./includes/config.inc.php");
-$db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
-	
-$sqlp = "SELECT distinct vendor.vid,vendor.vname,porder.vid from `vendor`,porder WHERE vendor.vid=porder.vid ORDER by vendor.vname ASC ";
-// echo $sqlp;
-$sqlrunp= mysqli_query($db, $sqlp);
+<tr>
+	<th width="200">Select Vendor</th>
+	<td >
+		<select name="vid">
+		<option value="">All Vendor</option>
+		<?
+		include("./includes/config.inc.php");
+		$db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 
- while($typel= mysqli_fetch_array($sqlrunp))
-{
- echo "<option value='".$typel[vid]."'";
- if(vendor_payable_approved_counter($typel[vid],$_POST["pcode"])>0 && $loginDesignation=="Chairman & Managing Director")echo " style=\"background:#ddd; color:red; font-size:14px;\" ";
- if($vid==$typel[vid]) echo " SELECTED ";
-echo ">$typel[vname] ";
-if($loginDesignation=="Chairman & Managing Director")
-	echo "--(".vendor_payable_approved_counter($typel[vid],$_POST["pcode"])." nos) ";
-echo "</option>  ";
- }
-?>
-	</select>
-</td>
-<td rowspan="2"><input type="submit" name="search" value="Search" style="height:50px;width:100"></td>
+		$sqlp = "SELECT distinct vendor.vid,vendor.vname,porder.vid, porder.location 
+																from `vendor`,porder 
+																WHERE vendor.vid=porder.vid and porder.location = $pcode
+																ORDER by vendor.vname ASC ";
+		// echo $sqlp;
+		$sqlrunp= mysqli_query($db, $sqlp);
 
- </tr>
+		while($typel= mysqli_fetch_array($sqlrunp))
+		{
+			echo "<option value='".$typel[vid]."'";
+			if(vendor_payable_approved_counter($typel[vid],$_POST["pcode"])>0 && $loginDesignation=="Chairman & Managing Director")echo " style=\"background:#ddd; color:red; font-size:14px;\" ";
+			if($vid==$typel[vid]) echo " SELECTED ";
+			echo ">$typel[vname] ";
+			if($loginDesignation=="Chairman & Managing Director")
+			echo "--(".vendor_payable_approved_counter($typel[vid],$_POST["pcode"])." nos) ";
+			echo "</option>  ";
+		}
+		?>
+		</select>
+	</td>
+	<td rowspan="2"><input type="submit" name="search" value="Search" style="height:50px;width:100"></td>
+</tr>
+
+<br>
+
 		
 		
 <!-- 		
@@ -165,32 +193,11 @@ echo "</option>  ";
 
 
 			</tr> -->
-			<tr>
-				<th width="200">Select Project</th>
-				<td>
-<select name="pcode">
-<?
-$sqlp = "SELECT `pcode`,pname from `project`";
-if($loginDesignation=="Procurement Executive")
-	$sqlp.=" where pcode='$loginProject' ";
-$sqlp.=" ORDER by pcode ASC";
-//echo $sqlp;
-$sqlrunp= mysqli_query($db, $sqlp);
- while($typel= mysqli_fetch_array($sqlrunp))
-{ 
- echo "<option value='".$typel[pcode]."'";
- if($pcode==$typel[pcode])  echo " SELECTED";
- if(vendorApprovalCounterProject($typel[pcode],"cr")>0)echo " style=\"background:#ddd; color:red; font-size:14px;\" ";
- echo ">$typel[pcode]--$typel[pname]         --(".vendorApprovalCounterProject($typel[pcode],"cr")." nos)  </option>  ";
- }
-?>
-	</select>
-				</td>
-
-			</tr>
+			
 
 	</table>
 </form>
+
 	<? if($search){
 if($vid=='') {$theVid=$vid='%';}
 if($pcode=='') $pcode='%';
@@ -305,6 +312,7 @@ $tt=1;
  $posl=$mr[posl]; 
  $poType=$mr[poType]; 
 
+
 // echo "<br>===================$posl=======================<br>"; 
  
 $dat=poInvoiceDate($posl); // get all invoice date into $dat array
@@ -329,7 +337,7 @@ $diff=(strtotime($todat)-strtotime($pdate))/86400;
 //  echo "=======". $data[$i][1]."========"; 
  
 
- if($diff>=91) $st6+=$data[$i][1]; 
+ if($diff>=91) $st6=$data[$i][1]; 
  elseif($diff>=61) $st5+=$data[$i][1];
   elseif($diff>=31) $st4+=$data[$i][1];
     elseif($diff>=16) $st3+=$data[$i][1];
@@ -394,7 +402,7 @@ if($item_receiving_completation==1){
  $data[$i][1]=$haveReceiveAmount; 
 // echo "=====scheduleReceiveperInvoiceAmount===<<".$data[$i][1]."====".$data[$i][0]."====>>";
 
- if($diff>=91) $st6+=$data[$i][1];
+ if($diff>=91) $st6=$data[$i][1];
  elseif($diff>=61) $st5+=$data[$i][1];
   elseif($diff>=31) $st4+=$data[$i][1];
     elseif($diff>=16) $st3+=$data[$i][1];
@@ -461,11 +469,32 @@ if($item_receiving_completation==1){
 // 				echo "<div style='background: #077900;color: #fff;display: inline-block;padding: 3px;border-radius: 5px;float: right;font-size: 12px; margin-top:2px;'>Verified</div>";
 // 			}
 	
+
+
 	?>
 
    
  <br>PO Amount: <? echo  number_format(poTotalAmount($mr[posl]),2).' dated '.mydate($mr[activeDate]); ?>
-<div class="invoiceList">
+<br>
+<?
+	$a=explode('_',$posl);
+	$project= $a[1];
+	if(is_po_sch_fail($project,$posl)==1){
+		?>
+			<div style="
+			display: inline-block;
+			padding: 4px;
+			background: #f00;
+			color: #fff;
+			border-radius: 5px;
+			font-size: 10px;
+			">
+				Po schedule fail
+			</div>
+		<?
+	};
+?>
+ <div class="invoiceList">
 <?php
 $sqlp1="SELECT s.itemCode,sum(s.qty) qty,p.rate rate, sum(s.qty)*sum(p.rate) total,s.sdate, s.invoice,p.advanceType FROM poschedule s, porder p  where p.posl='$posl' and s.posl=p.posl and p.itemCode=s.itemCode group by s.sdate  ORDER by s.sdate,s.itemCode DESC";
 // 	echo "$sqlp1";
@@ -476,7 +505,11 @@ $itemCodeAmount=0;
 $blankRowData="<p>&nbsp;</p>";
 $st1=$st2=$st3=$st4=$st5=$st6=$poPaidAmount=$totalPoPaidAmount=null;
 $totalPoPaidAmount=$poPaidAmount=poPaidAmount($posl);
-	
+$i=1;
+
+
+
+
 	//advance info
 	$poAdvanceArr=getPOadvanceinfo($posl);
 	$advancePayableAmount=$poAdvanceArr["amount"]-$totalPoPaidAmount;
@@ -486,46 +519,55 @@ $totalPoPaidAmount=$poPaidAmount=poPaidAmount($posl);
 		$visualDate=mydate($mr[activeDate]);
 		$poAdvanceParcent=$poAdvanceArr[parcent];
 		
-		echo "<p>Advance <font color='#00f'>$poAdvanceParcent%</font>: Raised on <span>$visualDate</span></p>";
-		
+		//echo "<p>Advance <font color='#00f'>$poAdvanceParcent%</font>: Raised on <span>$visualDate</span></p>";
+		echo "<p>Invoice $i: Raised on <span>$visualDate</span></p>";
+
 		$advancePayableAmount=number_format($advancePayableAmount,2);
 		$RowData=$advancePayableAmount>0 ? "<p><font color='#00f'>$advancePayableAmount</font></p>" : "<p>&nbsp;</p>";
 		
-if($InvoiceDiff>=91) {$st6.=$RowData;	$st5.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;$st2.=$blankRowData;$st1.=$blankRowData;}
- elseif($InvoiceDiff>=61) {$st5.=$RowData;
-$st6.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;$st2.=$blankRowData;$st1.=$blankRowData;}
-  elseif($InvoiceDiff>=31) {$st4.=$RowData;
-$st6.=$blankRowData;$st5.=$blankRowData;$st3.=$blankRowData;$st2.=$blankRowData;$st1.=$blankRowData;}
-    elseif($InvoiceDiff>=16) {$st3.=$RowData;
-$st6.=$blankRowData;$st5.=$blankRowData;$st4.=$blankRowData;$st2.=$blankRowData;$st1.=$blankRowData;}
-	  elseif($InvoiceDiff>=8) {$st2.=$RowData;
-$st6.=$blankRowData;$st5.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;$st1.=$blankRowData;}
-	    else {$st1.=$RowData;
-$st6.=$blankRowData;$st5.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;$st2.=$blankRowData;}
+		if($InvoiceDiff>=91) {$st6.=$RowData;	$st5.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;$st2.=$blankRowData;$st1.=$blankRowData;}
+		elseif($InvoiceDiff>=61) {$st5.=$RowData;
+		$st6.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;$st2.=$blankRowData;$st1.=$blankRowData;}
+		elseif($InvoiceDiff>=31) {$st4.=$RowData;
+		$st6.=$blankRowData;$st5.=$blankRowData;$st3.=$blankRowData;$st2.=$blankRowData;$st1.=$blankRowData;}
+			elseif($InvoiceDiff>=16) {$st3.=$RowData;
+		$st6.=$blankRowData;$st5.=$blankRowData;$st4.=$blankRowData;$st2.=$blankRowData;$st1.=$blankRowData;}
+			elseif($InvoiceDiff>=8) {$st2.=$RowData;
+		$st6.=$blankRowData;$st5.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;$st1.=$blankRowData;}
+				else {$st1.=$RowData;
+		$st6.=$blankRowData;$st5.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;$st2.=$blankRowData;}
 	}
 	//advance info end
 	
-	
-	
-	
-
 $poIsClosedQty=poIsClosedQty($posl);
 $isClosingVerified=isClosingVerified($posl,true);
 	
+if($advancePayableAmount>0 && $poAdvanceArr["parcent"]>0){
+	$i=1;
+}
+else
+$i=0;
+
 while($typel2=mysqli_fetch_array($sqlrunp1)){
 	$invoiceAmount=0;
-	$i=0;
+	//$i=0;
 	$edate=$typel2[sdate];
 	$indate=$mr[activeDate]; 
 	$itemCode=$typel2[itemCode]; 
 	$vendorHiddenRow="<input type=\"hidden\" name=\"vid_".$r."\" value=\"".$vid."\" />";
 	
+	$posl = $mr['posl'];
+	$typell=is_po_closed($posl);
+		 if($typell)$flag=1;
+		 else
+		 $flag=0;
+	
+
   $InvoiceDiff=(strtotime($todat)-strtotime($edate))/86400;
 	if($poType==1 || $poType==3){
 		$InvoiceDiff-=creditFacilityDays($posl);
 		$i++;
 		$visualDate=date("d-m-Y",strtotime($edate));
-		
 
 		foreach($itemPOArray as $itemPOa){
 			$invoiceAmount+=$itemPOa[1];
@@ -552,11 +594,7 @@ while($typel2=mysqli_fetch_array($sqlrunp1)){
 
 		echo "<p>Invoice $i: Raised on <span>$visualDate</span>";
 		
-		
-		
 		vendorpayable_approved_function($posl,$indate,$mr,$location);
-		
-		
 		
 		$formatedInvoiceActualAmount=number_format($invoiceActualAmount,2);
 		
@@ -564,16 +602,37 @@ while($typel2=mysqli_fetch_array($sqlrunp1)){
 		
 if($poIsClosedQty<1)
 $RowData.=" onclick=\"add_this_in_function(".str_replace(',','',number_format($invoiceActualAmount,2)).",$r,the_row_data_switch[$r$i],$r$i,7)\"";
+        
+
+//$formatedInvoiceActualAmount++;
+
+// if($formatedInvoiceActualAmount>1){
+// $RowData.=">$formatedInvoiceActualAmount</font></p>
+// <input type=\"hidden\" name=\"posl_$r\" value=\"$mr[posl]\" />";
+// }
+// else
+// $RowData.=">sdfsf</font></p>
+// <input type=\"hidden\" name=\"posl_$r\" value=\"$mr[posl]\" />";
+
+echo "sdsd".$flag;
+if($flag==1){
+	$RowData.="></font></p>
+		 <input type=\"hidden\" name=\"posl_$r\" value=\"$mr[posl]\" />";
+
+}
+else
 
 $RowData.=">$formatedInvoiceActualAmount</font></p>
-
-<input type=\"hidden\" name=\"posl_$r\" value=\"$mr[posl]\" />";
+	 <input type=\"hidden\" name=\"posl_$r\" value=\"$mr[posl]\" />";
 
 $get_row_data=check_theValue($posl,$vid,'7',$SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
 $RowData.="<input type=\"hidden\" value=\"$get_row_data[5]\" name=\"'seven$r\" id=\"".$r."__7\" />";
 	
 
-if($InvoiceDiff>=91) {$st6.=$RowData;	$st5.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;$st2.=$blankRowData;$st1.=$blankRowData;}
+
+
+
+if($InvoiceDiff>=91) {$st6.=$RowData; $st5.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;$st2.=$blankRowData;$st1.=$blankRowData;}
  elseif($InvoiceDiff>=61) {$st5.=$RowData;
 $st6.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;$st2.=$blankRowData;$st1.=$blankRowData;}
   elseif($InvoiceDiff>=31) {$st4.=$RowData;
@@ -585,7 +644,11 @@ $st6.=$blankRowData;$st5.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;
 	    else {$st1.=$RowData;
 $st6.=$blankRowData;$st5.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;$st2.=$blankRowData;}
 
-	}elseif($poType==2){
+}
+	
+	
+	
+	elseif($poType==2){
 		if($poIsClosedQty>0)
 			$itemCodeAmount+=eqpoActualReceiveAmountItemCode($posl,$itemCode);
 		
@@ -596,7 +659,7 @@ $st6.=$blankRowData;$st5.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;
 			$visualDate=date("d-m-Y",strtotime($indate));
 			if(strtotime($todat)<strtotime($indate))continue; //if end date exceed the current date
 			$invoiceActualAmount=round(eqpoActualReceiveAmount_date($posl,$fromDate,$indate),2);
-			echo "<p>Invoice $i: Raised on <span>$visualDate</span>"; 
+			echo "<p>Invoice $i: Raised on<span>$visualDate</span>"; 
 // 			echo $invoiceActualAmount>0 ? "<font style='float:right'>Tk. <font color='#00f'>$invoiceActualAmount</font></font></p>" : "</p>";
 
  if($poPaidAmount>0){
@@ -605,7 +668,7 @@ $st6.=$blankRowData;$st5.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;
 		 else{$invoiceActualAmount-=$poPaidAmount;$poPaidAmount=0;}
 	 }
 }
-				$invoiceActualAmount-=$poAdvanceParcent>0 ? pOAdvanceAdjustment($invoiceActualAmount,$poAdvanceParcent,$poAdvanceArr["amount"],$typel2[advanceType]) : 0; //advance adjustment
+			$invoiceActualAmount-=$poAdvanceParcent>0 ? pOAdvanceAdjustment($invoiceActualAmount,$poAdvanceParcent,$poAdvanceArr["amount"],$typel2[advanceType]) : 0; //advance adjustment
 
 $totalInvoiceAmount+=$invoiceActualAmount; //total amount collection
 vendorpayable_approved_function($posl,$indate,$mr,$location);
@@ -613,32 +676,31 @@ vendorpayable_approved_function($posl,$indate,$mr,$location);
 			$formatedInvoiceActualAmount=number_format($invoiceActualAmount,2);
 			if($invoiceActualAmount>0){
 				$RowData="<p><font id='".$r."7' color='#00f' ";
-if($poIsClosedQty<1)
-$RowData.=" onclick=\"add_this_in_function(".str_replace(',','',number_format($invoiceActualAmount,2)).",$r,the_row_data_switch[$r$i],$r$i,7)\"";
-				
-$RowData.=">$formatedInvoiceActualAmount</font></p>
-<input type=\"hidden\" name=\"posl_$r\" value=\"$mr[posl]\" />";
+				if($poIsClosedQty<1)
+				$RowData.=" onclick=\"add_this_in_function(".str_replace(',','',number_format($invoiceActualAmount,2)).",$r,the_row_data_switch[$r$i],$r$i,7)\"";
+								
+				$RowData.=">$formatedInvoiceActualAmount</font></p>
+				<input type=\"hidden\" name=\"posl_$r\" value=\"$mr[posl]\" />";
 
-$get_row_data=check_theValue($posl,$vid,'7',$SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
-$RowData.="<input type=\"hidden\" value=\"$get_row_data[5]\" name=\"'seven$r\" id=\"".$r."__7\" />";
-}else 
-	$RowData.="<p>&nbsp;</p>";
+				$get_row_data=check_theValue($posl,$vid,'7',$SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
+				$RowData.="<input type=\"hidden\" value=\"$get_row_data[5]\" name=\"'seven$r\" id=\"".$r."__7\" />";
+			}else 
+				$RowData.="<p>&nbsp;</p>";
 
+		$InvoiceDiff=(strtotime($todat)-strtotime($indate))/86400;
+		$InvoiceDiff-=creditFacilityDays($posl);
 
-$InvoiceDiff=(strtotime($todat)-strtotime($indate))/86400;
-$InvoiceDiff-=creditFacilityDays($posl);
-
-if($InvoiceDiff>=91) {$st6.=$RowData;	$st5.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;$st2.=$blankRowData;$st1.=$blankRowData;}
- elseif($InvoiceDiff>=61) {$st5.=$RowData;
-$st6.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;$st2.=$blankRowData;$st1.=$blankRowData;}
-  elseif($InvoiceDiff>=31) {$st4.=$RowData;
-$st6.=$blankRowData;$st5.=$blankRowData;$st3.=$blankRowData;$st2.=$blankRowData;$st1.=$blankRowData;}
-    elseif($InvoiceDiff>=16) {$st3.=$RowData;
-$st6.=$blankRowData;$st5.=$blankRowData;$st4.=$blankRowData;$st2.=$blankRowData;$st1.=$blankRowData;}
-	  elseif($InvoiceDiff>=8) {$st2.=$RowData;
-$st6.=$blankRowData;$st5.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;$st1.=$blankRowData;}
-	    else {$st1.=$RowData;
-$st6.=$blankRowData;$st5.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;$st2.=$blankRowData;}
+		if($InvoiceDiff>=91) {$st6.=$RowData;	$st5.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;$st2.=$blankRowData;$st1.=$blankRowData;}
+		elseif($InvoiceDiff>=61) {$st5.=$RowData;
+		$st6.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;$st2.=$blankRowData;$st1.=$blankRowData;}
+		elseif($InvoiceDiff>=31) {$st4.=$RowData;
+		$st6.=$blankRowData;$st5.=$blankRowData;$st3.=$blankRowData;$st2.=$blankRowData;$st1.=$blankRowData;}
+			elseif($InvoiceDiff>=16) {$st3.=$RowData;
+		$st6.=$blankRowData;$st5.=$blankRowData;$st4.=$blankRowData;$st2.=$blankRowData;$st1.=$blankRowData;}
+			elseif($InvoiceDiff>=8) {$st2.=$RowData;
+		$st6.=$blankRowData;$st5.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;$st1.=$blankRowData;}
+				else {$st1.=$RowData;
+		$st6.=$blankRowData;$st5.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;$st2.=$blankRowData;}
 			
 			$RowData="";
 			$fromDate=$indate;
@@ -650,14 +712,14 @@ $st6.=$blankRowData;$st5.=$blankRowData;$st4.=$blankRowData;$st3.=$blankRowData;
 }
 ?>
 </div>
-	</td>
+</td>
  <td align="right" class="invoiceList"><? if($st1)echo $st1;echo $vendorHiddenRow;?></td>
  <td align="right" class="invoiceList"><? if($st2)echo $st2;?></td>
  <td align="right" class="invoiceList"><? if($st3)echo $st3;?></td>
  <td align="right" class="invoiceList"><? if($st4)echo $st4;?></td>
  <td align="right" class="invoiceList"><? if($st5)echo $st5;?></td>
  <td align="right" class="invoiceList"><? if($st6)echo $st6;?></td>
-	<td align="right">
+<td align="right">
 <?
 $sqlp = "SELECT * from `popayments` WHERE (posl LIKE '". $mr[posl]."') AND (paidAmount < totalAmount) order by popID ASC ";
 //echo $sqlp;
@@ -668,7 +730,6 @@ while($re_s=mysqli_fetch_array($sqlrunp)){
 
 if($pcode AND $vid){
 
-
 $potype=poType($re_s[posl]);
 $t=explode('_',$re_s[posl]);
 if($potype==1) $receiveAmount=poTotalreceive($re_s[posl],$t[1]);
@@ -676,20 +737,77 @@ if($potype==2) $receiveAmount=eqpoActualReceiveAmount($re_s[posl]);
 if($potype==3) $receiveAmount=subWorkTotalReceive_Po($re_s[posl]);
 $paid=poPaidAmount($re_s[posl]);
 
-	$currentPayable=foodinfAmount($re_s[totalAmount],$receiveAmount,$paid,$re_s[posl]); 
-   $currentPayable=round($currentPayable,2);
+$currentPayable=foodinfAmount($re_s[totalAmount],$receiveAmount,$paid,$re_s[posl]); 
+$currentPayable=round($currentPayable,2);
   
   } 
   
-
  echo number_format($currentPayable,2)."<br>";
    }?>
-						</td>
+	</td>
  	<td align="right">
 		<input type="text" style="text-align:right" id="approved_amount_<?php echo $r; ?>" name="approved_amount_<?php echo $r; ?>" value="<?php if($get_row_data['amount']){echo $get_row_data['amount'];$grand_amount=$get_row_data['amount']+$grand_amount;} else echo 0;?>"
  <?php //if(!is_vendor_payable_approved($posl) && !$isClosingVerified)echo "readonly"; ?> class="approved_amount" />
 	</td>
 </tr>
+
+
+
+
+
+
+
+<?
+
+$localPath = $_SERVER["DOCUMENT_ROOT"]."/erpb";
+include($localPath."/includes/config.inc.php"); //datbase_connection
+$db = mysqli_connect($SESS_DBHOST, $SESS_DBUSER,$SESS_DBPASS,$SESS_DBNAME);
+
+$posl = $mr['posl'];
+$a = explode('_',$posl);
+$p = $a[1];
+$sqlp = "SELECT * FROM `po_force_close_approval` WHERE is_complete =1 and posl = '$posl'";
+//echo $sqlp;
+$sqlrunp= mysqli_query($db, $sqlp);
+$typel = is_po_closed($posl);
+ while($typel= mysqli_fetch_array($sqlrunp)){
+	 $i++;
+	 if($typel){
+		
+	?>
+			<tr align="left" class="invoiceList">
+				<td>
+					<? echo "<p>Invoice $i: Raised on <span>$typel[edate]</span>"; ?>
+				</td>
+				<td colspan="6" style='border-right:none'>
+					<?
+					echo "<p>Paid amount is: $typel[text]"; 
+					echo "<br>";
+					$poTotalRecieve = number_format(poTotalreceive($posl,$p),2);
+					$poPaidAmount =number_format(poPaidAmount($posl),2);
+					echo "<p>Recieve amount : <span>$poTotalRecieve</span> , Paid amount : <span>$poPaidAmount</span> ";
+					//echo "<br>";
+					//echo "<p>Paid amount : <span>$poPaidAmount</span>";
+					?>
+				</td>
+				<td colspan="2" style='border-left:none;border-right:none'>
+					<?
+					$poTotalRecieve = poTotalreceive($posl,$p);
+					$poPaidAmount = poPaidAmount($posl);
+					$amount = number_format(($poTotalRecieve-$poPaidAmount),2);
+					echo "<p>Force close amount : <span>$amount</span>"; 
+					
+					?>
+				</td>
+			</tr>
+
+<?	    
+    }  
+}
+
+?>
+
+
 <tr>
 	<td colspan="6" align="right">	
 <?php
@@ -704,9 +822,7 @@ $paid=poPaidAmount($re_s[posl]);
 		$q_aux=mysqli_query($db,$sql_aux);
 		$row_aux=mysqli_fetch_array($q_aux);
 
-
-	
-		echo "<p class='closedClass'>Force Close</p>"; //closing row
+	//	echo "<p class='closedClass'>Force Close</p>"; //closing row
 		if($mr[closedTxt])echo "<b>Reason: </b><i>$mr[closedTxt]</i>";
 			echo "<br>";
 			if($row_aux["amount"])
@@ -729,42 +845,36 @@ $paid=poPaidAmount($re_s[posl]);
 	<td></td>
 	<td></td>
 	</tr>
-	<script type="text/javascript">
 
-						
-<?php if($st1+$st2+$st3+$st4+$st5+$st6==0)
-		{ 
-		$all_js='
-		document.getElementById("ro_'.($r-1).'").style.display="none";'.$all_js;
-	 }
-						
-						?>
+	<script type="text/javascript">						
+		<?php if($st1+$st2+$st3+$st4+$st5+$st6==0)
+				{ 
+				$all_js='
+				document.getElementById("ro_'.($r-1).'").style.display="none";'.$all_js;
+			}			
+				?>
+				function add_this_in_function_load(row, get_the_switch_value, the_row_and_col, col) {
+					document.getElementById(the_row_and_col).style.background = "#ccc";
+					the_row_data_switch[the_row_and_col] = 1;
+					document.getElementById(row + '__' + col).value = 1;
+		}
+		<?php
 
-
-
-						function add_this_in_function_load(row, get_the_switch_value, the_row_and_col, col) {
-							document.getElementById(the_row_and_col).style.background = "#ccc";
-							the_row_data_switch[the_row_and_col] = 1;
-							document.getElementById(row + '__' + col).value = 1;
-}
-<?php
-
-			 if($get_row_data['7']==1)
-	 	echo "add_this_in_function_load(".$r.',0,'.$r.'7'.',7'.");";
-	 if($get_row_data['15']==1)
-	 	echo "add_this_in_function_load(".$r.',0,'.$r.'15'.',15'.");";
-	 if($get_row_data['30']==1)
-	 	echo "add_this_in_function_load(".$r.',0,'.$r.'30'.',30'.");";
-	 if($get_row_data['60']==1)
-	 	echo "add_this_in_function_load(".$r.',0,'.$r.'60'.',60'.");";
-	 if($get_row_data['90']==1)
-	 	echo "add_this_in_function_load(".$r.',0,'.$r.'90'.',90'.");";
-	 if($get_row_data['91']==1)
-	 	echo "add_this_in_function_load(".$r.',0,'.$r.'91'.',91'.");";
-		
-		
-	?>
-					</script>
+			if($get_row_data['7']==1)
+				echo "add_this_in_function_load(".$r.',0,'.$r.'7'.',7'.");";
+			if($get_row_data['15']==1)
+				echo "add_this_in_function_load(".$r.',0,'.$r.'15'.',15'.");";
+			if($get_row_data['30']==1)
+				echo "add_this_in_function_load(".$r.',0,'.$r.'30'.',30'.");";
+			if($get_row_data['60']==1)
+				echo "add_this_in_function_load(".$r.',0,'.$r.'60'.',60'.");";
+			if($get_row_data['90']==1)
+				echo "add_this_in_function_load(".$r.',0,'.$r.'90'.',90'.");";
+			if($get_row_data['91']==1)
+				echo "add_this_in_function_load(".$r.',0,'.$r.'91'.',91'.");";
+					
+			?>
+	</script>
 
 
 
@@ -791,7 +901,7 @@ echo $all_js;
 }
 
 
-							function add_this_in_function(amount, row, get_the_switch_value, the_row_and_col, col) {
+			function add_this_in_function(amount, row, get_the_switch_value, the_row_and_col, col) {
 			$(document).ready(function(){
 								if (get_the_switch_value == 1) {
 									$("#"+the_row_and_col).css({"background" : "#fff"});

@@ -302,7 +302,6 @@ while($iowResult=mysqli_fetch_array($sqlrunp)){
     $resultItem=mysqli_fetch_array($sqlruni);
   }
 	$temp=itemDes($itemCode);
-
   ?>
   <tr <? echo $bg; ?>>
     <td align="center"><? echo $itemCode;?>	</td>
@@ -453,8 +452,17 @@ if($rate==0){
 	 
 if($test[0]<'70' AND $test[0]>='98')
 if(!isMaxVendorQuotationValid($itemCode,$loginProject)){$rate=0;}
-          
-	echo round($rate,2);
+
+        $srate=siteRate($itemCode);
+		if($itemCode >= '82-00-000' && $itemCode < '95-00-000' ){
+			echo round($srate,2);
+		}
+		else 
+		{
+			echo round($rate,2);
+ 		}
+    
+	//echo round($rate,2);
 	//echo $rate;
 	if($rate<0) $tt=0;
 	?>
@@ -464,7 +472,16 @@ if(!isMaxVendorQuotationValid($itemCode,$loginProject)){$rate=0;}
 	<input type="hidden" name="dmaId<? echo $i?>" value="<? echo $iowResult[dmaId];?>"	>  -->	</td>
 
 <td align="right" width="50%"><?
-	 $amount=$rate*$iowResult[dmaQty]; echo round($amount,2);
+
+	if($itemCode >= '82-00-000' && $itemCode < '93-00-000' ){
+		$amount=$srate*$iowResult[dmaQty]; echo round($amount,2);
+	}
+	else 
+	{
+		$amount=$rate*$iowResult[dmaQty]; echo round($amount,2);
+	}
+	
+	 //$amount=$rate*$iowResult[dmaQty]; echo round($amount,2);
 	 if($test[0]>='01' AND $test[0]<'35'){$materialCost+=$amount;}
 	 elseif($test[0]>='35' AND $test[0]<'70'){$equipmentCost+=$amount;}
 	 elseif($test[0]>='70'){$humanCost+=$amount;}
